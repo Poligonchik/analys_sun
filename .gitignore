@@ -176,3 +176,5 @@ cython_debug/
 
 # Исключить все файлы .parquet
 *.parquet
+*.txt
+*.tar.gz
