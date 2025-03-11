@@ -9,7 +9,7 @@ output_directory = Path("./processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)  # Создаем директорию, если она не существует
 
 
-# Функция для парсинга секции
+# Функция для парсинга
 def parse_section(data, section_title, filename):
     section = []
     section_started = False
@@ -46,10 +46,11 @@ def parse_file(filepath):
         issued = issued_match.group(1)
         product = product_match.group(1)
 
-        # Парсинг секций
+        # парсинг частей нужных с реальными данными (дальше предсказания)
         regions_with_sunspots = parse_section(data, "I.  Regions with Sunspots", filepath)
         h_alpha_plages = parse_section(data, "IA. H-alpha Plages without Spots", filepath)
         regions_due_to_return = parse_section(data, "II. Regions Due to Return", filepath)
+        # остальные не нужны
 
         return {
             "issued": issued,

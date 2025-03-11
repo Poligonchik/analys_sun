@@ -3,13 +3,11 @@ import re
 import json
 from pathlib import Path
 
-# Путь к директории с файлами событий
 input_directory = Path("./ftp_data/2013/2013_events")
 output_directory = Path("./processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 
 # Функция для парсинга одного файла
-
 def parse_event_file(filepath):
     try:
         with open(filepath, 'r') as file:
@@ -17,8 +15,10 @@ def parse_event_file(filepath):
 
         # Извлечение заголовков
         date_match = re.search(r":Date:\s*(\d{4} \d{2} \d{2})", "".join(lines))
-        date = date_match.group(1) if date_match else "Unknown"
-
+        if date_match:
+            date = date_match.group(1)
+        else:
+            date = "Unknown"
         events = []
         event_section_started = False
 
@@ -32,7 +32,6 @@ def parse_event_file(filepath):
                 if line.strip() == "" or line.startswith("#") or "----" in line:
                     continue
 
-                # Парсинг данных события
                 parts = re.split(r"\s{2,}", line.strip())
                 if len(parts) >= 7:
                     events.append({
@@ -56,7 +55,7 @@ def parse_event_file(filepath):
         print(f"Ошибка обработки файла {filepath}: {e}")
         return None
 
-# Обработка всех файлов
+
 all_events = []
 for filepath in input_directory.glob("*.txt"):
     print(f"Обработка файла: {filepath}")
@@ -69,4 +68,4 @@ output_json = output_directory / "combined_events.json"
 with open(output_json, "w") as json_file:
     json.dump(all_events, json_file, indent=4)
 
-print(f"Данные событий успешно объединены и сохранены в файл: {output_json}")
+print(f"Все обработано и сохранено в файл: {output_json}")
