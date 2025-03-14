@@ -107,7 +107,7 @@ for year in range(1996, 2025):
         print(f"Папка {input_directory} не существует.")
 
 # Сохранение объединенных данных в JSON-файл
-output_directory = Path("./processed_results")
+output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 output_json = output_directory / "combined_events_all.json"
 with open(output_json, "w") as json_file:
