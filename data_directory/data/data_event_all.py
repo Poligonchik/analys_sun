@@ -23,6 +23,14 @@ def extract_date_from_filename(filename):
     return None
 
 
+# Функция для приведения значения времени к формату HHMM:
+# если первый символ является буквой, удаляем его.
+def fix_time(time_str):
+    if time_str and not time_str[0].isdigit():
+        return time_str[1:]
+    return time_str
+
+
 # Функция для парсинга одного файла событий
 def parse_event_file(filepath):
     try:
@@ -34,10 +42,9 @@ def parse_event_file(filepath):
         # Попытка извлечения даты из имени файла
         date = extract_date_from_filename(filename)
 
-        # Если не удалось извлечь дату из имени, то проверяем содержимое файла
+        # Если не удалось извлечь дату из имени, проверяем содержимое файла
         if not date:
             if "Space Environment Center" in content:
-                # Для формата 1996–1998
                 edited_match = re.search(r"EDITED EVENTS for (\d{4})\s+([A-Za-z]{3})\s+(\d{1,2})", content)
                 if edited_match:
                     year = edited_match.group(1)
@@ -48,7 +55,6 @@ def parse_event_file(filepath):
                 else:
                     date = "Unknown"
             else:
-                # Стандартный формат: ищем строку с тегом :Date:
                 date_match = re.search(r":Date:\s*(\d{4} \d{2} \d{2})", content)
                 if date_match:
                     date = date_match.group(1)
@@ -67,20 +73,62 @@ def parse_event_file(filepath):
                 if line.strip() == "" or line.startswith("#") or "----" in line:
                     continue
 
+                # Разбиваем строку по 2 и более пробелам
                 parts = re.split(r"\s{2,}", line.strip())
                 if len(parts) >= 7:
-                    events.append({
-                        "event": parts[0],
-                        "begin": parts[1],
-                        "max": parts[2],
-                        "end": parts[3],
-                        "obs": parts[4],
-                        "q": parts[5],
-                        "type": parts[6],
-                        "loc_freq": parts[7] if len(parts) > 7 else None,
-                        "particulars": parts[8] if len(parts) > 8 else None,
-                        "region": parts[9] if len(parts) > 9 else None
-                    })
+                    # Если в поле "end" содержатся два значения (например, "B0546 ////"), разделяем их:
+                    if " " in parts[3]:
+                        end_obs = parts[3].split()
+                        if len(end_obs) >= 2:
+                            end_field = fix_time(end_obs[0])
+                            obs_field = end_obs[1]  # для obs не обрабатываем время
+                        else:
+                            end_field = fix_time(parts[3])
+                            obs_field = parts[4] if len(parts) > 4 else None
+                        base_index = 4
+                    else:
+                        end_field = fix_time(parts[3])
+                        obs_field = parts[4]
+                        base_index = 5
+
+                    # Обрабатываем поля Begin и Max как время
+                    begin_field = fix_time(parts[1])
+                    max_field = fix_time(parts[2])
+
+                    q_field = parts[base_index] if len(parts) > base_index else None
+                    type_field = parts[base_index + 1] if len(parts) > base_index + 1 else None
+                    loc_freq_field = parts[base_index + 2] if len(parts) > base_index + 2 else None
+                    particulars_field = parts[base_index + 3] if len(parts) > base_index + 3 else None
+
+                    # Ищем значение для region после particulars
+                    region_field = None
+                    if len(parts) > base_index + 4:
+                        candidate = parts[base_index + 4]
+                        # Если кандидат выглядит как экспоненциальное число, то, возможно, за ним следует искомое значение
+                        if re.match(r'^[+-]?\d+(\.\d+)?[eE][+-]?\d+$', candidate):
+                            if len(parts) > base_index + 5:
+                                candidate2 = parts[base_index + 5]
+                                if re.match(r'^\d{3,5}$', candidate2):
+                                    region_field = candidate2
+                        else:
+                            if re.match(r'^\d{3,5}$', candidate):
+                                region_field = candidate
+
+                    event_dict = {
+                        "event": parts[0],  # символ "+" остаётся, если присутствует
+                        "begin": begin_field,
+                        "max": max_field,
+                        "end": end_field,
+                        "obs": obs_field,
+                        "q": q_field,
+                        "type": type_field,
+                        "loc_freq": loc_freq_field,
+                        "particulars": particulars_field
+                    }
+                    if region_field is not None:
+                        event_dict["region"] = region_field
+
+                    events.append(event_dict)
 
         return {
             "date": date,
@@ -95,7 +143,7 @@ all_events = []
 
 # Перебор годов от 1996 до 2024
 for year in range(1996, 2025):
-    input_directory = Path(f"./ftp_data/{year}/{year}_events")
+    input_directory = Path(f"../ftp_data/{year}/{year}_events")
     if input_directory.exists():
         for filepath in input_directory.glob("*.txt"):
             print(f"Обработка файла: {filepath}")
@@ -106,7 +154,7 @@ for year in range(1996, 2025):
     else:
         print(f"Папка {input_directory} не существует.")
 
-# Сохранение объединенных данных в JSON-файл
+# Сохранение объединённых данных в JSON-файл
 output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 output_json = output_directory / "combined_events_all.json"

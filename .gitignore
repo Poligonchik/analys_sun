@@ -178,3 +178,4 @@ cython_debug/
 *.parquet
 *.txt
 *.tar.gz
+*.csv
