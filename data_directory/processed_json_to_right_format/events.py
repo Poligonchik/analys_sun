@@ -29,7 +29,7 @@ def process_events_list(events_list):
     """
     Обрабатывает список записей из combined_events_all.json.
     Для каждого объекта, если есть поле "date", приводит его к формату "YYYY MM DD".
-    Также удаляет поле "year". Для каждого события удаляются поля "obs" и "q".
+    Также удаляет поле "year". Для каждого события удаляются поля "obs", "q" и "event".
     """
     for record in events_list:
         if "date" in record:
@@ -45,8 +45,8 @@ def process_events_list(events_list):
 
 def process_events_file(input_path, output_path):
     """
-    Загружает JSON-файл с событиями, обрабатывает каждый объект (приводит дату к формату "YYYY MM DD" и удаляет поле "year" и поля "obs", "q"),
-    сохраняет результат в новый JSON и возвращает данные.
+    Загружает JSON-файл с событиями, обрабатывает каждый объект (приводит дату к формату "YYYY MM DD"
+    и удаляет поле "year" и поля "obs", "q"), сохраняет результат в новый JSON и возвращает данные.
     """
     with open(input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -93,7 +93,7 @@ def analyze_list_data(data_list, sample_size=50):
                     unique_values.add(val)
         if key == "events":
             print(f"Ключ: '{key}' - Всего: {total}, Пропусков: {missing}, Уникальных значений: {len(unique_values)}")
-            print(f"  (Список уникальных значений для '{key}' не выводится, так как он очень объёмный)")
+            print("  (Список уникальных значений для 'events' не выводится, так как он очень объёмный)")
         else:
             unique_list = list(unique_values)
             if len(unique_list) > sample_size:
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     output_file = "../../unified_json/events.json"
     output_filled_file = "../../unified_json/events.json"
 
-    # Обработка файла: приведение даты к формату "YYYY MM DD" и удаление поля "year" и полей "obs", "q"
+    # Обработка файла: приведение даты к формату "YYYY MM DD" и удаление полей "year", "obs", "q", "event"
     processed_events = process_events_file(input_file, output_file)
 
     # Анализ верхнеуровневых данных
@@ -185,16 +185,15 @@ if __name__ == '__main__':
     # Анализ вложенных событий до замены пропусков
     analyze_events_data(all_events)
 
-    # Создаем DataFrame из всех событий (без заполнения пропусков)
+    # Создаем DataFrame из всех событий и заменяем строки "////" и "///" на NaN
     df_events = pd.DataFrame(all_events)
-
-    # Заменяем строки "////" и "///" на NaN
     df_events.replace({"////": pd.NA, "///": pd.NA}, inplace=True)
 
-    # --- Специальная обработка столбцов 'begin' и 'end' ---
-    # Преобразуем строки времени в минуты и затем обратно в формат HHMM, удаляя буквенные префиксы
+    # --- Специальная обработка столбцов 'begin', 'end', 'max' и заполнение пропусков в 'region' ---
+    # Преобразуем строки времени в минуты для столбцов begin, end и max
     df_events['begin_mins'] = df_events['begin'].apply(time_str_to_minutes)
     df_events['end_mins'] = df_events['end'].apply(time_str_to_minutes)
+    df_events['max_mins'] = df_events['max'].apply(time_str_to_minutes)
 
     # Функция для вычисления интервала (с учетом перехода через полночь)
     def compute_interval(row):
@@ -209,18 +208,62 @@ if __name__ == '__main__':
             return None
 
     df_events['interval'] = df_events.apply(compute_interval, axis=1)
-    # Здесь НЕ заполняем пропуски – оставляем исходные значения
+    # Вычисляем медианный интервал (для строк с заданными begin и end)
+    valid_intervals = df_events['interval'].dropna()
+    median_interval = valid_intervals.median() if not valid_intervals.empty else 13
+    print("Медианный интервал (минут):", median_interval)
+
+    # Если отсутствует end, заменяем его как begin + медианный интервал (с модулем 1440)
+    mask_end_missing = df_events['begin_mins'].notna() & df_events['end_mins'].isna()
+    df_events.loc[mask_end_missing, 'end_mins'] = (df_events.loc[mask_end_missing, 'begin_mins'] + median_interval) % 1440
+
+    # Если отсутствует begin, заменяем его как end - медианный интервал (с модулем 1440)
+    mask_begin_missing = df_events['end_mins'].notna() & df_events['begin_mins'].isna()
+    df_events.loc[mask_begin_missing, 'begin_mins'] = (df_events.loc[mask_begin_missing, 'end_mins'] - median_interval) % 1440
+
+    # Пересчитываем интервал после заполнения begin/end
+    df_events['interval'] = df_events.apply(compute_interval, axis=1)
+
+    # Обработка столбца max:
+    # Функция для вычисления доли прохождения интервала от начала до max
+    def compute_progress(row):
+        b = row['begin_mins']
+        e = row['end_mins']
+        m = row['max_mins']
+        if pd.notna(b) and pd.notna(e) and pd.notna(m) and pd.notna(row['interval']) and row['interval'] != 0:
+            diff = m - b if m >= b else m + 1440 - b
+            return diff / row['interval']
+        else:
+            return None
+
+    df_events['progress'] = df_events.apply(compute_progress, axis=1)
+    valid_progress = df_events['progress'].dropna()
+    average_progress = valid_progress.mean() if not valid_progress.empty else 0.5
+    print("Среднее значение progress (доля):", average_progress)
+
+    # Если max отсутствует, вычисляем его как begin + (average_progress * interval)
+    mask_max_missing = df_events['max_mins'].isna() & df_events['begin_mins'].notna() & df_events['end_mins'].notna()
+    df_events.loc[mask_max_missing, 'max_mins'] = (df_events.loc[mask_max_missing, 'begin_mins'] +
+                                                   average_progress * df_events.loc[mask_max_missing, 'interval']) % 1440
+
     # Преобразуем минуты обратно в строковый формат HHMM
     df_events['begin'] = df_events['begin_mins'].apply(minutes_to_time_str)
     df_events['end'] = df_events['end_mins'].apply(minutes_to_time_str)
+    df_events['max'] = df_events['max_mins'].apply(minutes_to_time_str)
 
-    # Удаляем временные столбцы
-    df_events.drop(columns=['begin_mins', 'end_mins', 'interval'], inplace=True)
-    # --- Конец специальной обработки begin/end ---
+    # Удаляем временные столбцы, использованные для расчётов
+    df_events.drop(columns=['begin_mins', 'end_mins', 'max_mins', 'interval', 'progress'], inplace=True)
 
-    print("\nПосле специальной обработки begin/end (без заполнения пропусков):")
+    # Обработка столбца 'region': вычисляем моду (наиболее часто встречающееся значение) и подставляем её в пропущенные ячейки
+    if 'region' in df_events.columns:
+        mode_value = df_events['region'].mode().iloc[0] if not df_events['region'].mode().empty else None
+        print("Мода для 'region':", mode_value)
+        df_events['region'].fillna(mode_value, inplace=True)
+
+    print("\nПосле специальной обработки begin/end, max и заполнения пропусков в 'region':")
     filled_events = df_events.to_dict(orient="records")
     analyze_events_data(filled_events)
+    # --- Конец специальной обработки ---
 
     # Сохраняем результат в JSON для дальнейшего анализа
     with open(output_filled_file, "w", encoding="utf-8") as f:

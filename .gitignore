@@ -179,3 +179,4 @@ cython_debug/
 *.txt
 *.tar.gz
 *.csv
+*.pkl
