@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 from collections import Counter
 
+
 def parse_issued_date(issued_str):
     """
     Преобразует строку вида '2000 Oct 14 0030 UTC'
@@ -16,12 +17,14 @@ def parse_issued_date(issued_str):
         print(f"Ошибка при парсинге даты '{issued_str}': {e}")
         return None
 
+
 def process_section(section):
     """
     Для каждой записи в секции (например, 'regions_with_sunspots'):
       - Извлекает дату из поля 'issued' и добавляет новое поле 'date' в формате 'YYYY MM DD'
       - Удаляет поле 'issued'
       - Если поле 'Mag_Type' отсутствует или пустое, заменяет его на 'Beta'
+      - Удаляет поля 'Z' и 'product'
     """
     for record in section:
         issued = record.get("issued")
@@ -34,15 +37,15 @@ def process_section(section):
         else:
             record["date"] = "unknown"
         # Удаляем поле "issued"
-        if "issued" in record:
-            del record["issued"]
-        # Обработка поля "Mag_Type": если отсутствует или пустое, заменяем на "Beta"
-        if "Mag_Type" in record:
-            if record["Mag_Type"] in [None, ""]:
-                record["Mag_Type"] = "Beta"
-        else:
+        record.pop("issued", None)
+        # Если поле "Mag_Type" отсутствует или пустое, заменяем на "Beta"
+        if not record.get("Mag_Type"):
             record["Mag_Type"] = "Beta"
+        # Удаляем поля "Z" и "product"
+        record.pop("Z", None)
+        record.pop("product", None)
     return section
+
 
 def impute_mode_for_field(section, field_name):
     """
@@ -62,6 +65,7 @@ def impute_mode_for_field(section, field_name):
             record[field_name] = mode_value
     return section
 
+
 def fill_missing_values_for_section(section):
     """
     Проходит по всем ключам в секции и для каждого поля заменяет пропуски
@@ -74,30 +78,59 @@ def fill_missing_values_for_section(section):
         section = impute_mode_for_field(section, key)
     return section
 
+
+def flatten_section(section):
+    """
+    Если секция является словарем (т.е. содержит вложенность), раскрывает вложенность
+    и возвращает плоский список записей.
+    Если секция уже является списком, возвращает её без изменений.
+    """
+    if isinstance(section, dict):
+        flat_list = []
+        for sub in section.values():
+            if isinstance(sub, list):
+                flat_list.extend(sub)
+            else:
+                flat_list.append(sub)
+        return flat_list
+    return section
+
+
 def process_srs_file(input_path, output_path):
     """
-    Загружает SRS JSON, обрабатывает все секции:
+    Загружает SRS JSON, оставляя только секцию 'regions_with_sunspots'.
+    Обрабатывает эту секцию:
       - Приводит дату к единому формату и удаляет поле 'issued'
-      - Сначала обрабатывает специальные поля (например, 'Mag_Type')
-      - Затем заполняет пропуски для всех ключей модой
+      - Заменяет отсутствующие значения в 'Mag_Type' на 'Beta'
+      - Удаляет поля 'Z' и 'product'
+      - Заполняет пропуски для всех ключей модой
+      - Раскрывает вложенности (если секция представлена словарём) в плоский список записей
+    Итоговый результат — список записей (без ключа 'regions_with_sunspots').
     Сохраняет результат в новый JSON.
     """
     with open(input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    for key in data.keys():
-        if isinstance(data[key], list):
-            print(f"Обработка секции: {key}")
-            data[key] = process_section(data[key])
-            # Заполнение пропусков для всех полей данной секции
-            data[key] = fill_missing_values_for_section(data[key])
+    # Извлекаем только нужную секцию
+    regions = data.get("regions_with_sunspots", [])
+
+    # Обработка секции
+    print("Обработка секции: regions_with_sunspots")
+    regions = process_section(regions)
+    regions = fill_missing_values_for_section(regions)
+    regions = flatten_section(regions)
+
+    # Итоговый результат — просто список записей
+    result = regions
+
     output_dir = os.path.dirname(output_path)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(result, f, ensure_ascii=False, indent=4)
     print(f"Обработанный файл сохранен по пути: {output_path}")
-    return data
+    return result
+
 
 def analyze_section(section, section_name="", sample_size=50):
     """
@@ -120,13 +153,18 @@ def analyze_section(section, section_name="", sample_size=50):
         print(f"Ключ: '{key}' - Всего: {total}, Пропусков: {missing}, Уникальных значений: {len(unique_values)}")
         print(f"  Первые {sample_size} уникальных значений: {unique_list}")
 
+
 def analyze_data(data):
     """
-    Вызывает analyze_section для каждой секции в data.
+    Вызывает analyze_section для данных.
+    Здесь анализируется только список записей, так как итоговый результат — плоский список.
     """
-    for key, section in data.items():
-        if isinstance(section, list):
+    if isinstance(data, list):
+        analyze_section(data, section_name="regions_with_sunspots")
+    elif isinstance(data, dict):
+        for key, section in data.items():
             analyze_section(section, section_name=key)
+
 
 if __name__ == '__main__':
     # Пути: исходный файл и куда положить результат
@@ -137,5 +175,8 @@ if __name__ == '__main__':
     analyze_data(processed_data)
 
 '''
-все пропуски заполняются модой для значений, дял которых нет медианы
+Все пропуски заполняются модой для значений, для которых нет медианы.
+Поля "Z" и "product" удаляются.
+Информация о секциях "regions_due_to_return" и "h_alpha_plages" полностью исключается,
+а итоговый JSON содержит только список записей из "regions_with_sunspots" без ключа.
 '''

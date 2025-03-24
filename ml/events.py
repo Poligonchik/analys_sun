@@ -175,12 +175,12 @@ print("Важность признаков:")
 print(importance.sort_values(ascending=False))
 
 # Сохраняем модель и данные для дальнейшего использования
-model_filename = "../unified_json/lightgbm_model_target_24.pkl"
+model_filename = "../models/lightgbm_model_target_24.pkl"
 joblib.dump(lgb_model, model_filename)
 print(f"Модель сохранена в {model_filename}")
 
 # Сохранение обучающих данных (например, в CSV)
-train_data_filename = "../unified_json/train_data_target_24.csv"
+train_data_filename = "../models/train_data_target_24.csv"
 train_df.to_csv(train_data_filename, index=False)
 print(f"Обучающие данные сохранены в {train_data_filename}")
 

@@ -5,20 +5,20 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import lightgbm as lgb
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, StackingClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (roc_auc_score, f1_score, accuracy_score, precision_score,
                              recall_score, confusion_matrix, classification_report)
-import joblib  # для сохранения модели
+import joblib
+import xgboost as xgb
 
-# Загрузка данных из файла с развёрнутыми событиями
+# Загрузка данных
 input_file = "../unified_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
-
-# Преобразуем список событий в DataFrame
 df = pd.DataFrame(data)
 
-# Функция для объединения даты и времени начала в одну временную метку
+# Функция объединения даты и времени начала
 def combine_datetime(row):
     try:
         dt_str = row['date'] + " " + row['begin']
@@ -29,12 +29,12 @@ def combine_datetime(row):
 df['timestamp'] = df.apply(combine_datetime, axis=1)
 df = df.dropna(subset=["timestamp"]).sort_values("timestamp").reset_index(drop=True)
 
-# Извлекаем временные признаки
+# Временные признаки
 df['hour'] = df['timestamp'].dt.hour
 df['weekday'] = df['timestamp'].dt.weekday
 df['month'] = df['timestamp'].dt.month
 
-# Функция для преобразования строки времени в количество минут от полуночи
+# Преобразование времени в минуты
 def time_str_to_minutes(time_str):
     if pd.isna(time_str):
         return np.nan
@@ -52,7 +52,7 @@ def time_str_to_minutes(time_str):
 df['begin_mins'] = df['begin'].apply(time_str_to_minutes)
 df['end_mins'] = df['end'].apply(time_str_to_minutes)
 
-# Вычисляем длительность события (с учетом перехода через полночь)
+# Вычисляем длительность события
 def compute_duration(row):
     b = row['begin_mins']
     e = row['end_mins']
@@ -70,29 +70,29 @@ categorical_cols = ['type', 'particulars', 'loc_freq', 'region']
 for col in categorical_cols:
     df[col] = df[col].astype("category")
 
-# Удаляем строки с пропущенными значениями в ключевых признаках (begin, end, particulars, type)
+# Удаляем строки с пропусками в ключевых признаках
 df = df.dropna(subset=['begin', 'end', 'particulars', 'type'])
 
-# Функция для создания целевой метки:
-# Возвращает 1, если в заданный горизонт (24 часа) после текущей временной метки происходит вспышка типа "XRA"
-# и в поле particulars начинается с "M" или "X"
+# Создаем бинарный таргет для сильных вспышек (если в горизонте 24 часов происходит вспышка XRA,
+# а в поле particulars начинается с "M" или "X")
 def label_future_strong_flare(ts, horizon_hours, df):
     t_end = ts + timedelta(hours=horizon_hours)
     mask = (df['timestamp'] > ts) & (df['timestamp'] <= t_end) & (df['type'] == "XRA")
     strong = df.loc[mask, 'particulars'].dropna().astype(str)
     return int(any(val.startswith(('M', 'X')) for val in strong))
 
-# Сортируем по timestamp и создаем целевые метки для горизонтов 12, 24 и 48 часов
 df = df.sort_values("timestamp").reset_index(drop=True)
 df['target_12'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 12, df))
 df['target_24'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 24, df))
 df['target_48'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 48, df))
 
-# Функция для агрегирования истории событий до текущего момента в заданном окне (в часах)
+# Функция агрегирования событий за окно (в часах)
 def add_aggregated_features(df, window_hours):
     agg_count = []
     agg_duration_sum = []
     agg_duration_mean = []
+    agg_duration_var = []   # дисперсия длительности
+    agg_duration_median = []  # медиана длительности
     agg_xra_count = []
     start_idx = 0
     n = len(df)
@@ -105,19 +105,28 @@ def add_aggregated_features(df, window_hours):
         count = len(window_df)
         agg_count.append(count)
         if count > 0:
-            dur_sum = window_df['duration'].sum()
-            dur_mean = window_df['duration'].mean()
+            dur_values = window_df['duration'].dropna()
+            dur_sum = dur_values.sum()
+            dur_mean = dur_values.mean()
+            dur_var = dur_values.var() if len(dur_values) > 1 else 0
+            dur_median = dur_values.median()
             xra_count = (window_df['type'] == 'XRA').sum()
         else:
             dur_sum = 0
             dur_mean = 0
+            dur_var = 0
+            dur_median = 0
             xra_count = 0
         agg_duration_sum.append(dur_sum)
         agg_duration_mean.append(dur_mean)
+        agg_duration_var.append(dur_var)
+        agg_duration_median.append(dur_median)
         agg_xra_count.append(xra_count)
     df[f'agg_count_{window_hours}h'] = agg_count
     df[f'agg_duration_sum_{window_hours}h'] = agg_duration_sum
     df[f'agg_duration_mean_{window_hours}h'] = agg_duration_mean
+    df[f'agg_duration_var_{window_hours}h'] = agg_duration_var
+    df[f'agg_duration_median_{window_hours}h'] = agg_duration_median
     df[f'agg_xra_count_{window_hours}h'] = agg_xra_count
     return df
 
@@ -125,24 +134,28 @@ def add_aggregated_features(df, window_hours):
 for window in [6, 10, 24, 30, 48]:
     df = add_aggregated_features(df, window)
 
-# Определяем список признаков
+# Добавляем составные признаки
+df['ratio_count_24_48'] = df[f'agg_count_24h'] / (df[f'agg_count_48h'] + 1e-5)
+df['diff_mean_24_48'] = df[f'agg_duration_mean_24h'] - df[f'agg_duration_mean_48h']
+
+# Определяем список признаков для моделей
 agg_features = []
 for window in [6, 10, 24, 30, 48]:
     agg_features += [f'agg_count_{window}h', f'agg_duration_sum_{window}h',
-                     f'agg_duration_mean_{window}h', f'agg_xra_count_{window}h']
+                     f'agg_duration_mean_{window}h', f'agg_duration_var_{window}h',
+                     f'agg_duration_median_{window}h', f'agg_xra_count_{window}h']
 base_features = ['hour', 'weekday', 'month', 'duration'] + categorical_cols
-features = base_features + agg_features
+features = base_features + agg_features + ['ratio_count_24_48', 'diff_mean_24_48']
 cat_features = categorical_cols  # для LightGBM
 
-# Перед обучением удаляем все строки с пропущенными значениями среди признаков и целевой метки target_24
+# Удаляем строки с пропусками среди признаков и таргета target_24
 df_clean = df.dropna(subset=features + ['target_24']).reset_index(drop=True)
 
-# Для моделей scikit-learn (например, RandomForest) нужно, чтобы все признаки были числовыми.
-# Преобразуем категориальные признаки в числовые коды.
+# Для моделей scikit-learn преобразуем категориальные признаки в числовые коды
 for col in categorical_cols:
     df_clean[col] = df_clean[col].cat.codes
 
-# Хронологически разделяем данные: первые 80% - обучение, последние 20% - тест
+# Хронологическое разделение: 80% обучение, 20% тест
 split_index = int(len(df_clean) * 0.8)
 train_df = df_clean.iloc[:split_index]
 test_df = df_clean.iloc[split_index:]
@@ -152,56 +165,96 @@ y_train = train_df["target_24"]
 X_test = test_df[features]
 y_test = test_df["target_24"]
 
-# --- Обучение модели LightGBM ---
-lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42)
+#############################################
+# Обучение моделей для бинарной классификации (target_24)
+#############################################
+
+# LightGBM с использованием всех ядер
+lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1)
 lgb_model.fit(X_train, y_train, categorical_feature=cat_features)
 y_pred_prob_lgb = lgb_model.predict_proba(X_test)[:, 1]
 y_pred_lgb = (y_pred_prob_lgb >= 0.5).astype(int)
 
-# --- Обучение модели RandomForest ---
-rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+# RandomForest (с балансировкой классов и n_jobs=-1)
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced', n_jobs=-1)
 rf_model.fit(X_train, y_train)
 y_pred_prob_rf = rf_model.predict_proba(X_test)[:, 1]
 y_pred_rf = rf_model.predict(X_test)
 
-# --- Энамблирование: усредняем вероятности обеих моделей ---
-y_pred_prob_ensemble = (y_pred_prob_lgb + y_pred_prob_rf) / 2
+# XGBoost (с n_jobs=-1)
+xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42, scale_pos_weight=1, n_jobs=-1)
+xgb_model.fit(X_train, y_train)
+y_pred_prob_xgb = xgb_model.predict_proba(X_test)[:, 1]
+y_pred_xgb = (y_pred_prob_xgb >= 0.5).astype(int)
+
+# Стэкинг-ансамблирование (без гиперпараметрической оптимизации)
+base_estimators = [
+    ('lgb', lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1)),
+    ('rf', RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced', n_jobs=-1)),
+    ('xgb', xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42, n_jobs=-1))
+]
+meta_estimator = LogisticRegression(random_state=42, max_iter=1000)
+stacking_model = StackingClassifier(estimators=base_estimators, final_estimator=meta_estimator, cv=5, n_jobs=-1)
+stacking_model.fit(X_train, y_train)
+y_pred_prob_stack = stacking_model.predict_proba(X_test)[:, 1]
+y_pred_stack = (y_pred_prob_stack >= 0.5).astype(int)
+
+# Простое усреднение вероятностей (энсамблирование)
+y_pred_prob_ensemble = (y_pred_prob_lgb + y_pred_prob_rf + y_pred_prob_xgb) / 3
 y_pred_ensemble = (y_pred_prob_ensemble >= 0.5).astype(int)
 
-# Функция для вычисления и вывода метрик
+# Дополнительный блок: Взвешенное голосование
+w_lgb = 0.35
+w_rf = 0.33
+w_xgb = 0.32
+y_pred_prob_weighted = (w_lgb * y_pred_prob_lgb + w_rf * y_pred_prob_rf + w_xgb * y_pred_prob_xgb)
+y_pred_weighted = (y_pred_prob_weighted >= 0.5).astype(int)
+
+#############################################
+# Функция для вывода метрик
+#############################################
 def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     print(f"\nМетрики предсказания для {model_name}:")
     print(f"Accuracy: {accuracy_score(y_true, y_pred):.3f} ({accuracy_score(y_true, y_pred)*100:.1f}%)")
     print(f"Precision: {precision_score(y_true, y_pred, zero_division=0):.3f}")
     print(f"Recall: {recall_score(y_true, y_pred, zero_division=0):.3f}")
     print(f"F1 Score: {f1_score(y_true, y_pred, zero_division=0):.3f}")
-    print(f"ROC AUC: {roc_auc_score(y_true, y_prob):.3f}")
+    try:
+        print(f"ROC AUC: {roc_auc_score(y_true, y_prob):.3f}")
+    except Exception:
+        pass
     print("Confusion Matrix:")
     print(confusion_matrix(y_true, y_pred))
     print("Classification Report:")
     print(classification_report(y_true, y_pred, zero_division=0))
 
-# Выводим метрики для каждой модели и для ансамбля
-print_metrics(y_test, y_pred_lgb, y_pred_prob_lgb, "LightGBM (24 часов)")
-print_metrics(y_test, y_pred_rf, y_pred_prob_rf, "Random Forest (24 часов)")
-print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (LightGBM + RF)")
+#############################################
+# Вывод метрик для моделей
+#############################################
+print_metrics(y_test, y_pred_lgb, y_pred_prob_lgb, "LightGBM (24 часов, бинарный)")
+print_metrics(y_test, y_pred_rf, y_pred_prob_rf, "Random Forest (24 часов, бинарный)")
+print_metrics(y_test, y_pred_xgb, y_pred_prob_xgb, "XGBoost (24 часов, бинарный)")
+print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (усреднение LGBM+RF+XGB)")
+print_metrics(y_test, y_pred_stack, y_pred_prob_stack, "Stacking (без GridSearchCV)")
+print_metrics(y_test, y_pred_weighted, y_pred_prob_weighted, "Weighted Voting Ensemble (LGBM+RF+XGB)")
 
-# Вывод важности признаков для обеих моделей
-print("\nВажность признаков (LightGBM):")
-importance_lgb = pd.Series(lgb_model.feature_importances_, index=features)
-print(importance_lgb.sort_values(ascending=False))
-
-print("\nВажность признаков (Random Forest):")
-importance_rf = pd.Series(rf_model.feature_importances_, index=features)
-print(importance_rf.sort_values(ascending=False))
-
-# Сохраняем модели и обучающие данные
+#############################################
+# Сохранение моделей и данных
+#############################################
 lgb_model_filename = "../models/lightgbm_model_target_24.pkl"
 rf_model_filename = "../models/random_forest_model_target_24.pkl"
+xgb_model_filename = "../models/xgboost_model_target_24.pkl"
+stack_model_filename = "../models/stacking_model_target_24.pkl"
+
 joblib.dump(lgb_model, lgb_model_filename)
 joblib.dump(rf_model, rf_model_filename)
+joblib.dump(xgb_model, xgb_model_filename)
+joblib.dump(stacking_model, stack_model_filename)
+
 print(f"\nМодель LightGBM сохранена в {lgb_model_filename}")
 print(f"Модель Random Forest сохранена в {rf_model_filename}")
+print(f"Модель XGBoost сохранена в {xgb_model_filename}")
+print(f"Модель Stacking сохранена в {stack_model_filename}")
 
 train_data_filename = "../models/train_data_target_24.csv"
 df_clean.to_csv(train_data_filename, index=False)
