@@ -1,0 +1,7302 @@
+[
+    {
+        "date": "2013-01-01",
+        "radio_flux": 118.0,
+        "sunspot_number": 99,
+        "hemispheric_area": 480.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-02",
+        "radio_flux": 119.0,
+        "sunspot_number": 90,
+        "hemispheric_area": 610.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-03",
+        "radio_flux": 129.0,
+        "sunspot_number": 116,
+        "hemispheric_area": 640.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.5",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-04",
+        "radio_flux": 143.0,
+        "sunspot_number": 167,
+        "hemispheric_area": 830.0,
+        "new_regions": 5,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.3",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-05",
+        "radio_flux": 145.0,
+        "sunspot_number": 181,
+        "hemispheric_area": 1030.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.9",
+        "background": 7,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-06",
+        "radio_flux": 142.0,
+        "sunspot_number": 186,
+        "hemispheric_area": 1140.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.8",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-07",
+        "radio_flux": 150.0,
+        "sunspot_number": 196,
+        "hemispheric_area": 1390.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.6",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-08",
+        "radio_flux": 156.0,
+        "sunspot_number": 144,
+        "hemispheric_area": 940.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.6",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-09",
+        "radio_flux": 169.0,
+        "sunspot_number": 153,
+        "hemispheric_area": 860.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-10",
+        "radio_flux": 174.0,
+        "sunspot_number": 145,
+        "hemispheric_area": 1300.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.5",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-11",
+        "radio_flux": 172.0,
+        "sunspot_number": 166,
+        "hemispheric_area": 1650.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.0",
+        "background": 11,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-12",
+        "radio_flux": 169.0,
+        "sunspot_number": 156,
+        "hemispheric_area": 1460.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.4",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 7
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-13",
+        "radio_flux": 156.0,
+        "sunspot_number": 126,
+        "hemispheric_area": 1410.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.3",
+        "background": 10,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 7
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-14",
+        "radio_flux": 154.0,
+        "sunspot_number": 128,
+        "hemispheric_area": 1260.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-15",
+        "radio_flux": 140.0,
+        "sunspot_number": 120,
+        "hemispheric_area": 1280.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.7",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-16",
+        "radio_flux": 137.0,
+        "sunspot_number": 91,
+        "hemispheric_area": 850.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.9",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-17",
+        "radio_flux": 123.0,
+        "sunspot_number": 74,
+        "hemispheric_area": 650.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-18",
+        "radio_flux": 115.0,
+        "sunspot_number": 56,
+        "hemispheric_area": 560.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-19",
+        "radio_flux": 107.0,
+        "sunspot_number": 46,
+        "hemispheric_area": 480.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-20",
+        "radio_flux": 107.0,
+        "sunspot_number": 48,
+        "hemispheric_area": 410.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-21",
+        "radio_flux": 108.0,
+        "sunspot_number": 50,
+        "hemispheric_area": 180.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-22",
+        "radio_flux": 110.0,
+        "sunspot_number": 53,
+        "hemispheric_area": 270.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-23",
+        "radio_flux": 105.0,
+        "sunspot_number": 68,
+        "hemispheric_area": 340.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.9",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-24",
+        "radio_flux": 103.0,
+        "sunspot_number": 60,
+        "hemispheric_area": 320.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-25",
+        "radio_flux": 101.0,
+        "sunspot_number": 44,
+        "hemispheric_area": 300.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-26",
+        "radio_flux": 99.0,
+        "sunspot_number": 55,
+        "hemispheric_area": 190.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-27",
+        "radio_flux": 98.0,
+        "sunspot_number": 60,
+        "hemispheric_area": 150.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-28",
+        "radio_flux": 98.0,
+        "sunspot_number": 52,
+        "hemispheric_area": 150.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-29",
+        "radio_flux": 95.0,
+        "sunspot_number": 63,
+        "hemispheric_area": 430.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-30",
+        "radio_flux": 97.0,
+        "sunspot_number": 56,
+        "hemispheric_area": 330.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-01-31",
+        "radio_flux": 103.0,
+        "sunspot_number": 47,
+        "hemispheric_area": 260.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-01",
+        "radio_flux": 104.0,
+        "sunspot_number": 65,
+        "hemispheric_area": 260.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.8",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-02",
+        "radio_flux": 112.0,
+        "sunspot_number": 54,
+        "hemispheric_area": 350.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-03",
+        "radio_flux": 111.0,
+        "sunspot_number": 79,
+        "hemispheric_area": 400.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-04",
+        "radio_flux": 107.0,
+        "sunspot_number": 30,
+        "hemispheric_area": 260.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.9",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-05",
+        "radio_flux": 105.0,
+        "sunspot_number": 41,
+        "hemispheric_area": 210.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.7",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-06",
+        "radio_flux": 104.0,
+        "sunspot_number": 39,
+        "hemispheric_area": 230.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.8",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-07",
+        "radio_flux": 103.0,
+        "sunspot_number": 58,
+        "hemispheric_area": 270.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-08",
+        "radio_flux": 104.0,
+        "sunspot_number": 57,
+        "hemispheric_area": 280.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-09",
+        "radio_flux": 108.0,
+        "sunspot_number": 58,
+        "hemispheric_area": 300.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.9",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-10",
+        "radio_flux": 106.0,
+        "sunspot_number": 45,
+        "hemispheric_area": 280.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-11",
+        "radio_flux": 105.0,
+        "sunspot_number": 60,
+        "hemispheric_area": 370.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.8",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-12",
+        "radio_flux": 102.0,
+        "sunspot_number": 55,
+        "hemispheric_area": 340.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.8",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-13",
+        "radio_flux": 100.0,
+        "sunspot_number": 26,
+        "hemispheric_area": 210.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-14",
+        "radio_flux": 100.0,
+        "sunspot_number": 25,
+        "hemispheric_area": 200.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.7",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-15",
+        "radio_flux": 100.0,
+        "sunspot_number": 59,
+        "hemispheric_area": 220.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-16",
+        "radio_flux": 103.0,
+        "sunspot_number": 75,
+        "hemispheric_area": 240.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-17",
+        "radio_flux": 106.0,
+        "sunspot_number": 74,
+        "hemispheric_area": 250.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.3",
+        "background": 3,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 7
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-18",
+        "radio_flux": 105.0,
+        "sunspot_number": 92,
+        "hemispheric_area": 400.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.5",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-19",
+        "radio_flux": 112.0,
+        "sunspot_number": 117,
+        "hemispheric_area": 460.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.6",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-20",
+        "radio_flux": 114.0,
+        "sunspot_number": 106,
+        "hemispheric_area": 650.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.2",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-21",
+        "radio_flux": 109.0,
+        "sunspot_number": 75,
+        "hemispheric_area": 660.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-22",
+        "radio_flux": 107.0,
+        "sunspot_number": 79,
+        "hemispheric_area": 530.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.3",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-23",
+        "radio_flux": 100.0,
+        "sunspot_number": 56,
+        "hemispheric_area": 440.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.8",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-24",
+        "radio_flux": 95.0,
+        "sunspot_number": 25,
+        "hemispheric_area": 60.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-25",
+        "radio_flux": 95.0,
+        "sunspot_number": 59,
+        "hemispheric_area": 110.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-26",
+        "radio_flux": 99.0,
+        "sunspot_number": 49,
+        "hemispheric_area": 250.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.8",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-27",
+        "radio_flux": 102.0,
+        "sunspot_number": 61,
+        "hemispheric_area": 250.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-02-28",
+        "radio_flux": 106.0,
+        "sunspot_number": 63,
+        "hemispheric_area": 370.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-01",
+        "radio_flux": 113.0,
+        "sunspot_number": 88,
+        "hemispheric_area": 460.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-02",
+        "radio_flux": 111.0,
+        "sunspot_number": 90,
+        "hemispheric_area": 510.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-03",
+        "radio_flux": 112.0,
+        "sunspot_number": 115,
+        "hemispheric_area": 520.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-04",
+        "radio_flux": 114.0,
+        "sunspot_number": 103,
+        "hemispheric_area": 290.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-05",
+        "radio_flux": 118.0,
+        "sunspot_number": 106,
+        "hemispheric_area": 300.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.2",
+        "background": 1,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-06",
+        "radio_flux": 114.0,
+        "sunspot_number": 88,
+        "hemispheric_area": 390.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-07",
+        "radio_flux": 114.0,
+        "sunspot_number": 80,
+        "hemispheric_area": 320.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-08",
+        "radio_flux": 115.0,
+        "sunspot_number": 59,
+        "hemispheric_area": 160.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-09",
+        "radio_flux": 116.0,
+        "sunspot_number": 63,
+        "hemispheric_area": 430.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-10",
+        "radio_flux": 119.0,
+        "sunspot_number": 89,
+        "hemispheric_area": 490.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-11",
+        "radio_flux": 120.0,
+        "sunspot_number": 105,
+        "hemispheric_area": 490.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-12",
+        "radio_flux": 123.0,
+        "sunspot_number": 95,
+        "hemispheric_area": 610.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.3",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-13",
+        "radio_flux": 123.0,
+        "sunspot_number": 103,
+        "hemispheric_area": 630.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-14",
+        "radio_flux": 123.0,
+        "sunspot_number": 133,
+        "hemispheric_area": 740.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-15",
+        "radio_flux": 123.0,
+        "sunspot_number": 105,
+        "hemispheric_area": 650.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.0",
+        "background": 2,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-16",
+        "radio_flux": 126.0,
+        "sunspot_number": 90,
+        "hemispheric_area": 890.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.3",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-17",
+        "radio_flux": 126.0,
+        "sunspot_number": 126,
+        "hemispheric_area": 980.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.6",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-18",
+        "radio_flux": 118.0,
+        "sunspot_number": 116,
+        "hemispheric_area": 930.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-19",
+        "radio_flux": 110.0,
+        "sunspot_number": 68,
+        "hemispheric_area": 630.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.6",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-20",
+        "radio_flux": 108.0,
+        "sunspot_number": 70,
+        "hemispheric_area": 520.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-21",
+        "radio_flux": 106.0,
+        "sunspot_number": 60,
+        "hemispheric_area": 460.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 4,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-22",
+        "radio_flux": 101.0,
+        "sunspot_number": 54,
+        "hemispheric_area": 210.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.2",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-23",
+        "radio_flux": 98.0,
+        "sunspot_number": 56,
+        "hemispheric_area": 250.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-24",
+        "radio_flux": 96.0,
+        "sunspot_number": 45,
+        "hemispheric_area": 180.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.3",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-25",
+        "radio_flux": 93.0,
+        "sunspot_number": 56,
+        "hemispheric_area": 170.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-26",
+        "radio_flux": 92.0,
+        "sunspot_number": 41,
+        "hemispheric_area": 140.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-27",
+        "radio_flux": 93.0,
+        "sunspot_number": 35,
+        "hemispheric_area": 100.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-28",
+        "radio_flux": 99.0,
+        "sunspot_number": 49,
+        "hemispheric_area": 170.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.8",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-29",
+        "radio_flux": 105.0,
+        "sunspot_number": 73,
+        "hemispheric_area": 280.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-30",
+        "radio_flux": 108.0,
+        "sunspot_number": 70,
+        "hemispheric_area": 480.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-03-31",
+        "radio_flux": 113.0,
+        "sunspot_number": 83,
+        "hemispheric_area": 630.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-01",
+        "radio_flux": 119.0,
+        "sunspot_number": 84,
+        "hemispheric_area": 650.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-02",
+        "radio_flux": 122.0,
+        "sunspot_number": 103,
+        "hemispheric_area": 700.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-03",
+        "radio_flux": 127.0,
+        "sunspot_number": 109,
+        "hemispheric_area": 860.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-04",
+        "radio_flux": 129.0,
+        "sunspot_number": 119,
+        "hemispheric_area": 820.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-05",
+        "radio_flux": 134.0,
+        "sunspot_number": 146,
+        "hemispheric_area": 860.0,
+        "new_regions": 4,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.6",
+        "background": 1,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-06",
+        "radio_flux": 137.0,
+        "sunspot_number": 117,
+        "hemispheric_area": 880.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.2",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-07",
+        "radio_flux": 138.0,
+        "sunspot_number": 144,
+        "hemispheric_area": 910.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-08",
+        "radio_flux": 139.0,
+        "sunspot_number": 162,
+        "hemispheric_area": 1140.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.0",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-09",
+        "radio_flux": 147.0,
+        "sunspot_number": 116,
+        "hemispheric_area": 960.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.4",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-10",
+        "radio_flux": 148.0,
+        "sunspot_number": 163,
+        "hemispheric_area": 1080.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.0",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-11",
+        "radio_flux": 137.0,
+        "sunspot_number": 121,
+        "hemispheric_area": 960.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.5",
+        "background": 7,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 14
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 1
+        }
+    },
+    {
+        "date": "2013-04-12",
+        "radio_flux": 138.0,
+        "sunspot_number": 128,
+        "hemispheric_area": 1220.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.9",
+        "background": 4,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-13",
+        "radio_flux": 125.0,
+        "sunspot_number": 148,
+        "hemispheric_area": 790.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-14",
+        "radio_flux": 117.0,
+        "sunspot_number": 111,
+        "hemispheric_area": 710.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-15",
+        "radio_flux": 113.0,
+        "sunspot_number": 99,
+        "hemispheric_area": 590.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-16",
+        "radio_flux": 113.0,
+        "sunspot_number": 97,
+        "hemispheric_area": 460.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-17",
+        "radio_flux": 108.0,
+        "sunspot_number": 89,
+        "hemispheric_area": 500.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-18",
+        "radio_flux": 105.0,
+        "sunspot_number": 86,
+        "hemispheric_area": 450.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-19",
+        "radio_flux": 99.0,
+        "sunspot_number": 101,
+        "hemispheric_area": 300.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-20",
+        "radio_flux": 105.0,
+        "sunspot_number": 101,
+        "hemispheric_area": 340.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 15
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-21",
+        "radio_flux": 109.0,
+        "sunspot_number": 76,
+        "hemispheric_area": 360.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.1",
+        "background": 13,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 30
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-22",
+        "radio_flux": 113.0,
+        "sunspot_number": 83,
+        "hemispheric_area": 650.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 3,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-23",
+        "radio_flux": 118.0,
+        "sunspot_number": 95,
+        "hemispheric_area": 710.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.9",
+        "background": 11,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-24",
+        "radio_flux": 115.0,
+        "sunspot_number": 92,
+        "hemispheric_area": 950.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.6",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-25",
+        "radio_flux": 119.0,
+        "sunspot_number": 93,
+        "hemispheric_area": 1450.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.3",
+        "background": 11,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-26",
+        "radio_flux": 122.0,
+        "sunspot_number": 104,
+        "hemispheric_area": 1090.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.9",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-27",
+        "radio_flux": 127.0,
+        "sunspot_number": 100,
+        "hemispheric_area": 650.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.4",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-28",
+        "radio_flux": 132.0,
+        "sunspot_number": 97,
+        "hemispheric_area": 640.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.9",
+        "background": 12,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 13
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-29",
+        "radio_flux": 142.0,
+        "sunspot_number": 136,
+        "hemispheric_area": 860.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.3",
+        "background": 12,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 17
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-04-30",
+        "radio_flux": 154.0,
+        "sunspot_number": 165,
+        "hemispheric_area": 1380.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.7",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 14
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-01",
+        "radio_flux": 159.0,
+        "sunspot_number": 151,
+        "hemispheric_area": 1220.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.8",
+        "background": 13,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 16
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-02",
+        "radio_flux": 149.0,
+        "sunspot_number": 102,
+        "hemispheric_area": 1110.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.0",
+        "background": 6,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-03",
+        "radio_flux": 148.0,
+        "sunspot_number": 139,
+        "hemispheric_area": 1150.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.5",
+        "background": 5,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-04",
+        "radio_flux": 142.0,
+        "sunspot_number": 156,
+        "hemispheric_area": 1080.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.4",
+        "background": 11,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-05",
+        "radio_flux": 137.0,
+        "sunspot_number": 103,
+        "hemispheric_area": 800.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.9",
+        "background": 16,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 16
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-06",
+        "radio_flux": 131.0,
+        "sunspot_number": 122,
+        "hemispheric_area": 670.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.5",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-07",
+        "radio_flux": 129.0,
+        "sunspot_number": 118,
+        "hemispheric_area": 670.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.1",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-08",
+        "radio_flux": 127.0,
+        "sunspot_number": 112,
+        "hemispheric_area": 740.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.3",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-09",
+        "radio_flux": 128.0,
+        "sunspot_number": 154,
+        "hemispheric_area": 945.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.4",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-10",
+        "radio_flux": 125.0,
+        "sunspot_number": 149,
+        "hemispheric_area": 890.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.7",
+        "background": 8,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-11",
+        "radio_flux": 137.0,
+        "sunspot_number": 145,
+        "hemispheric_area": 1050.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.8",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-12",
+        "radio_flux": 147.0,
+        "sunspot_number": 173,
+        "hemispheric_area": 1280.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.5",
+        "background": 13,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-13",
+        "radio_flux": 150.0,
+        "sunspot_number": 144,
+        "hemispheric_area": 1380.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.1",
+        "background": 10,
+        "flares": {
+            "X": 1,
+            "M": 2,
+            "S": 19
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-14",
+        "radio_flux": 148.0,
+        "sunspot_number": 142,
+        "hemispheric_area": 1200.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.1",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 1,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-15",
+        "radio_flux": 146.0,
+        "sunspot_number": 186,
+        "hemispheric_area": 1180.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.7",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 1,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-16",
+        "radio_flux": 145.0,
+        "sunspot_number": 212,
+        "hemispheric_area": 1290.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.0",
+        "background": 4,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-17",
+        "radio_flux": 136.0,
+        "sunspot_number": 198,
+        "hemispheric_area": 990.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.7",
+        "background": 1,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-18",
+        "radio_flux": 132.0,
+        "sunspot_number": 146,
+        "hemispheric_area": 700.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.8",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-19",
+        "radio_flux": 135.0,
+        "sunspot_number": 113,
+        "hemispheric_area": 590.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.8",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-20",
+        "radio_flux": 132.0,
+        "sunspot_number": 113,
+        "hemispheric_area": 590.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.0",
+        "background": 7,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 21
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-21",
+        "radio_flux": 125.0,
+        "sunspot_number": 119,
+        "hemispheric_area": 670.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.5",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-22",
+        "radio_flux": 133.0,
+        "sunspot_number": 107,
+        "hemispheric_area": 780.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 4,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 15
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 1
+        }
+    },
+    {
+        "date": "2013-05-23",
+        "radio_flux": 135.0,
+        "sunspot_number": 117,
+        "hemispheric_area": 710.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.5",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-24",
+        "radio_flux": 127.0,
+        "sunspot_number": 99,
+        "hemispheric_area": 570.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.5",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-25",
+        "radio_flux": 121.0,
+        "sunspot_number": 107,
+        "hemispheric_area": 680.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.9",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-26",
+        "radio_flux": 120.0,
+        "sunspot_number": 92,
+        "hemispheric_area": 550.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.8",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-27",
+        "radio_flux": 110.0,
+        "sunspot_number": 87,
+        "hemispheric_area": 430.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-28",
+        "radio_flux": 105.0,
+        "sunspot_number": 75,
+        "hemispheric_area": 320.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-29",
+        "radio_flux": 107.0,
+        "sunspot_number": 83,
+        "hemispheric_area": 230.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-30",
+        "radio_flux": 104.0,
+        "sunspot_number": 71,
+        "hemispheric_area": 140.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-05-31",
+        "radio_flux": 102.0,
+        "sunspot_number": 58,
+        "hemispheric_area": 120.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.3",
+        "background": 2,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-01",
+        "radio_flux": 106.0,
+        "sunspot_number": 60,
+        "hemispheric_area": 130.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-02",
+        "radio_flux": 111.0,
+        "sunspot_number": 76,
+        "hemispheric_area": 290.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-03",
+        "radio_flux": 112.0,
+        "sunspot_number": 99,
+        "hemispheric_area": 460.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-04",
+        "radio_flux": 110.0,
+        "sunspot_number": 59,
+        "hemispheric_area": 390.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-05",
+        "radio_flux": 109.0,
+        "sunspot_number": 81,
+        "hemispheric_area": 680.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.6",
+        "background": 0,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-06",
+        "radio_flux": 109.0,
+        "sunspot_number": 71,
+        "hemispheric_area": 510.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-07",
+        "radio_flux": 110.0,
+        "sunspot_number": 76,
+        "hemispheric_area": 460.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 3,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-08",
+        "radio_flux": 103.0,
+        "sunspot_number": 27,
+        "hemispheric_area": 200.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-09",
+        "radio_flux": 96.0,
+        "sunspot_number": 41,
+        "hemispheric_area": 220.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.7",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-10",
+        "radio_flux": 93.0,
+        "sunspot_number": 21,
+        "hemispheric_area": 120.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-11",
+        "radio_flux": 90.0,
+        "sunspot_number": 14,
+        "hemispheric_area": 50.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.3",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-12",
+        "radio_flux": 93.0,
+        "sunspot_number": 27,
+        "hemispheric_area": 80.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-13",
+        "radio_flux": 99.0,
+        "sunspot_number": 45,
+        "hemispheric_area": 130.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-14",
+        "radio_flux": 109.0,
+        "sunspot_number": 73,
+        "hemispheric_area": 410.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-15",
+        "radio_flux": 111.0,
+        "sunspot_number": 101,
+        "hemispheric_area": 510.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.3",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-16",
+        "radio_flux": 116.0,
+        "sunspot_number": 104,
+        "hemispheric_area": 490.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.6",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-17",
+        "radio_flux": 124.0,
+        "sunspot_number": 110,
+        "hemispheric_area": 990.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.6",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-18",
+        "radio_flux": 125.0,
+        "sunspot_number": 120,
+        "hemispheric_area": 770.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.4",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-19",
+        "radio_flux": 123.0,
+        "sunspot_number": 126,
+        "hemispheric_area": 810.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.2",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-20",
+        "radio_flux": 126.0,
+        "sunspot_number": 128,
+        "hemispheric_area": 660.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.6",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 14
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-21",
+        "radio_flux": 133.0,
+        "sunspot_number": 135,
+        "hemispheric_area": 850.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.5",
+        "background": 8,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 17
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-22",
+        "radio_flux": 130.0,
+        "sunspot_number": 137,
+        "hemispheric_area": 1200.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-23",
+        "radio_flux": 128.0,
+        "sunspot_number": 118,
+        "hemispheric_area": 800.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.8",
+        "background": 0,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-24",
+        "radio_flux": 121.0,
+        "sunspot_number": 82,
+        "hemispheric_area": 740.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.7",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-25",
+        "radio_flux": 109.0,
+        "sunspot_number": 91,
+        "hemispheric_area": 400.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.8",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-26",
+        "radio_flux": 107.0,
+        "sunspot_number": 77,
+        "hemispheric_area": 320.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.4",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-27",
+        "radio_flux": 100.0,
+        "sunspot_number": 71,
+        "hemispheric_area": 340.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.6",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-28",
+        "radio_flux": 101.0,
+        "sunspot_number": 83,
+        "hemispheric_area": 230.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.0",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-29",
+        "radio_flux": 100.0,
+        "sunspot_number": 67,
+        "hemispheric_area": 230.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.9",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-06-30",
+        "radio_flux": 103.0,
+        "sunspot_number": 85,
+        "hemispheric_area": 280.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.4",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-01",
+        "radio_flux": 108.0,
+        "sunspot_number": 102,
+        "hemispheric_area": 430.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.3",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-02",
+        "radio_flux": 114.0,
+        "sunspot_number": 101,
+        "hemispheric_area": 620.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 16
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-03",
+        "radio_flux": 125.0,
+        "sunspot_number": 94,
+        "hemispheric_area": 700.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.1",
+        "background": 10,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 16
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-04",
+        "radio_flux": 138.0,
+        "sunspot_number": 109,
+        "hemispheric_area": 870.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.7",
+        "background": 14,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-05",
+        "radio_flux": 141.0,
+        "sunspot_number": 113,
+        "hemispheric_area": 970.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.9",
+        "background": 14,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 35
+        },
+        "optical_flares": {
+            "1": 3,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-06",
+        "radio_flux": 134.0,
+        "sunspot_number": 115,
+        "hemispheric_area": 870.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.1",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 17
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-07",
+        "radio_flux": 126.0,
+        "sunspot_number": 112,
+        "hemispheric_area": 850.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.1",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-08",
+        "radio_flux": 119.0,
+        "sunspot_number": 143,
+        "hemispheric_area": 790.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.0",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-09",
+        "radio_flux": 120.0,
+        "sunspot_number": 98,
+        "hemispheric_area": 720.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.5",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-10",
+        "radio_flux": 118.0,
+        "sunspot_number": 76,
+        "hemispheric_area": 440.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.9",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 7
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-11",
+        "radio_flux": 113.0,
+        "sunspot_number": 85,
+        "hemispheric_area": 350.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-12",
+        "radio_flux": 118.0,
+        "sunspot_number": 87,
+        "hemispheric_area": 230.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.1",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-13",
+        "radio_flux": 114.0,
+        "sunspot_number": 66,
+        "hemispheric_area": 260.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.8",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-14",
+        "radio_flux": 113.0,
+        "sunspot_number": 88,
+        "hemispheric_area": 310.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.0",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-15",
+        "radio_flux": 114.0,
+        "sunspot_number": 77,
+        "hemispheric_area": 360.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.6",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-16",
+        "radio_flux": 114.0,
+        "sunspot_number": 61,
+        "hemispheric_area": 530.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-17",
+        "radio_flux": 111.0,
+        "sunspot_number": 74,
+        "hemispheric_area": 430.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.2",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-18",
+        "radio_flux": 115.0,
+        "sunspot_number": 112,
+        "hemispheric_area": 440.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.4",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-19",
+        "radio_flux": 114.0,
+        "sunspot_number": 94,
+        "hemispheric_area": 330.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-20",
+        "radio_flux": 113.0,
+        "sunspot_number": 57,
+        "hemispheric_area": 260.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.0",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-21",
+        "radio_flux": 109.0,
+        "sunspot_number": 49,
+        "hemispheric_area": 320.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.2",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-22",
+        "radio_flux": 110.0,
+        "sunspot_number": 53,
+        "hemispheric_area": 240.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-23",
+        "radio_flux": 107.0,
+        "sunspot_number": 84,
+        "hemispheric_area": 250.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-24",
+        "radio_flux": 108.0,
+        "sunspot_number": 65,
+        "hemispheric_area": 320.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-25",
+        "radio_flux": 107.0,
+        "sunspot_number": 71,
+        "hemispheric_area": 340.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-26",
+        "radio_flux": 110.0,
+        "sunspot_number": 58,
+        "hemispheric_area": 330.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.3",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-27",
+        "radio_flux": 108.0,
+        "sunspot_number": 64,
+        "hemispheric_area": 340.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-28",
+        "radio_flux": 109.0,
+        "sunspot_number": 68,
+        "hemispheric_area": 470.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.8",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 14
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-29",
+        "radio_flux": 112.0,
+        "sunspot_number": 97,
+        "hemispheric_area": 500.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.1",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-30",
+        "radio_flux": 113.0,
+        "sunspot_number": 105,
+        "hemispheric_area": 490.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-07-31",
+        "radio_flux": 109.0,
+        "sunspot_number": 94,
+        "hemispheric_area": 450.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-01",
+        "radio_flux": 112.0,
+        "sunspot_number": 88,
+        "hemispheric_area": 380.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-02",
+        "radio_flux": 113.0,
+        "sunspot_number": 112,
+        "hemispheric_area": 450.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-03",
+        "radio_flux": 107.0,
+        "sunspot_number": 104,
+        "hemispheric_area": 390.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-04",
+        "radio_flux": 105.0,
+        "sunspot_number": 75,
+        "hemispheric_area": 330.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-05",
+        "radio_flux": 104.0,
+        "sunspot_number": 59,
+        "hemispheric_area": 200.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-06",
+        "radio_flux": 104.0,
+        "sunspot_number": 61,
+        "hemispheric_area": 180.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-07",
+        "radio_flux": 106.0,
+        "sunspot_number": 99,
+        "hemispheric_area": 190.0,
+        "new_regions": 4,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-08",
+        "radio_flux": 104.0,
+        "sunspot_number": 90,
+        "hemispheric_area": 190.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-09",
+        "radio_flux": 104.0,
+        "sunspot_number": 51,
+        "hemispheric_area": 130.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.1",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-10",
+        "radio_flux": 103.0,
+        "sunspot_number": 76,
+        "hemispheric_area": 110.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-11",
+        "radio_flux": 110.0,
+        "sunspot_number": 90,
+        "hemispheric_area": 180.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.3",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-12",
+        "radio_flux": 114.0,
+        "sunspot_number": 85,
+        "hemispheric_area": 330.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.2",
+        "background": 1,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-13",
+        "radio_flux": 122.0,
+        "sunspot_number": 98,
+        "hemispheric_area": 670.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.8",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-14",
+        "radio_flux": 125.0,
+        "sunspot_number": 105,
+        "hemispheric_area": 550.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.2",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-15",
+        "radio_flux": 123.0,
+        "sunspot_number": 129,
+        "hemispheric_area": 770.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.1",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-16",
+        "radio_flux": 120.0,
+        "sunspot_number": 104,
+        "hemispheric_area": 650.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.6",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-17",
+        "radio_flux": 125.0,
+        "sunspot_number": 96,
+        "hemispheric_area": 630.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.9",
+        "background": 2,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-18",
+        "radio_flux": 126.0,
+        "sunspot_number": 134,
+        "hemispheric_area": 840.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-19",
+        "radio_flux": 128.0,
+        "sunspot_number": 161,
+        "hemispheric_area": 1030.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.2",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-20",
+        "radio_flux": 132.0,
+        "sunspot_number": 115,
+        "hemispheric_area": 740.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.8",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-21",
+        "radio_flux": 130.0,
+        "sunspot_number": 149,
+        "hemispheric_area": 730.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-22",
+        "radio_flux": 132.0,
+        "sunspot_number": 125,
+        "hemispheric_area": 480.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.9",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-23",
+        "radio_flux": 124.0,
+        "sunspot_number": 127,
+        "hemispheric_area": 420.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-24",
+        "radio_flux": 117.0,
+        "sunspot_number": 101,
+        "hemispheric_area": 350.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.9",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-25",
+        "radio_flux": 113.0,
+        "sunspot_number": 46,
+        "hemispheric_area": 260.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.6",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-26",
+        "radio_flux": 111.0,
+        "sunspot_number": 35,
+        "hemispheric_area": 210.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-27",
+        "radio_flux": 110.0,
+        "sunspot_number": 61,
+        "hemispheric_area": 390.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-28",
+        "radio_flux": 108.0,
+        "sunspot_number": 44,
+        "hemispheric_area": 440.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-29",
+        "radio_flux": 109.0,
+        "sunspot_number": 55,
+        "hemispheric_area": 450.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-30",
+        "radio_flux": 108.0,
+        "sunspot_number": 62,
+        "hemispheric_area": 390.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-08-31",
+        "radio_flux": 108.0,
+        "sunspot_number": 60,
+        "hemispheric_area": 340.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.3",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-01",
+        "radio_flux": 104.0,
+        "sunspot_number": 71,
+        "hemispheric_area": 320.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.0",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-02",
+        "radio_flux": 106.0,
+        "sunspot_number": 84,
+        "hemispheric_area": 410.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-03",
+        "radio_flux": 106.0,
+        "sunspot_number": 74,
+        "hemispheric_area": 360.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-04",
+        "radio_flux": 109.0,
+        "sunspot_number": 77,
+        "hemispheric_area": 370.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.8",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 19
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-05",
+        "radio_flux": 110.0,
+        "sunspot_number": 75,
+        "hemispheric_area": 320.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-06",
+        "radio_flux": 101.0,
+        "sunspot_number": 41,
+        "hemispheric_area": 260.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-07",
+        "radio_flux": 99.0,
+        "sunspot_number": 35,
+        "hemispheric_area": 170.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-08",
+        "radio_flux": 96.0,
+        "sunspot_number": 24,
+        "hemispheric_area": 90.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-09",
+        "radio_flux": 94.0,
+        "sunspot_number": 13,
+        "hemispheric_area": 10.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-10",
+        "radio_flux": 95.0,
+        "sunspot_number": 23,
+        "hemispheric_area": 10.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.3",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-11",
+        "radio_flux": 93.0,
+        "sunspot_number": 53,
+        "hemispheric_area": 80.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-12",
+        "radio_flux": 93.0,
+        "sunspot_number": 58,
+        "hemispheric_area": 81.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "A7.9",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-13",
+        "radio_flux": 92.0,
+        "sunspot_number": 40,
+        "hemispheric_area": 90.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "A9.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-14",
+        "radio_flux": 93.0,
+        "sunspot_number": 24,
+        "hemispheric_area": 60.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "A7.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-15",
+        "radio_flux": 93.0,
+        "sunspot_number": 12,
+        "hemispheric_area": 30.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "A8.3",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-16",
+        "radio_flux": 95.0,
+        "sunspot_number": 23,
+        "hemispheric_area": 40.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-17",
+        "radio_flux": 99.0,
+        "sunspot_number": 80,
+        "hemispheric_area": 140.0,
+        "new_regions": 5,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-18",
+        "radio_flux": 104.0,
+        "sunspot_number": 59,
+        "hemispheric_area": 240.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-19",
+        "radio_flux": 108.0,
+        "sunspot_number": 85,
+        "hemispheric_area": 290.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.0",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-20",
+        "radio_flux": 109.0,
+        "sunspot_number": 85,
+        "hemispheric_area": 320.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.8",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-21",
+        "radio_flux": 110.0,
+        "sunspot_number": 79,
+        "hemispheric_area": 390.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-22",
+        "radio_flux": 111.0,
+        "sunspot_number": 98,
+        "hemispheric_area": 350.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.4",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-23",
+        "radio_flux": 108.0,
+        "sunspot_number": 65,
+        "hemispheric_area": 290.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.9",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-24",
+        "radio_flux": 110.0,
+        "sunspot_number": 56,
+        "hemispheric_area": 240.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B1.9",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-25",
+        "radio_flux": 111.0,
+        "sunspot_number": 61,
+        "hemispheric_area": 270.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-26",
+        "radio_flux": 110.0,
+        "sunspot_number": 63,
+        "hemispheric_area": 340.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.1",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-27",
+        "radio_flux": 108.0,
+        "sunspot_number": 54,
+        "hemispheric_area": 280.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-28",
+        "radio_flux": 106.0,
+        "sunspot_number": 58,
+        "hemispheric_area": 330.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-29",
+        "radio_flux": 103.0,
+        "sunspot_number": 39,
+        "hemispheric_area": 190.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.0",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-09-30",
+        "radio_flux": 105.0,
+        "sunspot_number": 42,
+        "hemispheric_area": 70.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.5",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-01",
+        "radio_flux": 107.0,
+        "sunspot_number": 49,
+        "hemispheric_area": 120.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-02",
+        "radio_flux": 108.0,
+        "sunspot_number": 59,
+        "hemispheric_area": 270.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-03",
+        "radio_flux": 114.0,
+        "sunspot_number": 61,
+        "hemispheric_area": 310.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.9",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-04",
+        "radio_flux": 109.0,
+        "sunspot_number": 84,
+        "hemispheric_area": 370.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.2",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-05",
+        "radio_flux": 106.0,
+        "sunspot_number": 69,
+        "hemispheric_area": 320.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.0",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-06",
+        "radio_flux": 107.0,
+        "sunspot_number": 53,
+        "hemispheric_area": 200.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.1",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-07",
+        "radio_flux": 112.0,
+        "sunspot_number": 76,
+        "hemispheric_area": 170.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-08",
+        "radio_flux": 112.0,
+        "sunspot_number": 99,
+        "hemispheric_area": 280.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B2.7",
+        "background": 0,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-09",
+        "radio_flux": 113.0,
+        "sunspot_number": 111,
+        "hemispheric_area": 490.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.1",
+        "background": 1,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-10",
+        "radio_flux": 121.0,
+        "sunspot_number": 138,
+        "hemispheric_area": 670.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.7",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-11",
+        "radio_flux": 129.0,
+        "sunspot_number": 115,
+        "hemispheric_area": 780.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.7",
+        "background": 11,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 17
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-12",
+        "radio_flux": 128.0,
+        "sunspot_number": 106,
+        "hemispheric_area": 760.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.9",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-13",
+        "radio_flux": 129.0,
+        "sunspot_number": 125,
+        "hemispheric_area": 920.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 5,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-14",
+        "radio_flux": 125.0,
+        "sunspot_number": 136,
+        "hemispheric_area": 790.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.1",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-15",
+        "radio_flux": 125.0,
+        "sunspot_number": 148,
+        "hemispheric_area": 800.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.3",
+        "background": 12,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-16",
+        "radio_flux": 128.0,
+        "sunspot_number": 120,
+        "hemispheric_area": 620.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.2",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-17",
+        "radio_flux": 136.0,
+        "sunspot_number": 166,
+        "hemispheric_area": 760.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.6",
+        "background": 5,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 16
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-18",
+        "radio_flux": 140.0,
+        "sunspot_number": 154,
+        "hemispheric_area": 930.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-19",
+        "radio_flux": 133.0,
+        "sunspot_number": 149,
+        "hemispheric_area": 890.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.2",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-20",
+        "radio_flux": 133.0,
+        "sunspot_number": 117,
+        "hemispheric_area": 720.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.5",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-21",
+        "radio_flux": 136.0,
+        "sunspot_number": 179,
+        "hemispheric_area": 870.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.7",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-22",
+        "radio_flux": 146.0,
+        "sunspot_number": 228,
+        "hemispheric_area": 990.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.1",
+        "background": 11,
+        "flares": {
+            "X": 3,
+            "M": 0,
+            "S": 20
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-23",
+        "radio_flux": 153.0,
+        "sunspot_number": 141,
+        "hemispheric_area": 1080.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.9",
+        "background": 9,
+        "flares": {
+            "X": 3,
+            "M": 0,
+            "S": 12
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-24",
+        "radio_flux": 161.0,
+        "sunspot_number": 148,
+        "hemispheric_area": 1440.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.9",
+        "background": 13,
+        "flares": {
+            "X": 3,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 4,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-25",
+        "radio_flux": 161.0,
+        "sunspot_number": 148,
+        "hemispheric_area": 1500.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.1",
+        "background": 7,
+        "flares": {
+            "X": 5,
+            "M": 2,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-26",
+        "radio_flux": 165.0,
+        "sunspot_number": 171,
+        "hemispheric_area": 1560.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.2",
+        "background": 15,
+        "flares": {
+            "X": 5,
+            "M": 0,
+            "S": 24
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-27",
+        "radio_flux": 167.0,
+        "sunspot_number": 206,
+        "hemispheric_area": 1930.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.1",
+        "background": 7,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 23
+        },
+        "optical_flares": {
+            "1": 3,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-28",
+        "radio_flux": 160.0,
+        "sunspot_number": 155,
+        "hemispheric_area": 1750.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.2",
+        "background": 2,
+        "flares": {
+            "X": 6,
+            "M": 1,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 3,
+            "2": 4,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-29",
+        "radio_flux": 153.0,
+        "sunspot_number": 171,
+        "hemispheric_area": 1720.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.1",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 1,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-30",
+        "radio_flux": 142.0,
+        "sunspot_number": 132,
+        "hemispheric_area": 1230.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.5",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-10-31",
+        "radio_flux": 143.0,
+        "sunspot_number": 128,
+        "hemispheric_area": 900.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.9",
+        "background": 5,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-01",
+        "radio_flux": 145.0,
+        "sunspot_number": 95,
+        "hemispheric_area": 730.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.1",
+        "background": 6,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-02",
+        "radio_flux": 142.0,
+        "sunspot_number": 123,
+        "hemispheric_area": 710.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.5",
+        "background": 8,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-03",
+        "radio_flux": 144.0,
+        "sunspot_number": 143,
+        "hemispheric_area": 1280.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.1",
+        "background": 3,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-04",
+        "radio_flux": 147.0,
+        "sunspot_number": 151,
+        "hemispheric_area": 1370.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.4",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 7
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-05",
+        "radio_flux": 149.0,
+        "sunspot_number": 134,
+        "hemispheric_area": 1400.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 9,
+        "flares": {
+            "X": 2,
+            "M": 1,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-06",
+        "radio_flux": 154.0,
+        "sunspot_number": 148,
+        "hemispheric_area": 1250.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.8",
+        "background": 12,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 13
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-07",
+        "radio_flux": 148.0,
+        "sunspot_number": 159,
+        "hemispheric_area": 1170.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.0",
+        "background": 11,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-08",
+        "radio_flux": 146.0,
+        "sunspot_number": 160,
+        "hemispheric_area": 1270.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.0",
+        "background": 3,
+        "flares": {
+            "X": 1,
+            "M": 1,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-09",
+        "radio_flux": 148.0,
+        "sunspot_number": 95,
+        "hemispheric_area": 980.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.7",
+        "background": 14,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-10",
+        "radio_flux": 154.0,
+        "sunspot_number": 90,
+        "hemispheric_area": 890.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.8",
+        "background": 8,
+        "flares": {
+            "X": 0,
+            "M": 1,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-11",
+        "radio_flux": 164.0,
+        "sunspot_number": 104,
+        "hemispheric_area": 1060.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 7,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-12",
+        "radio_flux": 168.0,
+        "sunspot_number": 147,
+        "hemispheric_area": 1810.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.8",
+        "background": 12,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 9
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-13",
+        "radio_flux": 171.0,
+        "sunspot_number": 128,
+        "hemispheric_area": 1670.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.3",
+        "background": 12,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-14",
+        "radio_flux": 176.0,
+        "sunspot_number": 234,
+        "hemispheric_area": 1580.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 16,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-15",
+        "radio_flux": 178.0,
+        "sunspot_number": 272,
+        "hemispheric_area": 1640.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.3",
+        "background": 7,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-16",
+        "radio_flux": 175.0,
+        "sunspot_number": 213,
+        "hemispheric_area": 1450.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 13,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-17",
+        "radio_flux": 177.0,
+        "sunspot_number": 282,
+        "hemispheric_area": 1640.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 10,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 14
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-18",
+        "radio_flux": 163.0,
+        "sunspot_number": 144,
+        "hemispheric_area": 1550.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.4",
+        "background": 13,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-19",
+        "radio_flux": 153.0,
+        "sunspot_number": 113,
+        "hemispheric_area": 1540.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.7",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 1,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-20",
+        "radio_flux": 147.0,
+        "sunspot_number": 95,
+        "hemispheric_area": 1180.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.5",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-21",
+        "radio_flux": 141.0,
+        "sunspot_number": 85,
+        "hemispheric_area": 890.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.0",
+        "background": 3,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-22",
+        "radio_flux": 143.0,
+        "sunspot_number": 51,
+        "hemispheric_area": 740.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.3",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-23",
+        "radio_flux": 136.0,
+        "sunspot_number": 65,
+        "hemispheric_area": 750.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 10,
+        "flares": {
+            "X": 2,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 2,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-24",
+        "radio_flux": 127.0,
+        "sunspot_number": 69,
+        "hemispheric_area": 880.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.5",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-25",
+        "radio_flux": 119.0,
+        "sunspot_number": 52,
+        "hemispheric_area": 200.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.6",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-26",
+        "radio_flux": 116.0,
+        "sunspot_number": 47,
+        "hemispheric_area": 140.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.5",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-27",
+        "radio_flux": 129.0,
+        "sunspot_number": 76,
+        "hemispheric_area": 370.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.6",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-28",
+        "radio_flux": 133.0,
+        "sunspot_number": 100,
+        "hemispheric_area": 800.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-29",
+        "radio_flux": 129.0,
+        "sunspot_number": 95,
+        "hemispheric_area": 770.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.5",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-11-30",
+        "radio_flux": 131.0,
+        "sunspot_number": 102,
+        "hemispheric_area": 630.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.5",
+        "background": 1,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-01",
+        "radio_flux": 131.0,
+        "sunspot_number": 104,
+        "hemispheric_area": 650.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-02",
+        "radio_flux": 134.0,
+        "sunspot_number": 124,
+        "hemispheric_area": 640.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.6",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-03",
+        "radio_flux": 136.0,
+        "sunspot_number": 97,
+        "hemispheric_area": 570.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.9",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-04",
+        "radio_flux": 138.0,
+        "sunspot_number": 98,
+        "hemispheric_area": 620.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.2",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-05",
+        "radio_flux": 150.0,
+        "sunspot_number": 103,
+        "hemispheric_area": 510.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-06",
+        "radio_flux": 151.0,
+        "sunspot_number": 105,
+        "hemispheric_area": 550.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.0",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-07",
+        "radio_flux": 157.0,
+        "sunspot_number": 104,
+        "hemispheric_area": 510.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.5",
+        "background": 3,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-08",
+        "radio_flux": 166.0,
+        "sunspot_number": 83,
+        "hemispheric_area": 680.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.4",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-09",
+        "radio_flux": 168.0,
+        "sunspot_number": 125,
+        "hemispheric_area": 920.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.0",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-10",
+        "radio_flux": 175.0,
+        "sunspot_number": 169,
+        "hemispheric_area": 1410.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.6",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-11",
+        "radio_flux": 171.0,
+        "sunspot_number": 166,
+        "hemispheric_area": 1350.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.3",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-12",
+        "radio_flux": 165.0,
+        "sunspot_number": 156,
+        "hemispheric_area": 1140.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.0",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-13",
+        "radio_flux": 163.0,
+        "sunspot_number": 141,
+        "hemispheric_area": 1050.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.0",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-14",
+        "radio_flux": 164.0,
+        "sunspot_number": 163,
+        "hemispheric_area": 1100.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.0",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-15",
+        "radio_flux": 156.0,
+        "sunspot_number": 158,
+        "hemispheric_area": 1060.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.8",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-16",
+        "radio_flux": 154.0,
+        "sunspot_number": 114,
+        "hemispheric_area": 780.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.1",
+        "background": 5,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-17",
+        "radio_flux": 159.0,
+        "sunspot_number": 91,
+        "hemispheric_area": 760.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "*",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 7
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-18",
+        "radio_flux": 156.0,
+        "sunspot_number": 118,
+        "hemispheric_area": 1130.0,
+        "new_regions": 3,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.8",
+        "background": 4,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 4
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-19",
+        "radio_flux": 153.0,
+        "sunspot_number": 138,
+        "hemispheric_area": 1150.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B8.0",
+        "background": 7,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-20",
+        "radio_flux": 149.0,
+        "sunspot_number": 137,
+        "hemispheric_area": 1070.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "C1.1",
+        "background": 8,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-21",
+        "radio_flux": 144.0,
+        "sunspot_number": 131,
+        "hemispheric_area": 1190.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B7.8",
+        "background": 10,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-22",
+        "radio_flux": 138.0,
+        "sunspot_number": 111,
+        "hemispheric_area": 880.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.4",
+        "background": 14,
+        "flares": {
+            "X": 6,
+            "M": 0,
+            "S": 10
+        },
+        "optical_flares": {
+            "1": 3,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-23",
+        "radio_flux": 136.0,
+        "sunspot_number": 108,
+        "hemispheric_area": 860.0,
+        "new_regions": 2,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.7",
+        "background": 13,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 13
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-24",
+        "radio_flux": 128.0,
+        "sunspot_number": 96,
+        "hemispheric_area": 670.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B5.3",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 0
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-25",
+        "radio_flux": 123.0,
+        "sunspot_number": 81,
+        "hemispheric_area": 490.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.2",
+        "background": 9,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 2
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-26",
+        "radio_flux": 125.0,
+        "sunspot_number": 96,
+        "hemispheric_area": 450.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 2,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 1
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-27",
+        "radio_flux": 131.0,
+        "sunspot_number": 107,
+        "hemispheric_area": 570.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B3.7",
+        "background": 7,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 5
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-28",
+        "radio_flux": 135.0,
+        "sunspot_number": 95,
+        "hemispheric_area": 570.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B4.8",
+        "background": 6,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 8
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-29",
+        "radio_flux": 137.0,
+        "sunspot_number": 119,
+        "hemispheric_area": 520.0,
+        "new_regions": 1,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.3",
+        "background": 11,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 11
+        },
+        "optical_flares": {
+            "1": 1,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-30",
+        "radio_flux": 143.0,
+        "sunspot_number": 93,
+        "hemispheric_area": 510.0,
+        "new_regions": 0,
+        "solar_field": -999.0,
+        "x_ray_flux": "B6.9",
+        "background": 3,
+        "flares": {
+            "X": 0,
+            "M": 0,
+            "S": 3
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 0,
+            "3": 0
+        }
+    },
+    {
+        "date": "2013-12-31",
+        "radio_flux": 145.0,
+        "sunspot_number": 136,
+        "hemispheric_area": 490.0,
+        "new_regions": 4,
+        "solar_field": -999.0,
+        "x_ray_flux": "B9.9",
+        "background": 8,
+        "flares": {
+            "X": 1,
+            "M": 0,
+            "S": 6
+        },
+        "optical_flares": {
+            "1": 0,
+            "2": 1,
+            "3": 0
+        }
+    }
+]

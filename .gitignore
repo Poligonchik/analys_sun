@@ -171,8 +171,8 @@ cython_debug/
 .pypirc
 
 
-# Исключить все файлы .json
-*.json
+## Исключить все файлы .json
+#*.json
 
 # Исключить все файлы .parquet
 *.parquet
