@@ -196,8 +196,8 @@ importance_rf = pd.Series(rf_model.feature_importances_, index=features)
 print(importance_rf.sort_values(ascending=False))
 
 # Сохраняем модели и обучающие данные
-lgb_model_filename = "../models/lightgbm_model_target_24.pkl"
-rf_model_filename = "../models/random_forest_model_target_24.pkl"
+lgb_model_filename = "../models/e_lightgbm_model_target_24.pkl"
+rf_model_filename = "../models/e_random_forest_model_target_24.pkl"
 joblib.dump(lgb_model, lgb_model_filename)
 joblib.dump(rf_model, rf_model_filename)
 print(f"\nМодель LightGBM сохранена в {lgb_model_filename}")

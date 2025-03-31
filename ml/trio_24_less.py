@@ -62,7 +62,7 @@ def extract_flare_class(particulars):
 
 
 #############################################
-# Функция определения "сильного" события
+# Функция определения "сильного" события (т.е. вспышки классов M и X)
 #############################################
 def is_strong_row(row):
     event_type = str(row.get('type', "")).strip()
@@ -78,7 +78,7 @@ events_df = pd.read_json(events_input)
 events_df['date'] = pd.to_datetime(events_df['date'], format="%Y %m %d")
 cols_to_drop = ['begin', 'end']
 events_df = events_df.drop(columns=[col for col in cols_to_drop if col in events_df.columns])
-events_df = events_df[ events_df['loc_freq'].astype(str).str.contains(r'[A-Za-z]', na=False)]
+events_df = events_df[events_df['loc_freq'].astype(str).str.contains(r'[A-Za-z]', na=False)]
 events_df['flare_class'] = events_df['particulars'].apply(extract_flare_class)
 events_df['strong'] = events_df.apply(is_strong_row, axis=1)
 
@@ -88,6 +88,7 @@ events_agg = events_df.groupby('date').agg(
 ).reset_index()
 
 flare_counts = events_df.groupby('date')['flare_class'].value_counts().unstack(fill_value=0).reset_index()
+# Если отсутствуют какие-либо классы, добавить их, но не будем использовать M и X далее
 for cl in ["A", "B", "C", "M", "X"]:
     if cl not in flare_counts.columns:
         flare_counts[cl] = 0
@@ -124,15 +125,15 @@ for col in srs_cols:
 #############################################
 # Загрузка и обработка данных DSD (dsd.json)
 #############################################
-# Предполагается, что в файле dsd.json уже удалены optical_flares и solar_field.
 dsd_input = "../unified_json/dsd.json"
 with open(dsd_input, "r", encoding="utf-8") as f:
     dsd_data = json.load(f)
 dsd_df = pd.DataFrame(dsd_data)
 dsd_df['date'] = pd.to_datetime(dsd_df['date'], format="%Y %m %d")
-# Удаляем поле background из списка интересующих признаков
-new_features = ['radio_flux', 'sunspot_number', 'hemispheric_area', 'new_regions',
-                'flares.C', 'flares.M', 'flares.X', 'flares.S']
+
+# Выбираем интересующие признаки из DSD, исключая flares.M и flares.X
+new_features = ['radio_flux', 'sunspot_number', 'hemispheric_area', 'new_regions', 'background',
+                'flares.C', 'flares.S']
 
 #############################################
 # Объединение данных DSD с merged по дате
@@ -140,14 +141,10 @@ new_features = ['radio_flux', 'sunspot_number', 'hemispheric_area', 'new_regions
 merged_final = pd.merge(merged, dsd_df[new_features + ['date']], on='date', how='left')
 
 #############################################
-# Вычисление целевого признака для 48-часового прогноза
+# Вычисление целевого признака
 #############################################
-# Таргет: наличие хотя бы одного сильного события (strong_events > 0) в следующие 2 календарных дня (48 часов)
 merged_final = merged_final.sort_values('date').reset_index(drop=True)
-# Суммируем значения strong_events за следующие 2 дня
-merged_final['target_48'] = (merged_final['strong_events'].shift(-1).fillna(0) +
-                             merged_final['strong_events'].shift(-2).fillna(0))
-merged_final['target_48'] = merged_final['target_48'].apply(lambda x: 1 if x > 0 else 0)
+merged_final['target_24'] = merged_final['strong_events'].shift(-1).fillna(0).apply(lambda x: 1 if x > 0 else 0)
 
 #############################################
 # Дополнительные комбинационные признаки
@@ -177,18 +174,19 @@ cols_new = ['delta_radio_flux', 'delta_sunspot_number', 'delta_hemispheric_area'
 merged_final[cols_new] = merged_final[cols_new].fillna(0)
 
 #############################################
-# Формирование финального датасета для моделирования (48h)
+# Формирование финального датасета для моделирования
 #############################################
+# Новый список признаков: из агрегированных данных событий исключены столбцы "M" и "X"
 features = [
-    'events_count', 'strong_events', 'A', 'B', 'C', 'M', 'X',
+    'events_count', 'strong_events', 'A', 'B', 'C',
     'ratio_events_to_srs', 'diff_events_srs', 'srs_events_interaction',
     'Area_srs', 'Lo_srs', 'LL_srs', 'NN_srs', 'NN_LL_ratio',
     'area_strong_interaction'
 ] + new_features + cols_new
-target = 'target_48'
+target = 'target_24'
 
 data_model = merged_final.dropna(subset=[target]).reset_index(drop=True)
-print("Общий датасет для моделирования (48h):", data_model.shape)
+print("Общий датасет для моделирования:", data_model.shape)
 print("Первые строки:")
 print(data_model.head())
 
@@ -202,7 +200,7 @@ def augment_data(df, features, n_augments=5):
             new_row = row.copy()
             for col in features:
                 if pd.api.types.is_numeric_dtype(new_row[col]):
-                    if col in ['events_count', 'strong_events', 'A', 'B', 'C', 'M', 'X', 'new_regions']:
+                    if col in ['events_count', 'strong_events', 'A', 'B', 'C', 'new_regions']:
                         noise = np.random.choice([-1, 0, 1])
                         new_val = int(new_row[col]) + noise
                         new_row[col] = new_val if new_val >= 0 else 0
@@ -213,9 +211,9 @@ def augment_data(df, features, n_augments=5):
             augmented_rows.append(new_row)
     return pd.DataFrame(augmented_rows)
 
-augmented_data = augment_data(data_model, features, n_augments=5)
+augmented_data = augment_data(data_model, features, n_augments=2)
 data_model_augmented = pd.concat([data_model, augmented_data], ignore_index=True)
-print("После аугментации общий датасет для моделирования (48h):", data_model_augmented.shape)
+print("После аугментации общий датасет для моделирования:", data_model_augmented.shape)
 
 #############################################
 # Разделение данных (хронологически, 80% обучение, 20% тест)
@@ -241,17 +239,17 @@ if X_train.empty or X_train.ndim != 2:
 #############################################
 smote = SMOTE(random_state=42)
 X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
-print("После SMOTE размер обучающей выборки (48h):", X_train_balanced.shape)
+print("После SMOTE размер обучающей выборки:", X_train_balanced.shape)
 
 #############################################
-# Обучение моделей на сбалансированных данных (48h)
+# Обучение моделей на сбалансированных данных
 #############################################
 # 1. LightGBM
 lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1)
 lgb_model.fit(X_train_balanced, y_train_balanced)
 y_pred_prob_lgb = lgb_model.predict_proba(X_test)[:, 1]
 y_pred_lgb = (y_pred_prob_lgb >= 0.5).astype(int)
-print_metrics(y_test, y_pred_lgb, y_pred_prob_lgb, "LightGBM (48h)")
+print_metrics(y_test, y_pred_lgb, y_pred_prob_lgb, "LightGBM (24h)")
 print("Feature importances (LightGBM):")
 print(pd.Series(lgb_model.feature_importances_, index=X_train.columns).sort_values(ascending=False))
 
@@ -260,7 +258,7 @@ rf_model = RandomForestClassifier(n_estimators=100, random_state=42, class_weigh
 rf_model.fit(X_train_balanced, y_train_balanced)
 y_pred_prob_rf = rf_model.predict_proba(X_test)[:, 1]
 y_pred_rf = rf_model.predict(X_test)
-print_metrics(y_test, y_pred_rf, y_pred_prob_rf, "RandomForest (48h)")
+print_metrics(y_test, y_pred_rf, y_pred_prob_rf, "RandomForest (24h)")
 print("Feature importances (RandomForest):")
 print(pd.Series(rf_model.feature_importances_, index=X_train.columns).sort_values(ascending=False))
 
@@ -269,27 +267,27 @@ xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', ra
 xgb_model.fit(X_train_balanced, y_train_balanced)
 y_pred_prob_xgb = xgb_model.predict_proba(X_test)[:, 1]
 y_pred_xgb = (y_pred_prob_xgb >= 0.5).astype(int)
-print_metrics(y_test, y_pred_xgb, y_pred_prob_xgb, "XGBoost (48h)")
+print_metrics(y_test, y_pred_xgb, y_pred_prob_xgb, "XGBoost (24h)")
 print("Feature importances (XGBoost):")
 print(pd.Series(xgb_model.feature_importances_, index=X_train.columns).sort_values(ascending=False))
 
 # ---------------------------
-# Энсамблирование: Усреднение вероятностей (48h)
+# Энсамблирование: Усреднение вероятностей
 # ---------------------------
 y_pred_prob_ensemble = (y_pred_prob_lgb + y_pred_prob_rf + y_pred_prob_xgb) / 3
 y_pred_ensemble = (y_pred_prob_ensemble >= 0.5).astype(int)
-print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (Усреднение, 48h)")
+print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (Усреднение, 24h)")
 
 # ---------------------------
-# Энсамблирование: Взвешенное голосование (48h)
+# Энсамблирование: Взвешенное голосование
 # ---------------------------
 weights = [0.25, 0.25, 0.5]
-y_pred_prob_weighted = (weights[0]*y_pred_prob_lgb + weights[1]*y_pred_prob_rf + weights[2]*y_pred_prob_xgb)
+y_pred_prob_weighted = (weights[0] * y_pred_prob_lgb + weights[1] * y_pred_prob_rf + weights[2] * y_pred_prob_xgb)
 y_pred_weighted = (y_pred_prob_weighted >= 0.5).astype(int)
-print_metrics(y_test, y_pred_weighted, y_pred_prob_weighted, "Weighted Voting Ensemble (48h)")
+print_metrics(y_test, y_pred_weighted, y_pred_prob_weighted, "Weighted Voting Ensemble (24h)")
 
 # ---------------------------
-# Энсамблирование: Стэкинг (Stacking, 48h)
+# Энсамблирование: Стэкинг (Stacking)
 # ---------------------------
 meta_features_train = np.column_stack((
     lgb_model.predict_proba(X_train_balanced)[:, 1],
@@ -305,7 +303,7 @@ meta_model = LogisticRegression(random_state=42)
 meta_model.fit(meta_features_train, y_train_balanced)
 y_pred_prob_stack = meta_model.predict_proba(meta_features_test)[:, 1]
 y_pred_stack = (y_pred_prob_stack >= 0.5).astype(int)
-print_metrics(y_test, y_pred_stack, y_pred_prob_stack, "Stacking Ensemble (48h)")
+print_metrics(y_test, y_pred_stack, y_pred_prob_stack, "Stacking Ensemble (24h)")
 
 #############################################
 # Сохранение датасета и моделей

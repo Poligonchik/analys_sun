@@ -180,3 +180,4 @@ cython_debug/
 *.tar.gz
 *.csv
 *.pkl
+files_for_predict/tables

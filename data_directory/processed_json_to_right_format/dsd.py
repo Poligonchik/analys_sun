@@ -68,6 +68,30 @@ def flatten_flares(records):
             del record["flares"]
     return records
 
+def shift_flares(records):
+    """
+    Сдвигает значения для вспышек следующим образом:
+      - Значение из поля "background" переносится в "flares.C".
+      - Старое значение "flares.C" записывается в "flares.M".
+      - Старое значение "flares.M" записывается в "flares.X".
+      - Старое значение "flares.X" записывается в "flares.S".
+    После сдвига удаляет поле "background".
+    """
+    for record in records:
+        background_val = record.get("background", 0.0)
+        flares_C_val = record.get("flares.C", 0.0)
+        flares_M_val = record.get("flares.M", 0.0)
+        flares_X_val = record.get("flares.X", 0.0)
+        # Сдвиг: background -> flares.C, flares.C -> flares.M, flares.M -> flares.X, flares.X -> flares.S
+        record["flares.C"] = background_val
+        record["flares.M"] = flares_C_val
+        record["flares.X"] = flares_M_val
+        record["flares.S"] = flares_X_val
+        # Удаляем поле background
+        if "background" in record:
+            del record["background"]
+    return records
+
 # ================================
 # Функции анализа
 # ================================
@@ -211,6 +235,9 @@ def impute_flattened_flares(records):
                 record[k] = 0.0
     return records
 
+# ================================
+# Основной блок
+# ================================
 
 if __name__ == '__main__':
     # Пути к входному и выходному файлам
@@ -226,6 +253,9 @@ if __name__ == '__main__':
 
     # Сначала развернём вложенные поля "flares"
     processed_data = flatten_flares(processed_data)
+
+    # Выполняем сдвиг значений: background -> flares.C, flares.C -> flares.M, flares.M -> flares.X, flares.X -> flares.S
+    processed_data = shift_flares(processed_data)
 
     # Сохранение обработанного файла (до импьютации)
     output_dir = os.path.dirname(output_file)

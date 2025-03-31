@@ -131,8 +131,8 @@ with open(dsd_input, "r", encoding="utf-8") as f:
 dsd_df = pd.DataFrame(dsd_data)
 dsd_df['date'] = pd.to_datetime(dsd_df['date'], format="%Y %m %d")
 
-# Выбираем интересующие признаки из DSD
-new_features = ['radio_flux', 'sunspot_number', 'hemispheric_area', 'new_regions', 'background',
+# Выбираем интересующие признаки из DSD (поле background исключено)
+new_features = ['radio_flux', 'sunspot_number', 'hemispheric_area', 'new_regions',
                 'flares.C', 'flares.M', 'flares.X', 'flares.S']
 
 #############################################
@@ -210,7 +210,7 @@ def augment_data(df, features, n_augments=5):
             augmented_rows.append(new_row)
     return pd.DataFrame(augmented_rows)
 
-augmented_data = augment_data(data_model, features, n_augments=5)
+augmented_data = augment_data(data_model, features, n_augments=2)
 data_model_augmented = pd.concat([data_model, augmented_data], ignore_index=True)
 print("После аугментации общий датасет для моделирования:", data_model_augmented.shape)
 

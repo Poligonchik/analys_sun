@@ -227,9 +227,9 @@ print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (усре
 #############################################
 # Сохранение моделей и данных
 #############################################
-lgb_model_filename = "../models/lightgbm_model_target_48.pkl"
-rf_model_filename = "../models/random_forest_model_target_48.pkl"
-xgb_model_filename = "../models/xgboost_model_target_48.pkl"
+lgb_model_filename = "../models/e_lightgbm_model_target_48.pkl"
+rf_model_filename = "../models/e_random_forest_model_target_48.pkl"
+xgb_model_filename = "../models/e_xgboost_model_target_48.pkl"
 
 joblib.dump(lgb_model, lgb_model_filename)
 joblib.dump(rf_model, rf_model_filename)

@@ -241,9 +241,9 @@ print_metrics(y_test, y_pred_weighted, y_pred_prob_weighted, "Weighted Voting En
 #############################################
 # Сохранение моделей и данных
 #############################################
-lgb_model_filename = "../models/lightgbm_model_target_24.pkl"
-rf_model_filename = "../models/random_forest_model_target_24.pkl"
-xgb_model_filename = "../models/xgboost_model_target_24.pkl"
+lgb_model_filename = "../models/e_lightgbm_model_target_24.pkl"
+rf_model_filename = "../models/e_random_forest_model_target_24.pkl"
+xgb_model_filename = "../models/e_xgboost_model_target_24.pkl"
 stack_model_filename = "../models/stacking_model_target_24.pkl"
 
 joblib.dump(lgb_model, lgb_model_filename)
