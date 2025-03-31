@@ -1,48 +1,40 @@
-#!/usr/bin/env python3
 import os
 import json
 import re
 from datetime import datetime, timedelta
-from pathlib import Path
-
-import numpy as np
 import pandas as pd
-import joblib
+import numpy as np
 import lightgbm as lgb
-import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (roc_auc_score, f1_score, accuracy_score, precision_score,
+                             recall_score, confusion_matrix, classification_report)
+import joblib
+import xgboost as xgb
 
-###########################################
-# Пути к файлам с текущей активностью (events_download.json)
-###########################################
-EVENTS_FILE = Path("../files_for_predict/tables/events_download.json")
+# Загружаем данные
+input_file = "../unified_json/events.json"
+with open(input_file, "r", encoding="utf-8") as f:
+    data = json.load(f)
+df = pd.DataFrame(data)
 
-###########################################
-# Пути к обученным моделям (target_24)
-###########################################
-LGB_MODEL_FILE = Path("../models/e_lightgbm_model_target_24.pkl")
-RF_MODEL_FILE = Path("../models/e_random_forest_model_target_24.pkl")
-XGB_MODEL_FILE = Path("../models/e_xgboost_model_target_24.pkl")
-
-
-###########################################
-# Функции для подготовки признаков (как при обучении)
-###########################################
+# Функция объединения даты и времени начала
 def combine_datetime(row):
     try:
-        date_str = pd.to_datetime(row['date']).strftime('%Y %m %d')  # преобразуем Timestamp в строку
-        dt_str = date_str + " " + str(row['begin']).zfill(4)         # дополняем до 4 знаков (например, 56 → 0056)
+        dt_str = row['date'] + " " + row['begin']
         return datetime.strptime(dt_str, "%Y %m %d %H%M")
-    except Exception as e:
-        print(f"Ошибка при combine_datetime для строки: {row}, {e}")
+    except Exception:
         return pd.NaT
 
+df['timestamp'] = df.apply(combine_datetime, axis=1)
+df = df.dropna(subset=["timestamp"]).sort_values("timestamp").reset_index(drop=True)
 
+# Временные признаки
+df['hour'] = df['timestamp'].dt.hour
+df['weekday'] = df['timestamp'].dt.weekday
+df['month'] = df['timestamp'].dt.month
 
+# Преобразование времени в минуты от полуночи
 def time_str_to_minutes(time_str):
-    """
-    Преобразует строку времени (формат HHMM) в минуты от полуночи.
-    """
     if pd.isna(time_str):
         return np.nan
     clean = re.sub(r'\D', '', time_str)
@@ -56,11 +48,11 @@ def time_str_to_minutes(time_str):
     except Exception:
         return np.nan
 
+df['begin_mins'] = df['begin'].apply(time_str_to_minutes)
+df['end_mins'] = df['end'].apply(time_str_to_minutes)
 
+# Вычисляем длительность события
 def compute_duration(row):
-    """
-    Вычисляет длительность события с учетом перехода через полночь.
-    """
     b = row['begin_mins']
     e = row['end_mins']
     if pd.notna(b) and pd.notna(e):
@@ -70,11 +62,34 @@ def compute_duration(row):
         return diff
     return np.nan
 
+df['duration'] = df.apply(compute_duration, axis=1)
 
+# Приводим категориальные признаки к типу "category"
+categorical_cols = ['type', 'particulars', 'loc_freq', 'region']
+for col in categorical_cols:
+    df[col] = df[col].astype("category")
+
+# Удаляем строки с пропусками в ключевых признаках
+df = df.dropna(subset=['begin', 'end', 'particulars', 'type'])
+
+#############################################
+# Таргет: предсказание сильной вспышки в ближайшие 24 часов
+#############################################
+def label_future_strong_flare(ts, horizon_hours, df):
+    t_end = ts + timedelta(hours=horizon_hours)
+    mask = (df['timestamp'] > ts) & (df['timestamp'] <= t_end) & (df['type'] == "XRA")
+    strong = df.loc[mask, 'particulars'].dropna().astype(str)
+    return int(any(val.startswith(('M', 'X')) for val in strong))
+
+df = df.sort_values("timestamp").reset_index(drop=True)
+df['target_12'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 12, df))
+df['target_24'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 24, df))
+df['target_48'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 48, df))
+
+#############################################
+# Новые признаки на основе истории вспышек за последние 24 часов
+#############################################
 def extract_flare_class(particulars):
-    """
-    Извлекает класс вспышки из поля particulars.
-    """
     if pd.isna(particulars):
         return "None"
     part = str(particulars).strip().upper()
@@ -83,15 +98,9 @@ def extract_flare_class(particulars):
             return cl
     return "None"
 
+df['flare_class'] = df['particulars'].apply(extract_flare_class)
 
 def add_flare_type_features(df, window_hours):
-    """
-    Вычисляет признаки за последние window_hours часов:
-      - last_flare_{window_hours}h: класс последней вспышки,
-      - count_A_{window_hours}h, ..., count_X_{window_hours}h: количества вспышек по классам,
-      - total_flare_count_{window_hours}h: общее число вспышек,
-      - ratio_MX_{window_hours}h: (count_M + count_X) / total.
-    """
     last_flare = []
     count_A = []
     count_B = []
@@ -122,105 +131,133 @@ def add_flare_type_features(df, window_hours):
     df[f'ratio_MX_{window_hours}h'] = (np.array(count_M) + np.array(count_X)) / (np.array(total_count) + 1e-5)
     return df
 
+# Добавляем признаки за последние 24 часов
+df = add_flare_type_features(df, 24)
 
-def compute_daily_flare_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Вычисляет суточные признаки: yesterday_count, daybefore_count, growth_flare,
-    на основе группировки по календарной дате (из timestamp).
-    """
-    df['event_date'] = df['timestamp'].dt.date
-    daily = df[df['flare_class'] != "None"].groupby('event_date').size().rename("daily_flare_count").reset_index()
-    daily['yesterday_count'] = daily['daily_flare_count'].shift(1)
-    daily['daybefore_count'] = daily['daily_flare_count'].shift(2)
-    daily['growth_flare'] = (daily['yesterday_count'] - daily['daybefore_count']) / (daily['daybefore_count'] + 1e-5)
-    daily['date'] = pd.to_datetime(daily['event_date'])
-    return daily[['date', 'yesterday_count', 'daybefore_count', 'growth_flare']]
+#############################################
+# Новые признаки на основе суточной агрегации вспышек
+#############################################
+# Добавляем столбец с датой события (без времени)
+df['event_date'] = df['timestamp'].dt.date
+# Группируем по календарной дате и считаем общее число вспышек (любых, где flare_class != "None")
+daily_flares = df[df['flare_class'] != "None"].groupby('event_date').size().rename("daily_flare_count").reset_index()
+# Сдвигаем для получения значений за вчера и позавчера
+daily_flares['yesterday_count'] = daily_flares['daily_flare_count'].shift(1)
+daily_flares['daybefore_count'] = daily_flares['daily_flare_count'].shift(2)
+daily_flares['growth_flare'] = (daily_flares['yesterday_count'] - daily_flares['daybefore_count']) / (daily_flares['daybefore_count'] + 1e-5)
+# Слияние с исходным df по дате
+df = pd.merge(df, daily_flares[['event_date', 'yesterday_count', 'daybefore_count', 'growth_flare']],
+              left_on='event_date', right_on='event_date', how='left')
 
+#############################################
+# Формирование финального датасета для моделирования
+#############################################
+# Оставляем нужные признаки:
+# базовые временные признаки: hour, weekday, month, duration
+# признаки по вспышкам за 24 часа: last_flare_24h, count_A_24h, count_B_24h, count_C_24h, count_M_24h, count_X_24h, total_flare_count_24h, ratio_MX_24h
+# новые признаки из суточной агрегации: yesterday_count, daybefore_count, growth_flare
+# таргет: target_24
+features_to_use = ['hour', 'weekday', 'month', 'duration',
+                   'last_flare_24h', 'count_A_24h', 'count_B_24h',
+                   'count_C_24h', 'count_M_24h', 'count_X_24h',
+                   'total_flare_count_24h', 'ratio_MX_24h',
+                   'yesterday_count', 'daybefore_count', 'growth_flare']
 
-def prepare_prediction_data() -> pd.DataFrame:
-    """
-    Загружает данные из EVENTS_FILE, вычисляет timestamp и все признаки для прогнозирования target_24.
-    Используется только events_download.json (без DSD).
-    Возвращает последнюю запись с 15 признаками:
-      ['hour', 'weekday', 'month', 'duration', 'last_flare_24h',
-       'count_A_24h', 'count_B_24h', 'count_C_24h', 'count_M_24h', 'count_X_24h',
-       'total_flare_count_24h', 'ratio_MX_24h', 'yesterday_count', 'daybefore_count', 'growth_flare']
-    """
-    df = pd.read_json(EVENTS_FILE)
-    print("После загрузки, df.shape =", df.shape)
+# Для формирования обучающего датасета оставляем только необходимые поля; сохраняем таргет отдельно
+df_model = df.copy()
+# Сначала временно удаляем таргеты, затем добавляем нужный (target_24)
+df_model = df_model.drop(columns=['begin', 'end', 'particulars', 'loc_freq', 'region', 'flare_class', 'target_12', 'target_48', 'target_24'])
+df_model['target_24'] = df['target_24']
 
-    df = df.dropna(subset=['date', 'begin', 'end', 'particulars'])
-    print("После dropna, df.shape =", df.shape)
+# Преобразуем категориальный признак last_flare_24h в числовой код
+df_model['last_flare_24h'] = df_model['last_flare_24h'].astype('category').cat.codes
 
-    df['date'] = df['date'].apply(lambda d: d.strip() if isinstance(d, str) else d)
+# Формируем финальный датасет для моделирования
+df_final = df_model[features_to_use + ['target_24']].dropna().reset_index(drop=True)
 
-    df['timestamp'] = df.apply(combine_datetime, axis=1)
-    df = df.dropna(subset=['timestamp']).sort_values('timestamp').reset_index(drop=True)
-    print("После вычисления timestamp, df.shape =", df.shape)
+# Хронологическое разделение: 80% обучение, 20% тест
+split_index = int(len(df_final) * 0.8)
+train_df = df_final.iloc[:split_index]
+test_df = df_final.iloc[split_index:]
 
-    df['hour'] = df['timestamp'].dt.hour
-    df['weekday'] = df['timestamp'].dt.weekday
-    df['month'] = df['timestamp'].dt.month
+X_train = train_df[features_to_use]
+y_train = train_df["target_24"]
+X_test = test_df[features_to_use]
+y_test = test_df["target_24"]
 
-    df['begin_mins'] = df['begin'].apply(time_str_to_minutes)
-    df['end_mins'] = df['end'].apply(time_str_to_minutes)
-    df['duration'] = df.apply(compute_duration, axis=1)
+#############################################
+# Обучение моделей
+#############################################
 
-    df['flare_class'] = df['particulars'].apply(extract_flare_class)
+# LightGBM
+lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1, device='gpu')
+lgb_model.fit(X_train, y_train)
+y_pred_prob_lgb = lgb_model.predict_proba(X_test)[:, 1]
+y_pred_lgb = (y_pred_prob_lgb >= 0.5).astype(int)
 
-    df = add_flare_type_features(df, 24)
+# RandomForest (с балансировкой классов)
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced', n_jobs=-1)
+rf_model.fit(X_train, y_train)
+y_pred_prob_rf = rf_model.predict_proba(X_test)[:, 1]
+y_pred_rf = rf_model.predict(X_test)
 
-    daily_feats = compute_daily_flare_features(df)
-    print("Суточные признаки, daily_feats.shape =", daily_feats.shape)
+# XGBoost
+xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss',
+                              random_state=42, scale_pos_weight=1, n_jobs=-1, tree_method='gpu_hist', verbosity=2)
+xgb_model.fit(X_train, y_train)
+y_pred_prob_xgb = xgb_model.predict_proba(X_test)[:, 1]
+y_pred_xgb = (y_pred_prob_xgb >= 0.5).astype(int)
 
-    df = pd.merge(df, daily_feats, on='date', how='left')
-    print("После слияния с суточными признаками, df.shape =", df.shape)
+# Простое усреднение вероятностей (энсамблирование)
+y_pred_prob_ensemble = (y_pred_prob_lgb + y_pred_prob_rf + y_pred_prob_xgb) / 3
+y_pred_ensemble = (y_pred_prob_ensemble >= 0.5).astype(int)
 
-    # Преобразуем категориальный признак last_flare_24h в числовой код
-    df['last_flare_24h'] = df['last_flare_24h'].astype('category').cat.codes
+#############################################
+# Функция для вывода метрик
+#############################################
+def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
+    from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, classification_report
+    print(f"\nМетрики предсказания для {model_name}:")
+    print(f"Accuracy: {accuracy_score(y_true, y_pred):.3f} ({accuracy_score(y_true, y_pred) * 100:.1f}%)")
+    print(f"Precision: {precision_score(y_true, y_pred, zero_division=0):.3f}")
+    print(f"Recall: {recall_score(y_true, y_pred, zero_division=0):.3f}")
+    print(f"F1 Score: {f1_score(y_true, y_pred, zero_division=0):.3f}")
+    try:
+        print(f"ROC AUC: {roc_auc_score(y_true, y_prob):.3f}")
+    except Exception:
+        pass
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_true, y_pred))
+    print("Classification Report:")
+    print(classification_report(y_true, y_pred, zero_division=0))
 
-    features_to_use = ['hour', 'weekday', 'month', 'duration',
-                       'last_flare_24h', 'count_A_24h', 'count_B_24h',
-                       'count_C_24h', 'count_M_24h', 'count_X_24h',
-                       'total_flare_count_24h', 'ratio_MX_24h',
-                       'yesterday_count', 'daybefore_count', 'growth_flare']
+#############################################
+# Вывод метрик для моделей (предсказание на следующие 24 часа)
+#############################################
+print_metrics(y_test, y_pred_lgb, y_pred_prob_lgb, "LightGBM (24 часов, бинарный)")
+print_metrics(y_test, y_pred_rf, y_pred_prob_rf, "Random Forest (24 часов, бинарный)")
+print_metrics(y_test, y_pred_xgb, y_pred_prob_xgb, "XGBoost (24 часов, бинарный)")
+print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (усреднение LGBM+RF+XGB)")
 
-    df_final = df[features_to_use].dropna().reset_index(drop=True)
-    print("Финальный набор признаков для прогнозирования, df_final.shape =", df_final.shape)
+#############################################
+# Сохранение моделей и данных
+#############################################
+lgb_model_filename = "../models/e_lightgbm_model_target_24.pkl"
+rf_model_filename = "../models/e_random_forest_model_target_24.pkl"
+xgb_model_filename = "../models/e_xgboost_model_target_24.pkl"
 
-    return df_final.iloc[-1:].copy()
+joblib.dump(lgb_model, lgb_model_filename)
+joblib.dump(rf_model, rf_model_filename)
+joblib.dump(xgb_model, xgb_model_filename)
 
+print(f"\nМодель LightGBM сохранена в {lgb_model_filename}")
+print(f"Модель Random Forest сохранена в {rf_model_filename}")
+print(f"Модель XGBoost сохранена в {xgb_model_filename}")
 
-###########################################
-# Прогноз для завтрашнего дня
-###########################################
-def predict_tomorrow():
-    input_row = prepare_prediction_data()
-    if input_row.empty:
-        print("Нет данных для прогнозирования!")
-        return
-    print("Признаки для прогноза (последняя запись):")
-    print(input_row)
+train_data_filename = "../models/train_data_target_24.csv"
+df_final.to_csv(train_data_filename, index=False)
+print(f"Обучающие данные сохранены в {train_data_filename}")
 
-    # Загрузка обученных моделей
-    lgb_model = joblib.load(LGB_MODEL_FILE)
-    rf_model = joblib.load(RF_MODEL_FILE)
-    xgb_model = joblib.load(XGB_MODEL_FILE)
-
-    prob_lgb = lgb_model.predict_proba(input_row)[:, 1][0]
-    prob_rf = rf_model.predict_proba(input_row)[:, 1][0]
-    prob_xgb = xgb_model.predict_proba(input_row)[:, 1][0]
-
-    prob_ensemble = (prob_lgb + prob_rf + prob_xgb) / 3.0
-    prob_weighted = 0.25 * prob_lgb + 0.25 * prob_rf + 0.5 * prob_xgb
-
-    print("\nПрогноз для завтрашнего дня (вероятность наличия хотя бы одного сильного события):")
-    print(f"LightGBM: {prob_lgb:.3f}")
-    print(f"RandomForest: {prob_rf:.3f}")
-    print(f"XGBoost: {prob_xgb:.3f}")
-    print(f"Ensemble (усреднение): {prob_ensemble:.3f}")
-    print(f"Ensemble (взвешенное): {prob_weighted:.3f}")
-
-
-if __name__ == "__main__":
-    predict_tomorrow()
+full_data_filename = "../unified_json/full_events_with_targets.csv"
+df.to_csv(full_data_filename, index=False)
+print(f"Полный DataFrame с прогнозами сохранен в {full_data_filename}")
