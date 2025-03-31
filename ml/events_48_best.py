@@ -11,12 +11,8 @@ from sklearn.metrics import (roc_auc_score, f1_score, accuracy_score, precision_
 import joblib
 import xgboost as xgb
 
-#############################################
-# Загрузка и подготовка данных
-#############################################
-
-# Загрузка данных
-input_file = "../unified_json/events.json"
+# Загружаем данные
+input_file = "../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)
@@ -77,9 +73,8 @@ for col in categorical_cols:
 df = df.dropna(subset=['begin', 'end', 'particulars', 'type'])
 
 #############################################
-# Таргет: предсказание сильной вспышки в ближайшие часы
+# Таргет: предсказание сильной вспышки в ближайшие 24 часов
 #############################################
-
 def label_future_strong_flare(ts, horizon_hours, df):
     t_end = ts + timedelta(hours=horizon_hours)
     mask = (df['timestamp'] > ts) & (df['timestamp'] <= t_end) & (df['type'] == "XRA")
@@ -94,7 +89,6 @@ df['target_48'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 4
 #############################################
 # Новые признаки на основе истории вспышек за последние 24 часов
 #############################################
-
 def extract_flare_class(particulars):
     if pd.isna(particulars):
         return "None"
@@ -114,7 +108,6 @@ def add_flare_type_features(df, window_hours):
     count_M = []
     count_X = []
     total_count = []
-
     for i, current_time in enumerate(df['timestamp']):
         window_start = current_time - timedelta(hours=window_hours)
         window_df = df[(df['timestamp'] >= window_start) & (df['timestamp'] < current_time)]
@@ -128,7 +121,6 @@ def add_flare_type_features(df, window_hours):
         count_M.append((window_df['flare_class'] == "M").sum())
         count_X.append((window_df['flare_class'] == "X").sum())
         total_count.append(len(window_df))
-
     df[f'last_flare_{window_hours}h'] = last_flare
     df[f'count_A_{window_hours}h'] = count_A
     df[f'count_B_{window_hours}h'] = count_B
@@ -139,17 +131,39 @@ def add_flare_type_features(df, window_hours):
     df[f'ratio_MX_{window_hours}h'] = (np.array(count_M) + np.array(count_X)) / (np.array(total_count) + 1e-5)
     return df
 
+# Добавляем признаки за последние 24 часов
 df = add_flare_type_features(df, 24)
+
+#############################################
+# Новые признаки на основе суточной агрегации вспышек
+#############################################
+# Добавляем столбец с датой события (без времени)
+df['event_date'] = df['timestamp'].dt.date
+# Группируем по календарной дате и считаем общее число вспышек (любых, где flare_class != "None")
+daily_flares = df[df['flare_class'] != "None"].groupby('event_date').size().rename("daily_flare_count").reset_index()
+# Сдвигаем для получения значений за вчера и позавчера
+daily_flares['yesterday_count'] = daily_flares['daily_flare_count'].shift(1)
+daily_flares['daybefore_count'] = daily_flares['daily_flare_count'].shift(2)
+daily_flares['growth_flare'] = (daily_flares['yesterday_count'] - daily_flares['daybefore_count']) / (daily_flares['daybefore_count'] + 1e-5)
+# Слияние с исходным df по дате
+df = pd.merge(df, daily_flares[['event_date', 'yesterday_count', 'daybefore_count', 'growth_flare']],
+              left_on='event_date', right_on='event_date', how='left')
 
 #############################################
 # Формирование финального датасета для моделирования
 #############################################
-
+# Оставляем нужные признаки:
+# базовые временные признаки: hour, weekday, month, duration
+# признаки по вспышкам за 24 часа: last_flare_24h, count_A_24h, count_B_24h, count_C_24h, count_M_24h, count_X_24h, total_flare_count_24h, ratio_MX_24h
+# новые признаки из суточной агрегации: yesterday_count, daybefore_count, growth_flare
+# таргет: target_24
 features_to_use = ['hour', 'weekday', 'month', 'duration',
                    'last_flare_24h', 'count_A_24h', 'count_B_24h',
                    'count_C_24h', 'count_M_24h', 'count_X_24h',
-                   'total_flare_count_24h', 'ratio_MX_24h']
+                   'total_flare_count_24h', 'ratio_MX_24h',
+                   'yesterday_count', 'daybefore_count', 'growth_flare']
 
+# Для формирования обучающего датасета оставляем только необходимые поля; сохраняем таргет отдельно
 df_model = df.copy()
 df_model = df_model.drop(
     columns=['begin', 'end', 'particulars', 'loc_freq', 'region', 'flare_class', 'target_12', 'target_24', 'target_48'])
@@ -176,7 +190,7 @@ y_test = test_df["target_48"]
 #############################################
 
 # LightGBM
-lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1)
+lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1, device='gpu')
 lgb_model.fit(X_train, y_train)
 y_pred_prob_lgb = lgb_model.predict_proba(X_test)[:, 1]
 y_pred_lgb = (y_pred_prob_lgb >= 0.5).astype(int)
@@ -189,12 +203,12 @@ y_pred_rf = rf_model.predict(X_test)
 
 # XGBoost
 xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss',
-                              random_state=42, scale_pos_weight=1, n_jobs=-1)
+                              random_state=42, scale_pos_weight=1, n_jobs=-1, tree_method='gpu_hist', verbosity=2)
 xgb_model.fit(X_train, y_train)
 y_pred_prob_xgb = xgb_model.predict_proba(X_test)[:, 1]
 y_pred_xgb = (y_pred_prob_xgb >= 0.5).astype(int)
 
-# Эансамблирование (усреднение вероятностей)
+# Простое усреднение вероятностей (энсамблирование)
 y_pred_prob_ensemble = (y_pred_prob_lgb + y_pred_prob_rf + y_pred_prob_xgb) / 3
 y_pred_ensemble = (y_pred_prob_ensemble >= 0.5).astype(int)
 
@@ -243,6 +257,6 @@ train_data_filename = "../models/train_data_target_48.csv"
 df_final.to_csv(train_data_filename, index=False)
 print(f"Обучающие данные сохранены в {train_data_filename}")
 
-full_data_filename = "../unified_json/full_events_with_targets.csv"
+full_data_filename = "../result_json/full_events_with_targets.csv"
 df.to_csv(full_data_filename, index=False)
 print(f"Полный DataFrame с прогнозами сохранен в {full_data_filename}")

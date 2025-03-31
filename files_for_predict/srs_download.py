@@ -103,6 +103,9 @@ def process_srs_file(input_filename: str, output_filename: str):
     # Удаляем поля "Z" и "Type"
     final_df = final_df.drop(columns=["Z", "Type"])
 
+    # Переставляем столбцы так, чтобы observed_date оказался в конце
+    final_df = final_df[["Nmbr", "Location", "Lo", "Area", "LL", "NN", "Mag_Type", "observed_date"]]
+
     # Переименовываем поле observed_date в date
     final_df = final_df.rename(columns={"observed_date": "date"})
 
@@ -118,6 +121,7 @@ def process_srs_file(input_filename: str, output_filename: str):
     for col in final_df.columns:
         nd_count = (final_df[col] == "ND").sum()
         print(f"{col}: {nd_count}")
+
 
 
 def main():

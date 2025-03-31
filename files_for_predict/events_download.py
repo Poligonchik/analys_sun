@@ -1,247 +1,217 @@
 #!/usr/bin/env python3
-import os
+import requests
 import json
-import re
-from datetime import datetime, timedelta
-from pathlib import Path
-
-import numpy as np
+import os
 import pandas as pd
-import joblib
-import lightgbm as lgb
-import xgboost as xgb
-from sklearn.ensemble import RandomForestClassifier
+from datetime import datetime
 
-###########################################
-# Пути к файлам с текущей активностью (за последние 30 дней)
-###########################################
-EVENTS_FILE = Path("../files_for_predict/tables/events_download.json")
-
-###########################################
-# Пути к обученным моделям (target_24)
-###########################################
-LGB_MODEL_FILE = Path("../models/e_lightgbm_model_target_24.pkl")
-RF_MODEL_FILE = Path("../models/e_random_forest_model_target_24.pkl")
-XGB_MODEL_FILE = Path("../models/e_xgboost_model_target_24.pkl")
-
-
-###########################################
-# Функции для подготовки признаков (как в обучении)
-###########################################
-def combine_datetime(row):
+def download_events():
     """
-    Объединяет значение date и begin для создания timestamp.
-    Если значение 'date' уже является Timestamp, преобразует его в строку формата "YYYY MM DD".
+    Загружает данные по URL и сохраняет их в файл events_download.json.
+    """
+    url = "https://services.swpc.noaa.gov/json/edited_events.json"
+    filename = "tables/events_download.json"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Проверка на статус 200 OK
+    except requests.RequestException as e:
+        print(f"Ошибка при загрузке данных: {e}")
+        return False
+
+    data = response.json()
+
+    # Сохраняем JSON в файл в текущей папке
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+    print(f"Файл успешно сохранён как: {os.path.abspath(filename)}")
+    return True
+
+def extract_time(dt_str):
+    """
+    Извлекает время из строки ISO datetime и возвращает его в формате HHMM.
+    Если ошибка – возвращает "ND".
     """
     try:
-        if isinstance(row['date'], pd.Timestamp):
-            date_str = row['date'].strftime("%Y %m %d")
-        else:
-            date_str = str(row['date']).strip()
-        begin_str = str(row['begin']).strip()
-        dt_str = date_str + " " + begin_str
-        return datetime.strptime(dt_str, "%Y %m %d %H%M")
-    except Exception as e:
-        print(f"Ошибка при combine_datetime для строки: {row[['date', 'begin']]}, {e}")
-        return pd.NaT
-
-
-def time_str_to_minutes(time_str):
-    """
-    Преобразует строку времени (формат HHMM) в минуты от полуночи.
-    """
-    if pd.isna(time_str):
-        return np.nan
-    clean = re.sub(r'\D', '', time_str)
-    if clean == "":
-        return np.nan
-    clean = clean.zfill(4)
-    try:
-        hours = int(clean[:2])
-        minutes = int(clean[2:4])
-        return hours * 60 + minutes
+        dt = datetime.fromisoformat(dt_str)
+        return dt.strftime("%H%M")
     except Exception:
-        return np.nan
+        return "ND"
 
-
-def compute_duration(row):
+def extract_date(dt_str):
     """
-    Вычисляет длительность события с учетом перехода через полночь.
+    Извлекает дату из строки ISO datetime и возвращает её в формате "YYYY MM DD".
+    Если ошибка – возвращает "ND".
+    """
+    try:
+        dt = datetime.fromisoformat(dt_str)
+        return dt.strftime("%Y %m %d")
+    except Exception:
+        return "ND"
+
+def format_region(region):
+    """
+    Форматирует значение region как 4-значную строку с ведущими нулями.
+    Если region отсутствует, возвращает "0000".
+    """
+    if region is None:
+        return "0000"
+    try:
+        return f"{int(region):04d}"
+    except Exception:
+        return str(region)
+
+def transform_event(event):
+    """
+    Преобразует событие из исходного формата в новый формат с полями:
+    begin, max, end, type, loc_freq, particulars, date, region.
+    """
+    new_event = {}
+    new_event["begin"] = extract_time(event.get("begin_datetime", ""))
+    new_event["max"] = extract_time(event.get("max_datetime", ""))
+    new_event["end"] = extract_time(event.get("end_datetime", ""))
+    new_event["type"] = event.get("type", "ND")
+    new_event["loc_freq"] = event.get("frequency", "ND")
+    new_event["particulars"] = event.get("particulars1", "")
+    new_event["date"] = extract_date(event.get("begin_datetime", ""))
+    new_event["region"] = format_region(event.get("region"))
+    return new_event
+
+def time_str_to_minutes(t):
+    """
+    Преобразует строку времени формата HHMM в минуты от начала дня.
+    Если преобразование не удалось, возвращает pd.NA.
+    """
+    if pd.isna(t):
+        return pd.NA
+    try:
+        t_str = str(t).zfill(4)
+        hh = int(t_str[:2])
+        mm = int(t_str[2:])
+        return hh * 60 + mm
+    except Exception:
+        return pd.NA
+
+def minutes_to_time_str(m):
+    """
+    Преобразует минуты от начала дня в строку формата HHMM.
+    """
+    try:
+        m = int(round(m))
+        hh = m // 60
+        mm = m % 60
+        return f"{hh:02d}{mm:02d}"
+    except Exception:
+        return pd.NA
+
+def compute_interval(row):
+    """
+    Вычисляет интервал между begin и end (в минутах) с учетом перехода через полночь.
     """
     b = row['begin_mins']
     e = row['end_mins']
     if pd.notna(b) and pd.notna(e):
-        diff = e - b
-        if diff < 0:
-            diff += 1440
-        return diff
-    return np.nan
+        return e - b if e >= b else e + 1440 - b
+    else:
+        return pd.NA
 
-
-def extract_flare_class(particulars):
+def transform_events():
     """
-    Извлекает класс вспышки из поля particulars.
+    Выполняет преобразование загруженных данных:
+    - Преобразует время и дату в нужный формат
+    - Заполняет отсутствующие значения end и begin на основе медианного интервала
+    - Вычисляет значение max для пропущенных значений с использованием средней доли прохождения интервала
+    - Все отсутствующие значения заменяются на pd.NA
+    - Сохраняет итоговый JSON в файл output_events.json
     """
-    if pd.isna(particulars):
-        return "None"
-    part = str(particulars).strip().upper()
-    for cl in ["X", "M", "C", "B", "A"]:
-        if part.startswith(cl):
-            return cl
-    return "None"
+    input_filename = "tables/events_download.json"  # Исходный JSON с событиями
+    output_filename = "tables/events_download.json"
 
+    # Загружаем исходный JSON
+    with open(input_filename, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-def add_flare_type_features(df, window_hours):
-    """
-    Вычисляет признаки за последние window_hours часов:
-      - last_flare_{window_hours}h: класс последней вспышки,
-      - count_A_{window_hours}h, count_B_{window_hours}h, count_C_{window_hours}h,
-        count_M_{window_hours}h, count_X_{window_hours}h,
-      - total_flare_count_{window_hours}h: общее число вспышек,
-      - ratio_MX_{window_hours}h: отношение (count_M + count_X) / total_flare_count.
-    """
-    last_flare = []
-    count_A = []
-    count_B = []
-    count_C = []
-    count_M = []
-    count_X = []
-    total_count = []
-    for i, current_time in enumerate(df['timestamp']):
-        window_start = current_time - timedelta(hours=window_hours)
-        window_df = df[(df['timestamp'] >= window_start) & (df['timestamp'] < current_time)]
-        if not window_df.empty:
-            last_flare.append(window_df.iloc[-1]['flare_class'])
-        else:
-            last_flare.append("None")
-        count_A.append((window_df['flare_class'] == "A").sum())
-        count_B.append((window_df['flare_class'] == "B").sum())
-        count_C.append((window_df['flare_class'] == "C").sum())
-        count_M.append((window_df['flare_class'] == "M").sum())
-        count_X.append((window_df['flare_class'] == "X").sum())
-        total_count.append(len(window_df))
-    df[f'last_flare_{window_hours}h'] = last_flare
-    df[f'count_A_{window_hours}h'] = count_A
-    df[f'count_B_{window_hours}h'] = count_B
-    df[f'count_C_{window_hours}h'] = count_C
-    df[f'count_M_{window_hours}h'] = count_M
-    df[f'count_X_{window_hours}h'] = count_X
-    df[f'total_flare_count_{window_hours}h'] = total_count
-    df[f'ratio_MX_{window_hours}h'] = (np.array(count_M) + np.array(count_X)) / (np.array(total_count) + 1e-5)
-    return df
+    # Преобразуем каждое событие в новый формат
+    transformed = [transform_event(e) for e in data]
 
+    # Создаем DataFrame и заменяем пустые строки и "ND" на pd.NA
+    df = pd.DataFrame(transformed)
+    df = df.replace({"": pd.NA, "ND": pd.NA})
 
-def compute_daily_flare_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Вычисляет суточные признаки: yesterday_count, daybefore_count, growth_flare
-    на основе количества вспышек (где flare_class != "None").
-    """
-    df['event_date'] = df['timestamp'].dt.date
-    daily = df[df['flare_class'] != "None"].groupby('event_date').size().rename("daily_flare_count").reset_index()
-    daily['yesterday_count'] = daily['daily_flare_count'].shift(1)
-    daily['daybefore_count'] = daily['daily_flare_count'].shift(2)
-    daily['growth_flare'] = (daily['yesterday_count'] - daily['daybefore_count']) / (daily['daybefore_count'] + 1e-5)
-    daily['date'] = pd.to_datetime(daily['event_date'])
-    return daily[['date', 'yesterday_count', 'daybefore_count', 'growth_flare']]
-
-
-def prepare_prediction_data() -> pd.DataFrame:
-    """
-    Загружает данные из EVENTS_FILE, вычисляет timestamp и все признаки для прогнозирования target_24.
-    Используется только events_download.json (без DSD).
-    Возвращает последнюю запись с 15 признаками:
-      ['hour', 'weekday', 'month', 'duration', 'last_flare_24h',
-       'count_A_24h', 'count_B_24h', 'count_C_24h', 'count_M_24h', 'count_X_24h',
-       'total_flare_count_24h', 'ratio_MX_24h', 'yesterday_count', 'daybefore_count', 'growth_flare']
-    """
-    df = pd.read_json(EVENTS_FILE)
-    print("После загрузки, df.shape =", df.shape)
-
-    # Удаляем строки с отсутствующими критичными полями
-    df = df.dropna(subset=['date', 'begin', 'end', 'particulars'])
-    print("После dropna, df.shape =", df.shape)
-
-    # Приводим поле date к строке, если оно строковое
-    df['date'] = df['date'].apply(lambda d: d.strip() if isinstance(d, str) else d)
-
-    # Вычисляем timestamp
-    df['timestamp'] = df.apply(combine_datetime, axis=1)
-    df = df.dropna(subset=['timestamp']).sort_values('timestamp').reset_index(drop=True)
-    print("После вычисления timestamp, df.shape =", df.shape)
-
-    # Вычисляем временные признаки
-    df['hour'] = df['timestamp'].dt.hour
-    df['weekday'] = df['timestamp'].dt.weekday
-    df['month'] = df['timestamp'].dt.month
-
-    # Вычисляем begin_mins, end_mins и duration
+    # Преобразуем время из строк в минуты от начала дня
     df['begin_mins'] = df['begin'].apply(time_str_to_minutes)
-    df['end_mins'] = df['end'].apply(time_str_to_minutes)
-    df['duration'] = df.apply(compute_duration, axis=1)
+    df['max_mins']   = df['max'].apply(time_str_to_minutes)
+    df['end_mins']   = df['end'].apply(time_str_to_minutes)
 
-    # Извлекаем flare_class из particulars
-    df['flare_class'] = df['particulars'].apply(extract_flare_class)
+    # Вычисляем интервал между begin и end
+    df['interval'] = df.apply(compute_interval, axis=1)
 
-    # Добавляем признаки за последние 24 часов
-    df = add_flare_type_features(df, 24)
+    # Вычисляем медианный интервал (для строк с заданными begin и end)
+    valid_intervals = df['interval'].dropna()
+    median_interval = valid_intervals.median() if not valid_intervals.empty else 13
+    print("Медианный интервал (минут):", median_interval)
 
-    # Вычисляем суточные признаки
-    daily_feats = compute_daily_flare_features(df)
-    print("Суточные признаки, daily_feats.shape =", daily_feats.shape)
+    # Если отсутствует end, заменяем его как begin + медианный интервал (с модулем 1440)
+    mask_end_missing = df['begin_mins'].notna() & df['end_mins'].isna()
+    df.loc[mask_end_missing, 'end_mins'] = (df.loc[mask_end_missing, 'begin_mins'] + median_interval) % 1440
 
-    # Слияние суточных признаков с основными данными по дате
-    df = pd.merge(df, daily_feats, on='date', how='left')
-    print("После слияния с суточными признаками, df.shape =", df.shape)
+    # Если отсутствует begin, заменяем его как end - медианный интервал (с модулем 1440)
+    mask_begin_missing = df['end_mins'].notna() & df['begin_mins'].isna()
+    df.loc[mask_begin_missing, 'begin_mins'] = (df.loc[mask_begin_missing, 'end_mins'] - median_interval) % 1440
 
-    # Преобразуем категориальный признак last_flare_24h в числовой код
-    df['last_flare_24h'] = df['last_flare_24h'].astype('category').cat.codes
+    # Пересчитываем интервал после заполнения begin/end
+    df['interval'] = df.apply(compute_interval, axis=1)
 
-    # Определяем набор признаков для прогнозирования (15 признаков)
-    features_to_use = ['hour', 'weekday', 'month', 'duration',
-                       'last_flare_24h', 'count_A_24h', 'count_B_24h',
-                       'count_C_24h', 'count_M_24h', 'count_X_24h',
-                       'total_flare_count_24h', 'ratio_MX_24h',
-                       'yesterday_count', 'daybefore_count', 'growth_flare']
+    # Функция для вычисления доли прохождения интервала от начала до max
+    def compute_progress(row):
+        b = row['begin_mins']
+        e = row['end_mins']
+        m = row['max_mins']
+        if pd.notna(b) and pd.notna(e) and pd.notna(m) and pd.notna(row['interval']) and row['interval'] != 0:
+            diff = m - b if m >= b else m + 1440 - b
+            return diff / row['interval']
+        else:
+            return pd.NA
 
-    df_final = df[features_to_use].dropna().reset_index(drop=True)
-    print("Финальный набор признаков для прогнозирования, df_final.shape =", df_final.shape)
+    df['progress'] = df.apply(compute_progress, axis=1)
+    valid_progress = df['progress'].dropna()
+    average_progress = valid_progress.mean() if not valid_progress.empty else 0.5
+    print("Среднее значение progress (доля):", average_progress)
 
-    # Возвращаем последнюю запись
-    return df_final.iloc[-1:].copy()
+    # Если max отсутствует, вычисляем его как begin + (average_progress * interval)
+    mask_max_missing = df['max_mins'].isna() & df['begin_mins'].notna() & df['end_mins'].notna()
+    df.loc[mask_max_missing, 'max_mins'] = (df.loc[mask_max_missing, 'begin_mins'] +
+                                             average_progress * df.loc[mask_max_missing, 'interval']) % 1440
 
+    # Преобразуем минуты обратно в строковый формат HHMM
+    df['begin'] = df['begin_mins'].apply(minutes_to_time_str)
+    df['end']   = df['end_mins'].apply(minutes_to_time_str)
+    df['max']   = df['max_mins'].apply(minutes_to_time_str)
 
-###########################################
-# Прогноз для завтрашнего дня
-###########################################
-def predict_tomorrow():
-    input_row = prepare_prediction_data()
-    if input_row.empty:
-        print("Нет данных для прогнозирования!")
-        return
-    print("Признаки для прогноза (последняя запись):")
-    print(input_row)
+    # Удаляем временные столбцы, если они не нужны в итоговом JSON
+    df.drop(columns=['begin_mins', 'max_mins', 'end_mins', 'interval', 'progress'], inplace=True)
 
-    # Загрузка обученных моделей
-    lgb_model = joblib.load(LGB_MODEL_FILE)
-    rf_model = joblib.load(RF_MODEL_FILE)
-    xgb_model = joblib.load(XGB_MODEL_FILE)
+    # Еще раз заменяем возможные оставшиеся "ND" или пустые строки на pd.NA
+    df = df.replace({"": pd.NA, "ND": pd.NA})
 
-    # Получаем прогнозные вероятности (на вход подаются ровно 15 признаков)
-    prob_lgb = lgb_model.predict_proba(input_row)[:, 1][0]
-    prob_rf = rf_model.predict_proba(input_row)[:, 1][0]
-    prob_xgb = xgb_model.predict_proba(input_row)[:, 1][0]
+    # Сохраняем итоговый DataFrame в JSON
+    final_json = df.to_dict(orient="records")
+    with open(output_filename, "w", encoding="utf-8") as f:
+        json.dump(final_json, f, indent=4, ensure_ascii=False)
 
-    # Ансамблирование: простое усреднение и взвешенное голосование (0.25, 0.25, 0.5)
-    prob_ensemble = (prob_lgb + prob_rf + prob_xgb) / 3.0
-    prob_weighted = 0.25 * prob_lgb + 0.25 * prob_rf + 0.5 * prob_xgb
+    print(f"Преобразование завершено. Итоговый файл: {output_filename}")
 
-    print("\nПрогноз для завтрашнего дня (вероятность наличия хотя бы одного сильного события):")
-    print(f"LightGBM: {prob_lgb:.3f}")
-    print(f"RandomForest: {prob_rf:.3f}")
-    print(f"XGBoost: {prob_xgb:.3f}")
-    print(f"Ensemble (усреднение): {prob_ensemble:.3f}")
-    print(f"Ensemble (взвешенное): {prob_weighted:.3f}")
+    # Подсчитываем количество пропущенных значений по каждому столбцу
+    missing_counts = df.isna().sum()
+    print("\nКоличество пропущенных значений по столбцам:")
+    print(missing_counts)
 
+def main():
+    # Сначала загружаем данные
+    if download_events():
+        # Затем выполняем преобразование
+        transform_events()
 
 if __name__ == "__main__":
-    predict_tomorrow()
+    main()

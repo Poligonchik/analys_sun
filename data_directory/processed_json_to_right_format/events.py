@@ -161,8 +161,8 @@ def minutes_to_time_str(minutes):
 if __name__ == '__main__':
     # Пути: исходный JSON и куда сохранить обработанный JSON
     input_file = "../processed_results/combined_events_all.json"
-    output_file = "../../unified_json/events.json"
-    output_filled_file = "../../unified_json/events.json"
+    output_file = "../../result_json/events.json"
+    output_filled_file = "../../result_json/events.json"
 
     # Обработка файла: приведение даты к формату "YYYY MM DD" и удаление полей "year", "obs", "q", "event"
     processed_events = process_events_file(input_file, output_file)

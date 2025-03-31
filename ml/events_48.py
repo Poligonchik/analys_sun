@@ -13,7 +13,7 @@ import joblib
 import xgboost as xgb
 
 # Загрузка данных
-input_file = "../unified_json/events.json"
+input_file = "../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)

@@ -8,8 +8,7 @@ FTP_SERVER = "ftp.swpc.noaa.gov"
 FTP_PATH = "/pub/warehouse/"    # Удалённая папка, которую нужно скачать
 LOCAL_SAVE_PATH = "./ftp_data"  # Локальная папка для сохранения файлов
 
-# Параметры keep-alive
-KEEPALIVE_INTERVAL = 300  # Интервал отправки NOOP в секундах (например, 5 минут)
+KEEPALIVE_INTERVAL = 300
 
 # Расширения файлов, которые нужно скачивать
 ALLOWED_EXTENSIONS = (".json", ".txt")
@@ -149,11 +148,10 @@ if __name__ == "__main__":
     try:
         ftp = connect_ftp(FTP_SERVER)
 
-        # Запуск keep-alive в отдельном потоке
+
         keep_alive_thread = threading.Thread(target=keep_alive, args=(ftp, KEEPALIVE_INTERVAL), daemon=True)
         keep_alive_thread.start()
 
-        # Пример: скачиваем только .json и .txt файлы
         print(f"\nНачнём скачивание только .json и .txt файлов из {FTP_PATH}...\n")
         download_selected_files(ftp, FTP_PATH, LOCAL_SAVE_PATH, ALLOWED_EXTENSIONS)
 

@@ -75,7 +75,7 @@ def get_max_class(row):
 #############################################
 # Загрузка и подготовка данных событий (events.json)
 #############################################
-events_input = "../unified_json/events.json"
+events_input = "../result_json/events.json"
 events_df = pd.read_json(events_input)
 
 # Преобразуем поле date (формат "YYYY MM DD")
@@ -114,7 +114,7 @@ events_final[cols_event] = events_final[cols_event].fillna(0)
 #############################################
 # Загрузка данных SRS (srs.json)
 #############################################
-srs_input = "../unified_json/srs.json"
+srs_input = "../result_json/srs.json"
 srs_df = pd.read_json(srs_input)
 for col in ['Lo', 'Area', 'LL', 'NN']:
     srs_df[col] = pd.to_numeric(srs_df[col], errors='coerce')

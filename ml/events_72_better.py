@@ -16,7 +16,7 @@ import xgboost as xgb
 #############################################
 
 # Загрузка данных
-input_file = "../unified_json/events.json"
+input_file = "../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)
@@ -251,6 +251,6 @@ train_data_filename = "../models/train_data_target_72.csv"
 df_final.to_csv(train_data_filename, index=False)
 print(f"Обучающие данные сохранены в {train_data_filename}")
 
-full_data_filename = "../unified_json/full_events_with_targets.csv"
+full_data_filename = "../result_json/full_events_with_targets.csv"
 df.to_csv(full_data_filename, index=False)
 print(f"Полный DataFrame с прогнозами сохранен в {full_data_filename}")

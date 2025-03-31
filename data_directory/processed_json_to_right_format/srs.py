@@ -169,7 +169,7 @@ def analyze_data(data):
 if __name__ == '__main__':
     # Пути: исходный файл и куда положить результат
     input_file = "../processed_results/combined_srs_all.json"
-    output_file = "../../unified_json/srs.json"
+    output_file = "../../result_json/srs.json"
 
     processed_data = process_srs_file(input_file, output_file)
     analyze_data(processed_data)

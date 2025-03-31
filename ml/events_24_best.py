@@ -10,9 +10,12 @@ from sklearn.metrics import (roc_auc_score, f1_score, accuracy_score, precision_
                              recall_score, confusion_matrix, classification_report)
 import joblib
 import xgboost as xgb
+import joblib
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import StackingClassifier
 
 # Загружаем данные
-input_file = "../unified_json/events.json"
+input_file = "../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)
@@ -258,6 +261,35 @@ train_data_filename = "../models/train_data_target_24.csv"
 df_final.to_csv(train_data_filename, index=False)
 print(f"Обучающие данные сохранены в {train_data_filename}")
 
-full_data_filename = "../unified_json/full_events_with_targets.csv"
+full_data_filename = "../result_json/full_events_with_targets.csv"
 df.to_csv(full_data_filename, index=False)
 print(f"Полный DataFrame с прогнозами сохранен в {full_data_filename}")
+
+lgb_model = joblib.load("../models/e_lightgbm_model_target_24.pkl")
+rf_model = joblib.load("../models/e_random_forest_model_target_24.pkl")
+xgb_model = joblib.load("../models/e_xgboost_model_target_24.pkl")
+
+stacking_estimators = [
+    ('lgb', lgb_model),
+    ('rf', rf_model),
+    ('xgb', xgb_model)
+]
+
+stacking_model = StackingClassifier(
+    estimators=stacking_estimators,
+    final_estimator=LogisticRegression(random_state=42),
+    n_jobs=-1
+)
+stacking_model.fit(X_train, y_train)
+
+# Обучаем только мета-модель на том же X_train и y_train
+stacking_model.fit(X_train, y_train)
+
+# Предсказания и метрики
+y_pred_prob_stacking = stacking_model.predict_proba(X_test)[:, 1]
+y_pred_stacking = (y_pred_prob_stacking >= 0.5).astype(int)
+
+print_metrics(y_test, y_pred_stacking, y_pred_prob_stacking, "Ensemble Stacking (из загруженных моделей)")
+
+# Сохраняем стэкинг
+joblib.dump(stacking_model, "../models/e_stacking_model_target_24.pkl")

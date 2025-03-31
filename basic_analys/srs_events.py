@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # --- Загрузка данных ---
 # Загружаем SRS данные (обработанный srs.json, который является списком записей)
-srs_df = pd.read_json("../unified_json/srs.json")  # скорректируйте путь при необходимости
+srs_df = pd.read_json("../result_json/srs.json")  # скорректируйте путь при необходимости
 
 # Приводим числовые столбцы SRS к числовому типу
 srs_df['Lo'] = pd.to_numeric(srs_df['Lo'], errors='coerce')
@@ -23,7 +23,7 @@ srs_agg = srs_df.groupby('date').agg({
 }).rename(columns={'Nmbr': 'srs_count'}).reset_index()
 
 # Загружаем данные о событиях (events)
-events_df = pd.read_json("../unified_json/events.json")  # измените путь, если требуется
+events_df = pd.read_json("../result_json/events.json")  # измените путь, если требуется
 
 # Приводим поля begin, max, end к числовому типу
 events_df['begin'] = pd.to_numeric(events_df['begin'], errors='coerce')

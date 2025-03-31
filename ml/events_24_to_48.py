@@ -93,7 +93,7 @@ def add_flare_history_features(df, lower_hours, upper_hours, prefix):
 #############################################
 # Загрузка и подготовка данных из events.json
 #############################################
-input_file = "../unified_json/events.json"
+input_file = "../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)
@@ -294,6 +294,6 @@ train_data_filename = "../models/train_data_target_day2.csv"
 df_model.to_csv(train_data_filename, index=False)
 print(f"Обучающие данные сохранены в {train_data_filename}")
 
-full_data_filename = "../unified_json/full_events_with_targets_day2.csv"
+full_data_filename = "../result_json/full_events_with_targets_day2.csv"
 df.to_csv(full_data_filename, index=False)
 print(f"Полный DataFrame с прогнозами сохранен в {full_data_filename}")

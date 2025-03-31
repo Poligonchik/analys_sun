@@ -15,7 +15,7 @@ def print_rarest_values(df: pd.DataFrame, top_n: int = 10):
 
 def main_rarest_values():
     # Путь к директории с результатами
-    output_directory = Path("../../unified_json")
+    output_directory = Path("../../result_json")
     srs_path = output_directory / "srs.json"
 
     if srs_path.exists():

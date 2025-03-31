@@ -137,9 +137,9 @@ def plot_scatter_plots(df: pd.DataFrame, target_columns: list, threshold: float 
 
 def main():
     # Пути к файлам
-    dsd_path = Path("../unified_json/dsd.json")
-    events_path = Path("../unified_json/events.json")
-    srs_path = Path("../unified_json/srs.json")
+    dsd_path = Path("../result_json/dsd.json")
+    events_path = Path("../result_json/events.json")
+    srs_path = Path("../result_json/srs.json")
 
     # Загрузка данных
     if not dsd_path.exists():

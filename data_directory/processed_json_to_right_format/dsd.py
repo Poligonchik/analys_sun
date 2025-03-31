@@ -242,7 +242,7 @@ def impute_flattened_flares(records):
 if __name__ == '__main__':
     # Пути к входному и выходному файлам
     input_file = "../processed_results/DSD_all.json"
-    output_file = "../../unified_json/dsd.json"
+    output_file = "../../result_json/dsd.json"
 
     # Загрузка данных из DSD_all.json
     with open(input_file, "r", encoding="utf-8") as f:
