@@ -12,8 +12,8 @@ import xgboost as xgb
 import joblib
 from imblearn.over_sampling import SMOTE
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import VotingClassifier
 import matplotlib.pyplot as plt
-
 #############################################
 # Функция для вывода метрик
 #############################################
@@ -359,9 +359,9 @@ print_metrics(y_test, y_pred_stack, y_pred_prob_stack, "Stacking Ensemble (24h)"
 # Сохранение датасета и моделей
 #############################################
 data_model_augmented.to_csv("merged_events_srs.csv", index=False)
-joblib.dump(lgb_model, "lgb_model_merged.pkl")
-joblib.dump(rf_model, "rf_model_merged.pkl")
-joblib.dump(xgb_model, "xgb_model_merged.pkl")
+joblib.dump(lgb_model, "../models/d_s_e_lgb_model_merged.pkl")
+joblib.dump(rf_model, "../models/d_s_e_rf_model_merged.pkl")
+joblib.dump(xgb_model, "../models/d_s_e_xgb_model_merged.pkl")
 
 print("\nФинальный датасет сохранен в 'merged_events_srs.csv'")
 print("Модель LightGBM сохранена в 'lgb_model_merged.pkl'")
@@ -399,3 +399,22 @@ if corr_pairs:
         print(f"{row} и {col}: корреляция = {val:.3f}")
 else:
     print(f"\nНет пар признаков с корреляцией выше {threshold}.")
+
+
+# Ансамблевая модель VotingClassifier
+voting_clf = VotingClassifier(
+    estimators=[
+        ('lgb', lgb_model),
+        ('rf', rf_model),
+        ('xgb', xgb_model)
+    ],
+    voting='soft'  # Используем вероятности для усреднения
+)
+voting_clf.fit(X_train_balanced, y_train_balanced)
+y_pred_prob_voting = voting_clf.predict_proba(X_test)[:, 1]
+y_pred_voting = (y_pred_prob_voting >= 0.5).astype(int)
+print_metrics(y_test, y_pred_voting, y_pred_prob_voting, "VotingClassifier Ensemble (24h)")
+
+# Сохраняем ансамблевую модель
+joblib.dump(voting_clf, "../models/d_s_e_ensemble_model_merged.pkl")
+print("Ансамблевая модель VotingClassifier сохранена в '../models/d_s_e__ensemble_model_merged.pkl'")

@@ -5,12 +5,13 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import lightgbm as lgb
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.metrics import (roc_auc_score, f1_score, accuracy_score, precision_score,
                              recall_score, confusion_matrix, classification_report)
 import xgboost as xgb
 import joblib
 import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
 
 #############################################
 # 1) Функции вспомогательные
@@ -304,3 +305,22 @@ if corr_pairs:
         print(f"{row} и {col}: корреляция = {val:.3f}")
 else:
     print(f"\nНет пар признаков с корреляцией выше {threshold}.")
+
+# Стэкинговая модель
+meta_features_train = np.column_stack((
+    lgb_model.predict_proba(X_train)[:, 1],
+    rf_model.predict_proba(X_train)[:, 1],
+    xgb_model.predict_proba(X_train)[:, 1]
+))
+meta_features_test = np.column_stack((prob_lgb, prob_rf, prob_xgb))
+
+meta_model = LogisticRegression(random_state=42)
+meta_model.fit(meta_features_train, y_train)
+
+prob_stack = meta_model.predict_proba(meta_features_test)[:, 1]
+pred_stack = (prob_stack >= 0.5).astype(int)
+print_metrics(y_test, pred_stack, prob_stack, "Stacking Ensemble (48h)")
+
+# Сохраняем стэкинг-модель
+joblib.dump(meta_model, "../models/s_e_stacking_model_merged_48.pkl")
+print("Стэкинговая модель сохранена в 's_e_stacking_model_merged_48.pkl'.")

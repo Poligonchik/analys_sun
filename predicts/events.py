@@ -26,7 +26,8 @@ XGB_MODEL_FILE = Path("../models/e_xgboost_model_target_24.pkl")
 LGB_MODEL_FILE_48 = Path("../models/e_lightgbm_model_target_48.pkl")
 RF_MODEL_FILE_48 = Path("../models/e_random_forest_model_target_48.pkl")
 XGB_MODEL_FILE_48 = Path("../models/e_xgboost_model_target_48.pkl")
-
+stacking = Path("../models/e_stacking_model_target_24.pkl")
+stacking_48 = Path("../models/e_stacking_model_target_48.pkl")
 ###########################################
 # Функции для подготовки признаков (как при обучении)
 ###########################################
@@ -219,6 +220,8 @@ def predict_tomorrow():
     lgb_model_48 = joblib.load(LGB_MODEL_FILE_48)
     rf_model_48 = joblib.load(RF_MODEL_FILE_48)
     xgb_model_48 = joblib.load(XGB_MODEL_FILE_48)
+    stacking_24 = joblib.load(stacking)
+    stacking_48 = joblib.load(stacking)
 
     # Получаем прогнозные вероятности
     prob_lgb = lgb_model.predict_proba(input_row)[:, 1][0]
@@ -227,6 +230,8 @@ def predict_tomorrow():
     prob_lgb_48 = lgb_model_48.predict_proba(input_row)[:, 1][0]
     prob_rf_48 = rf_model_48.predict_proba(input_row)[:, 1][0]
     prob_xgb_48 = xgb_model_48.predict_proba(input_row)[:, 1][0]
+    prob_stacking_24 = stacking_24.predict_proba(input_row)[:, 1][0]
+    prob_stacking_48 = stacking_48.predict_proba(input_row)[:, 1][0]
 
     prob_ensemble_48 = (prob_lgb_48 + prob_rf_48 + prob_xgb_48) / 3.0
     prob_ensemble = (prob_lgb + prob_rf + prob_xgb) / 3.0
@@ -238,6 +243,7 @@ def predict_tomorrow():
     print(f"XGBoost: {prob_xgb:.3f}")
     print(f"Ensemble (усреднение): {prob_ensemble:.3f}")
     print(f"Ensemble (взвешенное): {prob_weighted:.3f}")
+    print(f"Ensemble (стэккинг){prob_stacking_24:.3f}")
 
     print("\nПрогноз для следующих 48 часов (вероятность наличия хотя бы одного сильного события):")
     print(f"LightGBM: {prob_lgb_48:.3f}")
@@ -245,6 +251,7 @@ def predict_tomorrow():
     print(f"XGBoost: {prob_xgb_48:.3f}")
     print(f"Ensemble (усреднение): {prob_ensemble_48:.3f}")
     print(f"Ensemble (взвешенное): {prob_weighted_48:.3f}")
+    print(f"Ensemble (стэккинг){prob_stacking_48:.3f}")
 
     # На основании предыдущих метрик рекомендуем ориентироваться на модель LightGBM
     print(

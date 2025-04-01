@@ -260,3 +260,39 @@ print(f"Обучающие данные сохранены в {train_data_filena
 full_data_filename = "../result_json/full_events_with_targets.csv"
 df.to_csv(full_data_filename, index=False)
 print(f"Полный DataFrame с прогнозами сохранен в {full_data_filename}")
+
+#############################################
+# StackingClassifier (стэкинг моделей)
+#############################################
+from sklearn.ensemble import StackingClassifier
+from sklearn.linear_model import LogisticRegression
+
+# Базовые модели
+estimators = [
+    ('lgb', lgb_model),
+    ('rf', rf_model),
+    ('xgb', xgb_model)
+]
+
+# Мета-модель (можно поэкспериментировать с другими)
+stacking_model = StackingClassifier(
+    estimators=estimators,
+    final_estimator=LogisticRegression(max_iter=1000, class_weight='balanced'),
+    cv=5,
+    n_jobs=-1,
+    passthrough=True
+)
+
+# Обучение на тех же данных
+stacking_model.fit(X_train, y_train)
+
+# Предсказания и метрики
+y_pred_prob_stack = stacking_model.predict_proba(X_test)[:, 1]
+y_pred_stack = (y_pred_prob_stack >= 0.5).astype(int)
+
+print_metrics(y_test, y_pred_stack, y_pred_prob_stack, "Stacking Classifier")
+
+# Сохранение модели
+stack_model_filename = "../models/e_stacking_model_target_48.pkl"
+joblib.dump(stacking_model, stack_model_filename)
+print(f"Модель StackingClassifier сохранена в {stack_model_filename}")
