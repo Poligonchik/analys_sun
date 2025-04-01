@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 import requests
 import os
 import json
@@ -27,7 +27,6 @@ def extract_lo(location) -> str:
     location = str(location)
     match = re.search(r"([NS])(\d+)([EW])(\d+)", location)
     if match:
-        # Извлекаем группы: lat_dir, lat, lon_dir, lon – нам нужна только долгота
         _, _, lon_dir, lon = match.groups()
         lon = int(lon)
         if lon_dir == 'E':
@@ -38,7 +37,7 @@ def extract_lo(location) -> str:
     return "ND"
 
 
-# Маппинг для поля Mag (будет переименовано в Mag_Type)
+# Для совпадения
 mag_mapping = {
     "G": "Gamma",
     "GD": "Gamma-Delta",
@@ -59,26 +58,24 @@ def format_two_digits(x):
 
 
 def process_srs_file(input_filename: str, output_filename: str):
-    # Загрузка JSON-данных из файла
     with open(input_filename, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    # Преобразуем данные в DataFrame
     df = pd.DataFrame(data)
 
     # Приводим дату из формата "2025-03-30" к формату "2025 03 30"
     df["observed_date"] = df["observed_date"].astype(str).str.replace("-", " ")
 
-    # Создаем новые поля согласно схеме:
-    # Nmbr     = region
+    # Создаем новые поля:
+    # Nmbr = region
     # Location = location
-    # Lo       = вычисляем через extract_lo(location)
-    # Area     = area
-    # Z        = spot_class
-    # LL       = extent, форматируем как двухзначное целое число (например, 5 → "05")
-    # NN       = number_spots, форматируем как двухзначное целое число
-    # Mag_Type = mag_class, преобразуем по mag_mapping (если нет соответствия, будет "ND")
-    # Type     = "f" (фиксированное значение)
+    # Lo = вычисляем через extract_lo(location)
+    # Area = area
+    # Z = spot_class
+    # LL = extent
+    # NN = number_spots
+    # Mag_Type = mag_class
+    # Type = "f"
     df["Nmbr"] = df["region"]
     df["Location"] = df["location"].fillna("ND")
     df["Lo"] = df["Location"].apply(extract_lo)
@@ -87,7 +84,6 @@ def process_srs_file(input_filename: str, output_filename: str):
     df["LL"] = df["extent"].fillna("ND")
     df["NN"] = df["number_spots"].fillna("ND")
 
-    # Форматируем LL и NN как двухзначные числа
     df["LL"] = df["LL"].apply(format_two_digits)
     df["NN"] = df["NN"].apply(format_two_digits)
 
@@ -97,7 +93,7 @@ def process_srs_file(input_filename: str, output_filename: str):
     # Убираем события, где Mag_Type равно "ND"
     df = df[df["Mag_Type"] != "ND"]
 
-    # Оставляем нужные столбцы, включая observed_date
+    # Оставляем нужные столбцы
     final_df = df[["observed_date", "Nmbr", "Location", "Lo", "Area", "Z", "LL", "NN", "Mag_Type", "Type"]]
 
     # Удаляем поля "Z" и "Type"
@@ -109,14 +105,12 @@ def process_srs_file(input_filename: str, output_filename: str):
     # Переименовываем поле observed_date в date
     final_df = final_df.rename(columns={"observed_date": "date"})
 
-    # Преобразуем итоговый DataFrame в список словарей и сохраняем в JSON-файл
     final_json = final_df.to_dict(orient="records")
     with open(output_filename, "w", encoding="utf-8") as f:
         json.dump(final_json, f, indent=4, ensure_ascii=False)
 
     print(f"Файл {output_filename} успешно создан.")
 
-    # Подсчет количества значений "ND" по каждому столбцу
     print("\nКоличество 'ND' по столбцам:")
     for col in final_df.columns:
         nd_count = (final_df[col] == "ND").sum()
@@ -129,7 +123,6 @@ def main():
     input_filename = "./tables/srs_download.json"
     output_filename = "./tables/srs_download.json"
 
-    # Скачиваем файл, если загрузка успешна, переходим к обработке
     if download_srs_json(download_url, input_filename):
         process_srs_file(input_filename, output_filename)
 

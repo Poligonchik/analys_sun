@@ -8,10 +8,6 @@ from pathlib import Path
 
 
 def load_dsd_data(filepath: Path) -> pd.DataFrame:
-    """
-    Загружает данные из файла DSD (JSON), приводит столбец 'date' к datetime
-    и поля 'flares.M' и 'flares.X' к числовому типу.
-    """
     with filepath.open('r', encoding='utf-8') as f:
         data = json.load(f)
     df = pd.DataFrame(data)
@@ -22,24 +18,18 @@ def load_dsd_data(filepath: Path) -> pd.DataFrame:
 
 
 def load_events_data(filepath: Path) -> pd.DataFrame:
-    """
-    Загружает данные из файла Events (JSON) и приводит столбец 'date' к datetime.
-    Преобразует временные поля ('begin', 'max', 'end') к числовому типу и вычисляет длительность события.
-    Затем агрегирует данные по дате: считает количество событий и среднюю длительность.
-    """
     with filepath.open('r', encoding='utf-8') as f:
         data = json.load(f)
     df = pd.DataFrame(data)
     df['date'] = pd.to_datetime(df['date'], format='%Y %m %d', errors='coerce')
 
-    # Преобразуем временные параметры к числовому виду и вычисляем продолжительность, если возможно.
+    # Преобразуем параметры к числовому виду и вычисляем продолжительность, если возможно.
     for col in ['begin', 'max', 'end']:
         df[col] = pd.to_numeric(df[col], errors='coerce')
-    # Вычисляем длительность события как разницу между end и begin (если имеются оба значения)
+    # Вычисляем длительность события как разницу между end и begin
     df['duration'] = df[['begin', 'end']].apply(lambda row: row['end'] - row['begin']
     if pd.notna(row['begin']) and pd.notna(row['end'])
     else np.nan, axis=1)
-    # Группируем по дате: количество событий и средняя длительность
     agg_df = df.groupby('date').agg(
         count_events=('date', 'count'),
         mean_duration=('duration', 'mean')
@@ -48,11 +38,6 @@ def load_events_data(filepath: Path) -> pd.DataFrame:
 
 
 def load_srs_data(filepath: Path) -> pd.DataFrame:
-    """
-    Загружает данные из файла SRS (JSON), приводит столбец 'date' к datetime,
-    а числовые поля (например, 'Nmbr', 'Lo', 'Area', 'LL', 'NN') – к числовому типу.
-    Затем агрегирует данные по дате (среднее значение для числовых признаков).
-    """
     with filepath.open('r', encoding='utf-8') as f:
         data = json.load(f)
     df = pd.DataFrame(data)
@@ -66,7 +51,6 @@ def load_srs_data(filepath: Path) -> pd.DataFrame:
         'LL': 'mean',
         'NN': 'mean'
     }).reset_index()
-    # Переименуем столбцы для ясности
     agg_df.rename(columns={
         'Nmbr': 'srs_Nmbr_mean',
         'Lo': 'srs_Lo_mean',
@@ -80,7 +64,6 @@ def load_srs_data(filepath: Path) -> pd.DataFrame:
 def merge_datasets(dsd_df: pd.DataFrame, events_df: pd.DataFrame, srs_df: pd.DataFrame) -> pd.DataFrame:
     """
     Объединяет данные DSD, агрегированные данные Events и SRS по полю 'date'.
-    Использует левое объединение, сохраняя все записи из DSD.
     """
     merged_df = pd.merge(dsd_df, events_df, on='date', how='left')
     merged_df = pd.merge(merged_df, srs_df, on='date', how='left')
@@ -89,10 +72,7 @@ def merge_datasets(dsd_df: pd.DataFrame, events_df: pd.DataFrame, srs_df: pd.Dat
 
 def compute_correlations(df: pd.DataFrame, target_columns: list) -> dict:
     """
-    Вычисляет коэффициенты корреляции Пирсона для каждого целевого столбца (например, 'flares.M' и 'flares.X')
-    со всеми другими числовыми признаками в DataFrame.
-
-    Возвращает словарь: { target: { feature: corr_value, ... }, ... }
+    Вычисляет коэффициенты корреляции Пирсона для каждого целевого столбца
     """
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     correlations = {}
@@ -114,7 +94,7 @@ def compute_correlations(df: pd.DataFrame, target_columns: list) -> dict:
 def plot_scatter_plots(df: pd.DataFrame, target_columns: list, threshold: float = 0.2):
     """
     Для каждого числового признака вычисляет коэффициент корреляции с целевыми столбцами.
-    Если абсолютное значение корреляции больше threshold, строит scatter plot.
+    И строим графики
     """
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     for target in target_columns:
@@ -136,12 +116,10 @@ def plot_scatter_plots(df: pd.DataFrame, target_columns: list, threshold: float 
 
 
 def main():
-    # Пути к файлам
     dsd_path = Path("../result_json/dsd.json")
     events_path = Path("../result_json/events.json")
     srs_path = Path("../result_json/srs.json")
 
-    # Загрузка данных
     if not dsd_path.exists():
         print(f"Файл {dsd_path} не найден!")
         return
@@ -163,12 +141,11 @@ def main():
     print("\nАгрегированные данные SRS (первые 5 строк):")
     print(srs_df.head())
 
-    # Объединяем данные по дате
     merged_df = merge_datasets(dsd_df, events_df, srs_df)
     print("\nОбъединённые данные (первые 5 строк):")
     print(merged_df.head())
 
-    # Определяем целевые столбцы для анализа – вспышки типа M и X
+    # Определяем целевые столбцы для анализа
     target_columns = ['flares.M', 'flares.X']
 
     # Вычисляем корреляции целевых столбцов с другими числовыми признаками
@@ -179,7 +156,7 @@ def main():
         for feature, corr in corr_dict.items():
             print(f"  {feature}: {corr:.2f}")
 
-    # Строим scatter plots для пар с корреляцией по модулю >= threshold (0.2)
+    # Строим scatter plots для пар с корреляцией по модулю
     plot_scatter_plots(merged_df, target_columns, threshold=0.2)
 
 

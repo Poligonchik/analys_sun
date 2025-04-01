@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 
-# Функция для преобразования текстового обозначения месяца в число
+# Преобразования текстового обозначения месяца в число
 def convert_month(month_abbr):
     month_map = {
         "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
@@ -14,7 +14,7 @@ def convert_month(month_abbr):
     return month_map.get(month_abbr, "00")
 
 
-# Функция для извлечения даты из имени файла, если оно соответствует шаблону YYYYMMDDevents.txt
+# Извлечения даты из имени файла, если оно соответствует шаблону
 def extract_date_from_filename(filename):
     match = re.match(r"(\d{4})(\d{2})(\d{2})events\.txt", filename)
     if match:
@@ -23,15 +23,13 @@ def extract_date_from_filename(filename):
     return None
 
 
-# Функция для приведения значения времени к формату HHMM:
-# если первый символ является буквой, удаляем его.
+# Функция для приведения значения времени к формату HHMM
 def fix_time(time_str):
-    if time_str and not time_str[0].isdigit():
+    if time_str and not time_str[0].isdigit(): # если первый символ является буквой, удаляем его, а то это жесть,
+        # в процессе анализа моего, выяснилось, что тут бывает буква перед временем в исходнике
         return time_str[1:]
     return time_str
 
-
-# Функция для парсинга одного файла событий
 def parse_event_file(filepath):
     try:
         filename = filepath.name
@@ -39,10 +37,8 @@ def parse_event_file(filepath):
             lines = file.readlines()
         content = "".join(lines)
 
-        # Попытка извлечения даты из имени файла
         date = extract_date_from_filename(filename)
 
-        # Если не удалось извлечь дату из имени, проверяем содержимое файла
         if not date:
             if "Space Environment Center" in content:
                 edited_match = re.search(r"EDITED EVENTS for (\d{4})\s+([A-Za-z]{3})\s+(\d{1,2})", content)
@@ -76,7 +72,7 @@ def parse_event_file(filepath):
                 # Разбиваем строку по 2 и более пробелам
                 parts = re.split(r"\s{2,}", line.strip())
                 if len(parts) >= 7:
-                    # Если в поле "end" содержатся два значения (например, "B0546 ////"), разделяем их:
+                    # Если в поле "end" содержатся два значения, разделяем их
                     if " " in parts[3]:
                         end_obs = parts[3].split()
                         if len(end_obs) >= 2:
@@ -115,7 +111,7 @@ def parse_event_file(filepath):
                                 region_field = candidate
 
                     event_dict = {
-                        "event": parts[0],  # символ "+" остаётся, если присутствует
+                        "event": parts[0],
                         "begin": begin_field,
                         "max": max_field,
                         "end": end_field,
@@ -141,7 +137,6 @@ def parse_event_file(filepath):
 
 all_events = []
 
-# Перебор годов от 1996 до 2024
 for year in range(1996, 2025):
     input_directory = Path(f"../ftp_data/{year}/{year}_events")
     if input_directory.exists():
@@ -149,12 +144,11 @@ for year in range(1996, 2025):
             print(f"Обработка файла: {filepath}")
             parsed_data = parse_event_file(filepath)
             if parsed_data:
-                parsed_data["year"] = year  # добавляем год для отладки
+                parsed_data["year"] = year
                 all_events.append(parsed_data)
     else:
         print(f"Папка {input_directory} не существует.")
 
-# Сохранение объединённых данных в JSON-файл
 output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 output_json = output_directory / "combined_events_all.json"

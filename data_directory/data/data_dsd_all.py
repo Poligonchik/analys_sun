@@ -11,15 +11,8 @@ month_map = {
 
 
 def parse_dsd_file(filepath: Path) -> list:
-    """
-    Парсит файл Daily Solar Data (DSD) и возвращает список записей в формате словаря.
-    Поддерживаются два формата:
-      1. Формат с датой вида "01 Jan 96" и 12 полей (например, для 1996 года).
-      2. Формат с датой вида "1998 01 01" и минимум 16 полей (например, для 1998 года).
-    Если в строке недостаточно данных – она пропускается.
-    """
     data_entries = []
-    file_format = None  # будет 'dmy' или 'ymd'
+    file_format = None
 
     with filepath.open('r', encoding='utf-8') as file:
         lines = file.readlines()
@@ -32,7 +25,7 @@ def parse_dsd_file(filepath: Path) -> list:
 
         parts = line.split()
 
-        # Определяем формат, если ещё не выбран
+        # Определяем формат (там разные есть)
         if not data_start:
             # Если первая часть – двухзначное число и вторая – название месяца
             if re.match(r'^\d{2}$', parts[0]) and parts[1] in month_map:
@@ -46,7 +39,6 @@ def parse_dsd_file(filepath: Path) -> list:
                 continue
 
         if file_format == 'dmy':
-            # Для формата dmy ожидаем ровно 12 полей (или больше, но берем первые 12)
             if len(parts) < 12:
                 continue
 
@@ -56,7 +48,6 @@ def parse_dsd_file(filepath: Path) -> list:
             full_year = "19" + yr  # Предполагаем данные за 20 век
             date = f"{full_year}-{month}-{day.zfill(2)}"
 
-            # Остальные поля
             try:
                 radio_flux = float(parts[3])
             except ValueError:
@@ -78,9 +69,9 @@ def parse_dsd_file(filepath: Path) -> list:
             except ValueError:
                 solar_field = None
 
-            x_ray_flux = parts[8]  # строковое значение
+            x_ray_flux = parts[8]
 
-            # Флейры – предполагаем, что поля 9, 10, 11 соответствуют классам C, M, X
+            # поля 9, 10, 11 соответствуют классам C, M, X
             try:
                 c_flares = int(parts[9]) if parts[9] != "*" else None
             except ValueError:
@@ -102,18 +93,17 @@ def parse_dsd_file(filepath: Path) -> list:
                 "new_regions": new_regions,
                 "solar_field": solar_field,
                 "x_ray_flux": x_ray_flux,
-                "background": None,          # отсутствует в этом формате
+                "background": None,
                 "flares": {
                     "C": c_flares,
                     "M": m_flares,
                     "X": x_flares
                 },
-                "optical_flares": None       # отсутствует в этом формате
+                "optical_flares": None
             }
             data_entries.append(entry)
 
         elif file_format == 'ymd':
-            # Для формата ymd ожидаем минимум 16 полей
             if len(parts) < 16:
                 continue
 
@@ -168,7 +158,7 @@ def parse_dsd_file(filepath: Path) -> list:
             except ValueError:
                 s_flares = None
 
-            # Оптические вспышки – следующие поля (может быть 2 или 3 поля)
+            # следующие поля
             optical = {}
             if len(parts) >= 15:
                 try:
@@ -222,7 +212,6 @@ def save_to_json(data: list, output_path: Path):
 
 def main():
     all_data = []
-    # Обрабатываем годы от 1996 до 2024
     for year in range(1996, 2025):
         input_file = Path(f'../ftp_data/{year}/{year}_DSD.txt')
         if not input_file.exists():

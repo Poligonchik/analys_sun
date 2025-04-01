@@ -2,13 +2,11 @@ import re
 import json
 from pathlib import Path
 
-# Корневая папка с файлами (структура: ../ftp_data/[год]/[год]_SGAS/*.txt)
 input_directory = Path("../ftp_data")
-# Папка для сохранения результата
 output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 
-# --- Регулярные выражения для поиска заголовочных данных ---
+# Регулярные выражения для поиска заголовочных данных
 RE_PRODUCT = re.compile(r":product:\s*(.+)", re.IGNORECASE)
 RE_ISSUED = re.compile(r":issued:\s*(.+)", re.IGNORECASE)
 RE_SGAS_NUMBER = re.compile(r"sgas\s*number\s*(\d+)", re.IGNORECASE)
@@ -53,8 +51,7 @@ def extract_section(text: str, section_name: str) -> str:
     match = re.search(pattern, text)
     if match:
         section_text = match.group(1).strip()
-        # Заменяем последовательности пробелов и табуляций на один пробел, сохраняя переносы строк
-        section_text = re.sub(r"[ \t]+", " ", section_text)
+        section_text = re.sub(r"[ \t]+", " ", section_text) # Заменяем последовательности пробелов и табуляций на один пробел
         return section_text
     else:
         return ""
@@ -75,7 +72,8 @@ def parse_energetic_events(section_text: str):
       - Разбивает текст на строки.
       - Пропускает первую строку, если она содержит слово "begin" (заголовок).
       - Для остальных строк, если первый токен (после split) начинается с цифры,
-        разбивает строку на токены. Если токенов меньше 9, дополняет пустыми строками.
+        разбивает строку на токены. Если токенов меньше 9, дополняет пустыми строками. (это временная мера, но потом не
+        приудмала как решить, ибо все файлы максимально разные
     Возвращает список словарей с ключами:
       "begin", "max", "end", "region", "location", "xray_class", "op_245mhz", "op_10cm", "sweep".
     """

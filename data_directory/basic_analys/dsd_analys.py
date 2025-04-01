@@ -9,15 +9,14 @@ from scipy.stats import pearsonr
 
 def load_data(json_path: Path) -> pd.DataFrame:
     """
-    Загружает данные из JSON-файла и преобразует их в DataFrame.
-    Если столбцы 'flares' и 'optical_flares' содержат вложенные словари,
+    Загружает данные
+    Столбцы 'flares' и 'optical_flares' содержат вложенные словари, поэтому
     разворачивает их в отдельные столбцы.
     """
     with json_path.open('r', encoding='utf-8') as f:
         data = json.load(f)
     df = pd.DataFrame(data)
 
-    # Преобразуем столбец даты в datetime
     df['date'] = pd.to_datetime(df['date'], errors='coerce')
 
     # Разворачиваем вложенные словари
@@ -34,9 +33,7 @@ def load_data(json_path: Path) -> pd.DataFrame:
 
 def plot_individual_scatter_plots(df: pd.DataFrame, max_nan_ratio=0.8):
     """
-    Строит отдельные scatter plots для каждого попарного сочетания числовых признаков,
-    у которых доля пропущенных значений не превышает max_nan_ratio.
-    На графике отображается коэффициент корреляции.
+    Строит отдельные scatter plots для каждого попарного сочетания числовых признаков
     """
     total_rows = len(df)
     nan_ratio = df.isnull().sum() / total_rows
@@ -47,9 +44,7 @@ def plot_individual_scatter_plots(df: pd.DataFrame, max_nan_ratio=0.8):
     num_cols = df[valid_cols].select_dtypes(include=['float64', 'int64']).columns.tolist()
     print("Числовые столбцы для анализа:", num_cols)
 
-    # Для каждого сочетания двух числовых столбцов
     for col1, col2 in itertools.combinations(num_cols, 2):
-        # Убираем пропуски по этим двум столбцам
         plot_df = df[[col1, col2]].dropna()
         if plot_df.empty:
             continue
@@ -75,7 +70,6 @@ def main():
     df = load_data(json_path)
     print("Первые 5 строк DataFrame:")
     print(df.head())
-    # Выводим общую информацию (при необходимости)
     print("\nИнформация о DataFrame:")
     print(df.info())
 

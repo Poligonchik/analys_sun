@@ -13,9 +13,7 @@ import joblib
 from imblearn.over_sampling import SMOTE
 from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
-#############################################
-# Функция для вывода метрик
-#############################################
+
 def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     print(f"\nМетрики предсказания для {model_name}:")
     acc = accuracy_score(y_true, y_pred)
@@ -32,7 +30,7 @@ def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     except Exception:
         pass
 
-    # Расчет TSS: TSS = Recall + Specificity - 1
+    # Расчет TSS
     cm = confusion_matrix(y_true, y_pred)
     if cm.shape == (2, 2):
         TN, FP, FN, TP = cm.ravel()
@@ -47,9 +45,6 @@ def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     print("Classification Report:")
     print(classification_report(y_true, y_pred, zero_division=0))
 
-#############################################
-# Функция извлечения класса вспышки из particulars
-#############################################
 def extract_flare_class(particulars):
     if pd.isna(particulars):
         return "None"
@@ -59,23 +54,19 @@ def extract_flare_class(particulars):
             return cl
     return "None"
 
-#############################################
-# Функция определения "сильного" события
-#############################################
+# Функция определения сильного события
 def is_strong_row(row):
     event_type = str(row.get('type', "")).strip()
     flare_class = str(row.get('flare_class', "None")).strip()
     return 1 if (event_type == "XRA" and flare_class in ["M", "X"]) else 0
 
-#############################################
-# Загрузка и подготовка данных событий (events.json)
-#############################################
+# Загрузка и подготовка данных событий
 events_input = "../result_json/events.json"
 events_df = pd.read_json(events_input)
 events_df['date'] = pd.to_datetime(events_df['date'], format="%Y %m %d")
 cols_to_drop = ['begin', 'end']
 events_df = events_df.drop(columns=[col for col in cols_to_drop if col in events_df.columns])
-# Фильтр строк, где 'loc_freq' содержит хотя бы одну букву (пример фильтра)
+# Фильтр строк, где 'loc_freq' содержит хотя бы одну букву
 events_df = events_df[events_df['loc_freq'].astype(str).str.contains(r'[A-Za-z]', na=False)]
 events_df['flare_class'] = events_df['particulars'].apply(extract_flare_class)
 events_df['strong'] = events_df.apply(is_strong_row, axis=1)
@@ -94,9 +85,7 @@ events_final = pd.merge(events_agg, flare_counts, on='date', how='outer')
 cols_event = ['events_count', 'strong_events', 'A', 'B', 'C', 'M', 'X']
 events_final[cols_event] = events_final[cols_event].fillna(0)
 
-#############################################
-# Загрузка данных SRS (srs.json)
-#############################################
+# Загрузка данных SRS
 srs_input = "../result_json/srs.json"
 srs_df = pd.read_json(srs_input)
 for col in ['Lo', 'Area', 'LL', 'NN']:
@@ -112,17 +101,13 @@ srs_df = srs_df.rename(columns={
 # Берем первую запись на дату, если есть дубли
 srs_single = srs_df.sort_values('date').drop_duplicates(subset=['date'], keep='first')
 
-#############################################
-# Объединение агрегированных данных событий и SRS по дате
-#############################################
+# Объединение данных событий и SRS по дате
 merged = pd.merge(events_final, srs_single, on='date', how='left')
 srs_cols = ['Nmbr', 'Lo_srs', 'Area_srs', 'LL_srs', 'NN_srs', 'Mag_Type_srs']
 for col in srs_cols:
     merged[col] = merged[col].fillna(0)
 
-#############################################
-# Загрузка и обработка данных DSD (dsd.json)
-#############################################
+# Загрузка и обработка данных DSD
 dsd_input = "../result_json/dsd.json"
 with open(dsd_input, "r", encoding="utf-8") as f:
     dsd_data = json.load(f)
@@ -135,24 +120,16 @@ new_features = [
     'flares.C', 'flares.M', 'flares.X', 'flares.S'
 ]
 
-#############################################
 # Объединение данных DSD с merged по дате
-#############################################
 merged_final = pd.merge(merged, dsd_df[new_features + ['date']], on='date', how='left')
-
-#############################################
-# Вычисление целевого признака target_48
-# (сдвигаем на 2 дня назад, чтобы предсказывать факт сильной вспышки через 48 часов)
-#############################################
+# Вычисление target_48
 merged_final = merged_final.sort_values('date').reset_index(drop=True)
 
 # Создаем новую колонку, в которой для каждой строки суммируем strong_events за следующие два дня
 merged_final['strong_48h_sum'] = merged_final['strong_events'].shift(-1).fillna(0) + merged_final['strong_events'].shift(-2).fillna(0)
 merged_final['target_48'] = merged_final['strong_48h_sum'].apply(lambda x: 1 if x > 0 else 0)
 
-#############################################
-# Кодирование магнитного типа Mag_Type_srs -> числовое значение
-#############################################
+# Кодирование магнитного типа
 MAG_TYPE_MAP = {
     'ALPHA': 1,
     'BETA': 1,
@@ -170,9 +147,7 @@ def encode_mag_type(x):
 
 merged_final['Mag_Type_code'] = merged_final['Mag_Type_srs'].apply(encode_mag_type)
 
-#############################################
-# Дополнительные комбинационные признаки
-#############################################
+# Дополнительные признаки
 merged_final['ratio_events_to_srs'] = np.where(merged_final['Nmbr'] > 0,
                                                merged_final['events_count'] / merged_final['Nmbr'],
                                                merged_final['events_count'])
@@ -181,9 +156,7 @@ merged_final['srs_events_interaction'] = merged_final['Nmbr'] * merged_final['ev
 merged_final['area_strong_interaction'] = merged_final['Area_srs'] * merged_final['strong_events']
 merged_final['NN_LL_ratio'] = merged_final['NN_srs'] / (merged_final['LL_srs'] + 1e-5)
 
-#############################################
-# Новые признаки на основе временных изменений (дельты и рост)
-#############################################
+# Новые признаки на основе временных изменений
 merged_final = merged_final.sort_values('date').reset_index(drop=True)
 merged_final['delta_radio_flux'] = merged_final['radio_flux'] - merged_final['radio_flux'].shift(1)
 merged_final['delta_sunspot_number'] = merged_final['sunspot_number'] - merged_final['sunspot_number'].shift(1)
@@ -201,31 +174,21 @@ cols_new = [
 ]
 merged_final[cols_new] = merged_final[cols_new].fillna(0)
 
-#############################################
-# Лаги (shift) для radio_flux, sunspot_number, hemispheric_area
-# на 1, 2, 3 дня
-#############################################
+# Лаги для radio_flux, sunspot_number, hemispheric_area
 for col in ['radio_flux', 'sunspot_number', 'hemispheric_area']:
     for lag in [1, 2, 3]:
         merged_final[f'{col}_lag{lag}'] = merged_final[col].shift(lag).fillna(0)
 
-#############################################
-# Rolling (скользящие) средние на 2, 3, 5 дней
-# для нескольких ключевых признаков
-#############################################
+# скользящие средние на 2, 3, 5 дней
 for col in ['radio_flux', 'events_count', 'sunspot_number', 'hemispheric_area']:
     merged_final[f'{col}_2d_mean'] = merged_final[col].rolling(2, min_periods=1).mean()
     merged_final[f'{col}_3d_mean'] = merged_final[col].rolling(3, min_periods=1).mean()
     merged_final[f'{col}_5d_mean'] = merged_final[col].rolling(5, min_periods=1).mean()
 
-#############################################
-# Стандартное отклонение (std) для radio_flux за последние 7 дней
-#############################################
+# Стандартное отклонение для radio_flux за последние 7 дней
 merged_final['radio_flux_7d_std'] = merged_final['radio_flux'].rolling(7, min_periods=1).std().fillna(0)
 
-#############################################
-# Формирование финального набора features
-#############################################
+# финальный набор features
 features = [
     # Из events
     'events_count', 'strong_events', 'A', 'B', 'C', 'M', 'X',
@@ -235,10 +198,10 @@ features = [
     'area_strong_interaction', 'Mag_Type_code',
     # Из DSD: базовые
     'radio_flux', 'sunspot_number', 'hemispheric_area', 'new_regions',
-    # Дельты и рост
+
     'delta_radio_flux', 'delta_sunspot_number', 'delta_hemispheric_area', 'delta_new_regions',
     'growth_radio_flux', 'growth_sunspot_number', 'growth_hemispheric_area', 'growth_new_regions',
-    # Rolling aggregates
+
     'radio_flux_3d_mean', 'events_count_3d_mean',
     'hemispheric_area_2d_mean'
 ]
@@ -250,9 +213,7 @@ print("Общий датасет для моделирования:", data_model
 print("Первые строки:")
 print(data_model.head(5))
 
-#############################################
 # Аугментация данных
-#############################################
 def augment_data(df, features, n_augments=2):
     augmented_rows = []
     for idx, row in df.iterrows():
@@ -275,9 +236,7 @@ augmented_data = augment_data(data_model, features, n_augments=2)
 data_model_augmented = pd.concat([data_model, augmented_data], ignore_index=True)
 print("После аугментации общий датасет для моделирования:", data_model_augmented.shape)
 
-#############################################
-# Разделение данных (хронологически, 80% обучение, 20% тест)
-#############################################
+# Разделение данных
 data_model_augmented = data_model_augmented.sort_values('date').reset_index(drop=True)
 split_idx = int(len(data_model_augmented) * 0.8)
 train_data = data_model_augmented.iloc[:split_idx]
@@ -294,16 +253,13 @@ print("Размер теста:", X_test.shape)
 if X_train.empty or X_train.ndim != 2:
     raise ValueError("Обучающая выборка пуста или имеет неверную размерность!")
 
-#############################################
-# Балансировка SMOTE
-#############################################
+# Балансировка smote
 smote = SMOTE(random_state=42)
 X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
 print("После SMOTE размер обучающей выборки:", X_train_balanced.shape)
 
-#############################################
-# Обучение моделей (Target = 48h)
-#############################################
+# Обучение моделей
+
 # LightGBM
 lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1)
 lgb_model.fit(X_train_balanced, y_train_balanced)
@@ -331,7 +287,7 @@ print_metrics(y_test, y_pred_xgb, y_pred_prob_xgb, "XGBoost (48h)")
 print("Feature importances (XGBoost):")
 print(pd.Series(xgb_model.feature_importances_, index=X_train.columns).sort_values(ascending=False))
 
-# Усреднение вероятностей (простое)
+# Усреднение вероятностей
 y_pred_prob_ensemble = (y_pred_prob_lgb + y_pred_prob_rf + y_pred_prob_xgb) / 3
 y_pred_ensemble = (y_pred_prob_ensemble >= 0.5).astype(int)
 print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (Усреднение, 48h)")
@@ -344,7 +300,7 @@ y_pred_prob_weighted = (weights[0] * y_pred_prob_lgb +
 y_pred_weighted = (y_pred_prob_weighted >= 0.5).astype(int)
 print_metrics(y_test, y_pred_weighted, y_pred_prob_weighted, "Weighted Voting Ensemble (48h)")
 
-# Стэкинг (Stacking)
+# Стэкинг
 meta_features_train = np.column_stack((
     lgb_model.predict_proba(X_train_balanced)[:, 1],
     rf_model.predict_proba(X_train_balanced)[:, 1],
@@ -357,9 +313,7 @@ y_pred_prob_stack = meta_model.predict_proba(meta_features_test)[:, 1]
 y_pred_stack = (y_pred_prob_stack >= 0.5).astype(int)
 print_metrics(y_test, y_pred_stack, y_pred_prob_stack, "Stacking Ensemble (48h)")
 
-#############################################
-# Сохранение датасета и моделей (48h)
-#############################################
+# Сохранение датасета и моделей
 data_model_augmented.to_csv("merged_events_srs_48.csv", index=False)
 joblib.dump(lgb_model, "../models/d_s_e_lgb_model_merged_48.pkl")
 joblib.dump(rf_model, "../models/d_s_e_rf_model_merged_48.pkl")
@@ -370,9 +324,6 @@ print("Модель LightGBM сохранена в 'd_s_e_lgb_model_merged_48.pk
 print("Модель RandomForest сохранена в 'd_s_e_rf_model_merged_48.pkl'")
 print("Модель XGBoost сохранена в 'd_s_e_xgb_model_merged_48.pkl'")
 
-#############################################
-# 10) Корреляционная матрица и поиск сильно коррелирующих пар (48h)
-#############################################
 corr_matrix = data_model[features].corr()
 print("Корреляционная матрица (численно):")
 print(corr_matrix)

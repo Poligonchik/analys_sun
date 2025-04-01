@@ -2,9 +2,7 @@ import re
 import json
 from pathlib import Path
 
-# --- Расширенные регулярные выражения с учетом вариантов написания (IGNORECASE) ---
 RE_SDF_NUMBER = re.compile(r"SDF Number\s+(\d+)", re.IGNORECASE)
-# Учитываем варианты: "Solar activity has been at" или "SOLAR ACTIVITY WAS" и т.п.
 RE_SOLAR_ACTIVITY_LEVEL = re.compile(
     r"Solar activity (?:has been at|was)[\s:]+(?:(?:at|been at)\s+)?([a-z]+(?:\s+(?:to\s+)?[a-z]+){0,2})(?=\s+levels\b|$)",
     re.IGNORECASE
@@ -39,10 +37,6 @@ RE_ELECTRON_FLUX = re.compile(
 )
 
 def extract_section(text: str, section_name: str) -> str:
-    """
-    Извлекает содержимое секции (например, IA. или IIA.) из текста.
-    Ищет содержимое после 'section_name.' до появления нового раздела (начинающегося с I[A-Z]{1,2}.) или до конца текста.
-    """
     pattern = rf"(?s){section_name}\.\s+(.*?)(?=\nI[A-Z]{{1,2}}\.|$)"
     match = re.search(pattern, text)
     if not match:
@@ -53,12 +47,11 @@ def extract_section(text: str, section_name: str) -> str:
 
 def parse_rsgi_file(filepath: Path) -> dict | None:
     """
-    Парсит файл RSGA, извлекая заголовки и секции IA и IIA, затем данные по ключевым регуляркам.
+    Парсит файл RSGA, извлекая заголовки и секции IA и IIA.
     """
     try:
         text = filepath.read_text(encoding="utf-8", errors="replace")
 
-        # Заголовки :Issued: и :Product:
         issued_match = re.search(r":Issued:\s*(.+)", text)
         product_match = re.search(r":Product:\s*(.+)", text)
         if not issued_match or not product_match:
@@ -68,13 +61,11 @@ def parse_rsgi_file(filepath: Path) -> dict | None:
         issued = issued_match.group(1).strip()
         product = product_match.group(1).strip()
 
-        # SDF Number
         sdf_number = None
         m = RE_SDF_NUMBER.search(text)
         if m:
             sdf_number = int(m.group(1))
 
-        # Извлекаем текст секций
         section_ia = extract_section(text, "IA")
         section_iia = extract_section(text, "IIA")
 
@@ -147,7 +138,7 @@ def parse_rsgi_file(filepath: Path) -> dict | None:
                 electron_flux_peak = m.group(1)
 
         return {
-            "filename": filepath.name,  # имя файла для отладки
+            "filename": filepath.name,
             "issued": issued,
             "product": product,
             "sdf_number": sdf_number,
@@ -176,7 +167,6 @@ def main():
 
     all_data = []
 
-    # Обрабатываем файлы из папок для годов 1988-1995: путь "./ftp_data/<year>_RSGA"
     for year in range(1988, 1996):
         input_directory = Path(f"./ftp_data/{year}_RSGA")
         if input_directory.exists():
@@ -189,7 +179,6 @@ def main():
         else:
             print(f"Папка {input_directory} не существует.")
 
-    # Обрабатываем файлы из папок для годов 1996-2024: путь "../ftp_data/<year>/<year>_RSGA"
     for year in range(1996, 2025):
         input_directory = Path(f"../ftp_data/{year}/{year}_RSGA")
         if input_directory.exists():
@@ -206,7 +195,6 @@ def main():
         print("Не удалось извлечь ни одной записи.")
         return
 
-    # Сохраняем объединённые данные в JSON-файл
     out_json = output_directory / "rsga_combined_all.json"
     with open(out_json, "w", encoding="utf-8") as f:
         json.dump(all_data, f, indent=4, ensure_ascii=False)

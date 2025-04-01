@@ -11,15 +11,13 @@ import joblib
 import lightgbm as lgb
 import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="xgboost")
 
-###########################################
-# Пути к файлам с текущей активностью (events_download.json)
-###########################################
+
 EVENTS_FILE = Path("../files_for_predict/tables/events_download.json")
 
-###########################################
-# Пути к обученным моделям (target_24)
-###########################################
+# Пути к обученным моделям
 LGB_MODEL_FILE = Path("../models/e_lightgbm_model_target_24.pkl")
 RF_MODEL_FILE = Path("../models/e_random_forest_model_target_24.pkl")
 XGB_MODEL_FILE = Path("../models/e_xgboost_model_target_24.pkl")
@@ -28,17 +26,14 @@ RF_MODEL_FILE_48 = Path("../models/e_random_forest_model_target_48.pkl")
 XGB_MODEL_FILE_48 = Path("../models/e_xgboost_model_target_48.pkl")
 stacking = Path("../models/e_stacking_model_target_24.pkl")
 stacking_48 = Path("../models/e_stacking_model_target_48.pkl")
-###########################################
-# Функции для подготовки признаков (как при обучении)
-###########################################
+
+# Подготовка признаков
 def combine_datetime(row):
     try:
-        # Если 'date' уже Timestamp, преобразуем в строку
         if isinstance(row['date'], pd.Timestamp):
             date_str = row['date'].strftime("%Y %m %d")
         else:
             date_str = str(row['date']).strip()
-        # Приводим begin к строке и дополняем ведущими нулями
         begin_str = str(row['begin']).strip().zfill(4)
         dt_str = date_str + " " + begin_str
         return datetime.strptime(dt_str, "%Y %m %d %H%M")
@@ -49,8 +44,7 @@ def combine_datetime(row):
 
 def time_str_to_minutes(time_str):
     """
-    Преобразует значение времени (формат HHMM) в минуты от полуночи.
-    Приводит входное значение к строке.
+    HHMM в минуты от полуночи. Приводим входное значение к строке.
     """
     if pd.isna(time_str):
         return np.nan
@@ -69,7 +63,7 @@ def time_str_to_minutes(time_str):
 
 def compute_duration(row):
     """
-    Вычисляет длительность события с учетом перехода через полночь.
+    Вычисляет длительность.
     """
     b = row['begin_mins']
     e = row['end_mins']
@@ -83,7 +77,7 @@ def compute_duration(row):
 
 def extract_flare_class(particulars):
     """
-    Извлекает класс вспышки из particulars.
+    Извлекает класс вспышки
     """
     if pd.isna(particulars):
         return "None"
@@ -97,10 +91,6 @@ def extract_flare_class(particulars):
 def add_flare_type_features(df, window_hours):
     """
     Вычисляет признаки за последние window_hours часов:
-      - last_flare_{window_hours}h: класс последней вспышки,
-      - count_A_{window_hours}h, ..., count_X_{window_hours}h,
-      - total_flare_count_{window_hours}h: общее число вспышек,
-      - ratio_MX_{window_hours}h: (count_M + count_X) / total_flare_count.
     """
     last_flare = []
     count_A = []
@@ -135,8 +125,7 @@ def add_flare_type_features(df, window_hours):
 
 def compute_daily_flare_features(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Вычисляет суточные признаки: yesterday_count, daybefore_count, growth_flare,
-    на основе группировки по календарной дате (из timestamp).
+    Вычисляет суточные признаки на основе группировки из timestamp.
     """
     df['event_date'] = df['timestamp'].dt.date
     daily = df[df['flare_class'] != "None"].groupby('event_date').size().rename("daily_flare_count").reset_index()
@@ -149,24 +138,19 @@ def compute_daily_flare_features(df: pd.DataFrame) -> pd.DataFrame:
 
 def prepare_prediction_data() -> pd.DataFrame:
     """
-    Загружает данные из EVENTS_FILE, вычисляет timestamp и все признаки для прогнозирования target_24.
-    Используется events_download.json.
-    Возвращает последнюю запись с 15 признаками:
-      ['hour', 'weekday', 'month', 'duration', 'last_flare_24h',
-       'count_A_24h', 'count_B_24h', 'count_C_24h', 'count_M_24h', 'count_X_24h',
-       'total_flare_count_24h', 'ratio_MX_24h', 'yesterday_count', 'daybefore_count', 'growth_flare']
+    Загружает данные из EVENTS_FILE, вычисляет все признаки для 24.
     """
     df = pd.read_json(EVENTS_FILE)
-    print("После загрузки, df.shape =", df.shape)
+    # print("После загрузки, df.shape =", df.shape)
 
     df = df.dropna(subset=['date', 'begin', 'end', 'particulars'])
-    print("После dropna, df.shape =", df.shape)
+    # print("После dropna, df.shape =", df.shape)
 
     df['date'] = df['date'].apply(lambda d: d.strip() if isinstance(d, str) else d)
 
     df['timestamp'] = df.apply(combine_datetime, axis=1)
     df = df.dropna(subset=['timestamp']).sort_values('timestamp').reset_index(drop=True)
-    print("После вычисления timestamp, df.shape =", df.shape)
+    # print("После вычисления timestamp, df.shape =", df.shape)
 
     df['hour'] = df['timestamp'].dt.hour
     df['weekday'] = df['timestamp'].dt.weekday
@@ -181,12 +165,12 @@ def prepare_prediction_data() -> pd.DataFrame:
     df = add_flare_type_features(df, 24)
 
     daily_feats = compute_daily_flare_features(df)
-    print("Суточные признаки, daily_feats.shape =", daily_feats.shape)
+    # print("Суточные признаки, daily_feats.shape =", daily_feats.shape)
 
     df = pd.merge(df, daily_feats, on='date', how='left')
-    print("После слияния с суточными признаками, df.shape =", df.shape)
+    # print("После слияния с суточными признаками, df.shape =", df.shape)
 
-    # Преобразуем категориальный признак last_flare_24h в числовой код
+    # категориальный в числовой код
     df['last_flare_24h'] = df['last_flare_24h'].astype('category').cat.codes
 
     features_to_use = ['hour', 'weekday', 'month', 'duration',
@@ -196,21 +180,19 @@ def prepare_prediction_data() -> pd.DataFrame:
                        'yesterday_count', 'daybefore_count', 'growth_flare']
 
     df_final = df[features_to_use].dropna().reset_index(drop=True)
-    print("Финальный набор признаков для прогнозирования, df_final.shape =", df_final.shape)
+    # print("Финальный набор признаков для прогнозирования, df_final.shape =", df_final.shape)
 
     return df_final.iloc[-1:].copy()
 
 
-###########################################
-# Прогноз выводом
-###########################################
+# Прогноз выводим
 def predict_tomorrow():
     input_row = prepare_prediction_data()
     if input_row.empty:
         print("Нет данных для прогнозирования!")
         return
-    print("Признаки для прогноза (последняя запись):")
-    print(input_row)
+    # print("Признаки для прогноза (последняя запись):")
+    # print(input_row)
 
     # Загрузка обученных моделей
     lgb_model = joblib.load(LGB_MODEL_FILE)
@@ -223,7 +205,7 @@ def predict_tomorrow():
     stacking_24 = joblib.load(stacking)
     stacking_48 = joblib.load(stacking)
 
-    # Получаем прогнозные вероятности
+    # Получаем вероятности
     prob_lgb = lgb_model.predict_proba(input_row)[:, 1][0]
     prob_rf = rf_model.predict_proba(input_row)[:, 1][0]
     prob_xgb = xgb_model.predict_proba(input_row)[:, 1][0]
@@ -242,7 +224,6 @@ def predict_tomorrow():
     print(f"RandomForest: {prob_rf:.3f}")
     print(f"XGBoost: {prob_xgb:.3f}")
     print(f"Ensemble (усреднение): {prob_ensemble:.3f}")
-    print(f"Ensemble (взвешенное): {prob_weighted:.3f}")
     print(f"Ensemble (стэккинг){prob_stacking_24:.3f}")
 
     print("\nПрогноз для следующих 48 часов (вероятность наличия хотя бы одного сильного события):")
@@ -250,12 +231,10 @@ def predict_tomorrow():
     print(f"RandomForest: {prob_rf_48:.3f}")
     print(f"XGBoost: {prob_xgb_48:.3f}")
     print(f"Ensemble (усреднение): {prob_ensemble_48:.3f}")
-    print(f"Ensemble (взвешенное): {prob_weighted_48:.3f}")
     print(f"Ensemble (стэккинг){prob_stacking_48:.3f}")
 
-    # На основании предыдущих метрик рекомендуем ориентироваться на модель LightGBM
     print(
-        "\nРекомендуется ориентироваться на прогноз модели LightGBM, так как она демонстрировала лучшие показатели (ROC AUC, F1 Score) на обучении.")
+        "\nРекомендуется ориентироваться на прогноз модели LightGBM")
 
 
 if __name__ == "__main__":

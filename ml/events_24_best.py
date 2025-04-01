@@ -14,13 +14,11 @@ import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import StackingClassifier
 
-# Загружаем данные
 input_file = "../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)
 
-# Функция объединения даты и времени начала
 def combine_datetime(row):
     try:
         dt_str = row['date'] + " " + row['begin']
@@ -36,7 +34,6 @@ df['hour'] = df['timestamp'].dt.hour
 df['weekday'] = df['timestamp'].dt.weekday
 df['month'] = df['timestamp'].dt.month
 
-# Преобразование времени в минуты от полуночи
 def time_str_to_minutes(time_str):
     if pd.isna(time_str):
         return np.nan
@@ -54,7 +51,6 @@ def time_str_to_minutes(time_str):
 df['begin_mins'] = df['begin'].apply(time_str_to_minutes)
 df['end_mins'] = df['end'].apply(time_str_to_minutes)
 
-# Вычисляем длительность события
 def compute_duration(row):
     b = row['begin_mins']
     e = row['end_mins']
@@ -67,7 +63,6 @@ def compute_duration(row):
 
 df['duration'] = df.apply(compute_duration, axis=1)
 
-# Приводим категориальные признаки к типу "category"
 categorical_cols = ['type', 'particulars', 'loc_freq', 'region']
 for col in categorical_cols:
     df[col] = df[col].astype("category")
@@ -75,9 +70,7 @@ for col in categorical_cols:
 # Удаляем строки с пропусками в ключевых признаках
 df = df.dropna(subset=['begin', 'end', 'particulars', 'type'])
 
-#############################################
-# Таргет: предсказание сильной вспышки в ближайшие 24 часов
-#############################################
+# Предсказание сильной вспышки в ближайшие 24 часов
 def label_future_strong_flare(ts, horizon_hours, df):
     t_end = ts + timedelta(hours=horizon_hours)
     mask = (df['timestamp'] > ts) & (df['timestamp'] <= t_end) & (df['type'] == "XRA")
@@ -89,9 +82,7 @@ df['target_12'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 1
 df['target_24'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 24, df))
 df['target_48'] = df['timestamp'].apply(lambda x: label_future_strong_flare(x, 48, df))
 
-#############################################
 # Новые признаки на основе истории вспышек за последние 24 часов
-#############################################
 def extract_flare_class(particulars):
     if pd.isna(particulars):
         return "None"
@@ -137,48 +128,37 @@ def add_flare_type_features(df, window_hours):
 # Добавляем признаки за последние 24 часов
 df = add_flare_type_features(df, 24)
 
-#############################################
 # Новые признаки на основе суточной агрегации вспышек
-#############################################
-# Добавляем столбец с датой события (без времени)
 df['event_date'] = df['timestamp'].dt.date
-# Группируем по календарной дате и считаем общее число вспышек (любых, где flare_class != "None")
+# Группируем по календарной дате и считаем число вспышек
 daily_flares = df[df['flare_class'] != "None"].groupby('event_date').size().rename("daily_flare_count").reset_index()
 # Сдвигаем для получения значений за вчера и позавчера
 daily_flares['yesterday_count'] = daily_flares['daily_flare_count'].shift(1)
 daily_flares['daybefore_count'] = daily_flares['daily_flare_count'].shift(2)
 daily_flares['growth_flare'] = (daily_flares['yesterday_count'] - daily_flares['daybefore_count']) / (daily_flares['daybefore_count'] + 1e-5)
-# Слияние с исходным df по дате
+
 df = pd.merge(df, daily_flares[['event_date', 'yesterday_count', 'daybefore_count', 'growth_flare']],
               left_on='event_date', right_on='event_date', how='left')
 
-#############################################
-# Формирование финального датасета для моделирования
-#############################################
-# Оставляем нужные признаки:
-# базовые временные признаки: hour, weekday, month, duration
-# признаки по вспышкам за 24 часа: last_flare_24h, count_A_24h, count_B_24h, count_C_24h, count_M_24h, count_X_24h, total_flare_count_24h, ratio_MX_24h
-# новые признаки из суточной агрегации: yesterday_count, daybefore_count, growth_flare
-# таргет: target_24
 features_to_use = ['hour', 'weekday', 'month', 'duration',
                    'last_flare_24h', 'count_A_24h', 'count_B_24h',
                    'count_C_24h', 'count_M_24h', 'count_X_24h',
                    'total_flare_count_24h', 'ratio_MX_24h',
                    'yesterday_count', 'daybefore_count', 'growth_flare']
 
-# Для формирования обучающего датасета оставляем только необходимые поля; сохраняем таргет отдельно
+# Для формирования обучающего датасета оставляем только необходимые поля
 df_model = df.copy()
-# Сначала временно удаляем таргеты, затем добавляем нужный (target_24)
+# Сначала временно удаляем таргеты, затем добавляем нужный
 df_model = df_model.drop(columns=['begin', 'end', 'particulars', 'loc_freq', 'region', 'flare_class', 'target_12', 'target_48', 'target_24'])
 df_model['target_24'] = df['target_24']
 
-# Преобразуем категориальный признак last_flare_24h в числовой код
+# Преобразуем категориальный признак в числовой код
 df_model['last_flare_24h'] = df_model['last_flare_24h'].astype('category').cat.codes
 
 # Формируем финальный датасет для моделирования
 df_final = df_model[features_to_use + ['target_24']].dropna().reset_index(drop=True)
 
-# Хронологическое разделение: 80% обучение, 20% тест
+# Хронологическое разделение
 split_index = int(len(df_final) * 0.8)
 train_df = df_final.iloc[:split_index]
 test_df = df_final.iloc[split_index:]
@@ -188,9 +168,7 @@ y_train = train_df["target_24"]
 X_test = test_df[features_to_use]
 y_test = test_df["target_24"]
 
-#############################################
 # Обучение моделей
-#############################################
 
 # LightGBM
 lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1, device='gpu')
@@ -211,13 +189,10 @@ xgb_model.fit(X_train, y_train)
 y_pred_prob_xgb = xgb_model.predict_proba(X_test)[:, 1]
 y_pred_xgb = (y_pred_prob_xgb >= 0.5).astype(int)
 
-# Простое усреднение вероятностей (энсамблирование)
+# усреднение вероятностей
 y_pred_prob_ensemble = (y_pred_prob_lgb + y_pred_prob_rf + y_pred_prob_xgb) / 3
 y_pred_ensemble = (y_pred_prob_ensemble >= 0.5).astype(int)
 
-#############################################
-# Функция для вывода метрик
-#############################################
 def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, classification_report
     print(f"\nМетрики предсказания для {model_name}:")
@@ -234,17 +209,13 @@ def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     print("Classification Report:")
     print(classification_report(y_true, y_pred, zero_division=0))
 
-#############################################
-# Вывод метрик для моделей (предсказание на следующие 24 часа)
-#############################################
+# Вывод метрик
 print_metrics(y_test, y_pred_lgb, y_pred_prob_lgb, "LightGBM (24 часов, бинарный)")
 print_metrics(y_test, y_pred_rf, y_pred_prob_rf, "Random Forest (24 часов, бинарный)")
 print_metrics(y_test, y_pred_xgb, y_pred_prob_xgb, "XGBoost (24 часов, бинарный)")
 print_metrics(y_test, y_pred_ensemble, y_pred_prob_ensemble, "Ensemble (усреднение LGBM+RF+XGB)")
 
-#############################################
 # Сохранение моделей и данных
-#############################################
 lgb_model_filename = "../models/e_lightgbm_model_target_24.pkl"
 rf_model_filename = "../models/e_random_forest_model_target_24.pkl"
 xgb_model_filename = "../models/e_xgboost_model_target_24.pkl"
@@ -282,14 +253,11 @@ stacking_model = StackingClassifier(
 )
 stacking_model.fit(X_train, y_train)
 
-# Обучаем только мета-модель на том же X_train и y_train
 stacking_model.fit(X_train, y_train)
 
-# Предсказания и метрики
 y_pred_prob_stacking = stacking_model.predict_proba(X_test)[:, 1]
 y_pred_stacking = (y_pred_prob_stacking >= 0.5).astype(int)
 
 print_metrics(y_test, y_pred_stacking, y_pred_prob_stacking, "Ensemble Stacking (из загруженных моделей)")
 
-# Сохраняем стэкинг
 joblib.dump(stacking_model, "../models/e_stacking_model_target_24.pkl")

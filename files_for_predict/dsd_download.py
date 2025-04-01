@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 import requests
 import os
 import json
@@ -6,7 +6,7 @@ from pathlib import Path
 
 def download_dsd_file() -> Path:
     """
-    Скачивает файл с ежедневными солнечными индексами и сохраняет его как "dsd.txt".
+    Скачивает файл и сохраняет его как "dsd.txt".
     """
     url = "https://services.swpc.noaa.gov/text/daily-solar-indices.txt"
     filename = "tables/dsd.txt"
@@ -25,11 +25,6 @@ def download_dsd_file() -> Path:
 def parse_dsd_file(filepath: Path) -> list:
     """
     Парсит файл DSD.txt и возвращает список записей.
-    Предполагается, что каждая строка данных содержит минимум 15 полей:
-      Year Month Day radio_flux sunspot_number hemispheric_area new_regions solar_field
-      x_ray_flux c_flares m_flares x_flares s_flares optical_flare1 optical_flare2 [optical_flare3]
-    Если значение равно "*" – заменяется на 0.0 для числовых полей или "A0.0" для x_ray_flux.
-    Поле solar_field и optical_flare* не включаются в итоговый результат.
     """
     data_entries = []
     with filepath.open('r', encoding='utf-8') as file:
@@ -43,40 +38,33 @@ def parse_dsd_file(filepath: Path) -> list:
             if len(parts) < 15:
                 continue
 
-            # Формирование даты: Year, Month, Day
+            # Формирование даты
             year, month, day = parts[0], parts[1], parts[2]
             date = f"{year} {month} {day.zfill(2)}"
 
-            # radio_flux
             try:
                 radio_flux = float(parts[3])
             except ValueError:
                 radio_flux = None
 
-            # sunspot_number
             try:
                 sunspot_number = int(parts[4])
             except ValueError:
                 sunspot_number = None
 
-            # hemispheric_area
             try:
                 hemispheric_area = float(parts[5])
             except ValueError:
                 hemispheric_area = None
 
-            # new_regions
             try:
                 new_regions = int(parts[6])
             except ValueError:
                 new_regions = None
 
-            # Пропускаем поле solar_field (parts[7])
-
-            # x_ray_flux: если значение равно "*" – устанавливаем "A0.0", иначе оставляем как есть
             x_ray_flux = "A0.0" if parts[8] == "*" else parts[8]
 
-            # Обработка вспышек (поля 9-12); если значение равно "*" – считаем его 0.0
+            # Обработка вспышек
             try:
                 c_flares = 0.0 if parts[9] == "*" else float(parts[9])
             except ValueError:
@@ -114,7 +102,6 @@ def parse_dsd_file(filepath: Path) -> list:
 def flatten_flares(records: list) -> list:
     """
     Переносит вложенные поля словаря "flares" на уровень верхнего уровня с префиксом "flares."
-    и удаляет исходное поле "flares".
     """
     for record in records:
         flares = record.get("flares")
@@ -130,16 +117,12 @@ def save_to_json(data: list, output_path: Path):
     print(f"Данные сохранены в {output_path}")
 
 def main():
-    # Скачиваем файл
     dsd_filepath = download_dsd_file()
     if dsd_filepath is None:
         return
-    # Парсим файл
     records = parse_dsd_file(dsd_filepath)
     print(f"Обработано записей: {len(records)}")
-    # Разворачиваем вложенный словарь "flares"
     records = flatten_flares(records)
-    # Сохраняем итоговый JSON
     output_file = Path("tables/dsd_download.json")
     save_to_json(records, output_file)
 

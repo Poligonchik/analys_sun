@@ -3,7 +3,6 @@ import re
 from pathlib import Path
 import json
 
-# --- Расширенные регулярные выражения (без изменений) ---
 RE_SDF_NUMBER = re.compile(r"SRS Number\s+(\d+)", re.IGNORECASE)  # иногда используется SRS Number
 RE_SOLAR_ACTIVITY_LEVEL = re.compile(
     r"Solar activity (?:has been at|was)[\s:]+([\w\s\-]+)(?: levels)?",
@@ -133,21 +132,19 @@ def save_to_dataframe(parsed_data: list, section_key: str, columns: list) -> pd.
 
 
 
-# Основная функция
+
 def main():
-    import pandas as pd  # Импортируем здесь для сохранения структуры
+    import pandas as pd
     output_directory = Path("../processed_results")
     output_directory.mkdir(parents=True, exist_ok=True)
 
     parsed_data = []
-    # Обрабатываем файлы SRS для годов 1996-2024: путь "../ftp_data/[год]/[год]_SRS"
     for year in range(1996, 2025):
         input_directory = Path(f"../ftp_data/{year}/{year}_SRS")
         if input_directory.exists():
             for filepath in input_directory.glob("*.txt"):
                 parsed_entry = parse_file(filepath)
                 if parsed_entry:
-                    # Добавим имя файла для отладки
                     parsed_entry["filename"] = filepath.name
                     parsed_entry["year"] = year
                     parsed_data.append(parsed_entry)
@@ -168,7 +165,6 @@ def main():
     return_columns = ["Nmbr", "Lat", "Lo"]
     return_df = save_to_dataframe(parsed_data, "regions_due_to_return", return_columns)
 
-    # Сохраняем объединенные данные в один JSON-файл
     out_json = output_directory / "combined_srs_all.json"
     data_to_save = {
         "regions_with_sunspots": sunspots_df.to_dict(orient="records"),
@@ -178,7 +174,6 @@ def main():
     with open(out_json, "w", encoding="utf-8") as json_file:
         json.dump(data_to_save, json_file, indent=4, ensure_ascii=False)
 
-    # Сохранение данных в Parquet
     sunspots_df.to_parquet(output_directory / "sunspots.parquet", index=False)
     h_alpha_df.to_parquet(output_directory / "h_alpha.parquet", index=False)
     return_df.to_parquet(output_directory / "return.parquet", index=False)

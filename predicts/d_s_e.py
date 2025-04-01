@@ -18,9 +18,6 @@ from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
 
 
-#############################################
-# Функция для вывода метрик
-#############################################
 def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     print(f"\nМетрики предсказания для {model_name}:")
     acc = accuracy_score(y_true, y_pred)
@@ -50,9 +47,6 @@ def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     print(classification_report(y_true, y_pred, zero_division=0))
 
 
-#############################################
-# Функции для обработки данных
-#############################################
 def combine_datetime(row):
     try:
         if isinstance(row['date'], pd.Timestamp):
@@ -145,11 +139,7 @@ def compute_daily_flare_features(df):
     return daily[['date', 'yesterday_count', 'daybefore_count', 'growth_flare']]
 
 
-#############################################
-# Функция формирования признаков для объединённых данных
-#############################################
 def prepare_prediction_features():
-    # Загрузка событий
     EVENTS_FILE = Path("../files_for_predict/tables/events_download.json")
     df_events = pd.read_json(EVENTS_FILE)
     df_events = df_events.dropna(subset=['date', 'begin', 'end', 'particulars'])
@@ -185,7 +175,7 @@ def prepare_prediction_features():
     df_srs['date'] = pd.to_datetime(df_srs['date'], format="%Y %m %d", errors='coerce')
     for col in ['Lo', 'Area', 'LL', 'NN']:
         df_srs[col] = pd.to_numeric(df_srs[col], errors='coerce').fillna(0)
-    print("SRS столбцы до переименования:", df_srs.columns.tolist())
+    # print("SRS столбцы до переименования:", df_srs.columns.tolist())
 
     def encode_mag_type(x):
         MAG_TYPE_MAP = {
@@ -204,7 +194,7 @@ def prepare_prediction_features():
         'NN': 'NN_srs',
         'Mag_Type': 'Mag_Type_srs'
     })
-    print("SRS столбцы после переименования:", df_srs.columns.tolist())
+    # print("SRS столбцы после переименования:", df_srs.columns.tolist())
     srs_single = df_srs.sort_values('date').drop_duplicates(subset=['date'], keep='first')
 
     # Загрузка данных DSD
@@ -214,23 +204,20 @@ def prepare_prediction_features():
     df_dsd = pd.DataFrame(dsd_data)
     df_dsd['date'] = pd.to_datetime(df_dsd['date'], format="%Y %m %d", errors='coerce')
 
-    # Определяем список признаков из DSD
     new_features = [
         'radio_flux', 'sunspot_number', 'hemispheric_area', 'new_regions',
         'flares.C', 'flares.M', 'flares.X', 'flares.S'
     ]
 
-    # Объединяем: сначала Events + SRS, затем + DSD
     merged = pd.merge(events_final, srs_single, on='date', how='outer').fillna(0)
-    print("Столбцы после объединения событий и SRS:", merged.columns.tolist())
+    # print("Столбцы после объединения событий и SRS:", merged.columns.tolist())
     merged_final = pd.merge(merged, df_dsd[new_features + ['date']], on='date', how='left').fillna(0)
     merged_final = merged_final.sort_values('date').reset_index(drop=True)
-    print("Столбцы итогового объединенного датасета:", merged_final.columns.tolist())
+    # print("Столбцы итогового объединенного датасета:", merged_final.columns.tolist())
 
-    # Целевой признак: наличие сильного события (M/X) на следующий день
+    # наличие сильного события (M/X) на следующий день
     merged_final['target_24'] = merged_final['strong_events'].shift(-1).fillna(0).apply(lambda x: 1 if x > 0 else 0)
 
-    # Дополнительные комбинационные признаки
     merged_final['ratio_events_to_srs'] = np.where(merged_final['Nmbr'] > 0,
                                                    merged_final['events_count'] / merged_final['Nmbr'],
                                                    merged_final['events_count'])
@@ -239,7 +226,6 @@ def prepare_prediction_features():
     merged_final['area_strong_interaction'] = merged_final['Area_srs'] * merged_final['strong_events']
     merged_final['NN_LL_ratio'] = merged_final['NN_srs'] / (merged_final['LL_srs'] + 1e-5)
 
-    # Признаки на основе дельт и темпов роста (DSD)
     merged_final['delta_radio_flux'] = merged_final['radio_flux'] - merged_final['radio_flux'].shift(1)
     merged_final['delta_sunspot_number'] = merged_final['sunspot_number'] - merged_final['sunspot_number'].shift(1)
     merged_final['delta_hemispheric_area'] = merged_final['hemispheric_area'] - merged_final['hemispheric_area'].shift(
@@ -261,18 +247,15 @@ def prepare_prediction_features():
                 'growth_radio_flux', 'growth_sunspot_number', 'growth_hemispheric_area', 'growth_new_regions']:
         merged_final[col] = merged_final[col].fillna(0)
 
-    # Лаги для показателей DSD
     for col in ['radio_flux', 'sunspot_number', 'hemispheric_area']:
         for lag in [1, 2, 3]:
             merged_final[f'{col}_lag{lag}'] = merged_final[col].shift(lag).fillna(0)
 
-    # Скользящие средние (3-дневное среднее)
     for col in ['radio_flux', 'events_count', 'sunspot_number', 'hemispheric_area']:
         merged_final[f'{col}_3d_mean'] = merged_final[col].rolling(3, min_periods=1).mean()
 
     merged_final['radio_flux_7d_std'] = merged_final['radio_flux'].rolling(7, min_periods=1).std().fillna(0)
 
-    # Формирование финального списка признаков (32 признака, как в обучении)
     final_features = [
         'events_count', 'strong_events', 'A', 'B', 'C', 'M', 'X',
         'ratio_events_to_srs', 'diff_events_srs', 'srs_events_interaction',
@@ -283,50 +266,44 @@ def prepare_prediction_features():
         'growth_radio_flux', 'growth_sunspot_number', 'growth_hemispheric_area', 'growth_new_regions',
         'radio_flux_3d_mean', 'events_count_3d_mean', 'hemispheric_area_2d_mean'
     ]
-    # Если признака hemispheric_area_2d_mean нет, вычисляем как 2-дневное среднее по hemispheric_area
     if 'hemispheric_area_2d_mean' not in merged_final.columns:
         merged_final['hemispheric_area_2d_mean'] = merged_final['hemispheric_area'].rolling(2, min_periods=1).mean()
 
     merged_final = merged_final.fillna(0).sort_values('date').reset_index(drop=True)
-    print("Последние 5 строк итогового датасета:")
-    print(merged_final.tail(5))
+    # print("Последние 5 строк итогового датасета:")
+    # print(merged_final.tail(5))
     return merged_final, final_features
 
 
-#############################################
-# Функция предсказания для горизонтов 24h и 48h с использованием стэкинга
-#############################################
+# Функция предсказания для горизонтов 24 и 48 часов
 def predict_tomorrow():
     merged_final, features = prepare_prediction_features()
-    # Выбираем последнюю запись по списку признаков
     prediction_row = merged_final.iloc[-1:][features].fillna(0).reset_index(drop=True)
     if prediction_row.empty:
         print("Нет данных для прогнозирования!")
         return
-    print("Признаки для прогноза (последняя запись):")
-    print(prediction_row)
+    # print("Признаки для прогноза:")
+    # print(prediction_row)
 
-    # Пути к моделям для target_24
+    # Пути к моделям
     LGB_MODEL_FILE_24 = Path("../models/d_s_e_lgb_model_merged_24.pkl")
     RF_MODEL_FILE_24 = Path("../models/d_s_e_rf_model_merged_24.pkl")
     XGB_MODEL_FILE_24 = Path("../models/d_s_e_xgb_model_merged_24.pkl")
     STACK_MODEL_FILE_24 = Path("../models/d_s_e_stacking_model_merged_24.pkl")
-    # Пути к моделям для target_48
     LGB_MODEL_FILE_48 = Path("../models/d_s_e_lgb_model_merged_48.pkl")
     RF_MODEL_FILE_48 = Path("../models/d_s_e_rf_model_merged_48.pkl")
     XGB_MODEL_FILE_48 = Path("../models/d_s_e_xgb_model_merged_48.pkl")
 
-    # Загрузка моделей для 24 часов
+    # Загрузка моделей
     lgb_model_24 = joblib.load(LGB_MODEL_FILE_24)
     rf_model_24 = joblib.load(RF_MODEL_FILE_24)
     xgb_model_24 = joblib.load(XGB_MODEL_FILE_24)
     stack_model_24 = joblib.load(STACK_MODEL_FILE_24)
-    # Загрузка моделей для 48 часов
     lgb_model_48 = joblib.load(LGB_MODEL_FILE_48)
     rf_model_48 = joblib.load(RF_MODEL_FILE_48)
     xgb_model_48 = joblib.load(XGB_MODEL_FILE_48)
 
-    # Предсказания для горизонта 24 часов
+    # Предсказания для 24 часов
     prob_lgb_24 = lgb_model_24.predict_proba(prediction_row)[:, 1][0]
     prob_rf_24 = rf_model_24.predict_proba(prediction_row)[:, 1][0]
     prob_xgb_24 = xgb_model_24.predict_proba(prediction_row)[:, 1][0]
@@ -334,7 +311,7 @@ def predict_tomorrow():
     meta_features_24 = np.array([[prob_lgb_24, prob_rf_24, prob_xgb_24]])
     prob_stack_24 = stack_model_24.predict_proba(meta_features_24)[:, 1][0]
 
-    # Предсказания для горизонта 48 часов
+    # Предсказания для 48 часов
     prob_lgb_48 = lgb_model_48.predict_proba(prediction_row)[:, 1][0]
     prob_rf_48 = rf_model_48.predict_proba(prediction_row)[:, 1][0]
     prob_xgb_48 = xgb_model_48.predict_proba(prediction_row)[:, 1][0]
@@ -355,10 +332,8 @@ def predict_tomorrow():
     print(f"Ensemble (усреднение): {prob_ens_48:.3f}")
 
     print(
-        "\nРекомендуется ориентироваться на прогноз стэкинг-модели, так как она продемонстрировала лучшие результаты на тестовой выборке.")
+        "\nРекомендуется ориентироваться на прогноз стэкинг-модели.")
 
 
 if __name__ == "__main__":
-    # Для предсказания обучаем модели и сохраняем их (если требуется, этот блок можно не выполнять)
-    # Здесь предполагается, что модели уже обучены и сохранены по указанным путям.
     predict_tomorrow()

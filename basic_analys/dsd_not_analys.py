@@ -16,13 +16,11 @@ def is_missing(val):
 
 input_file = "../result_json/dsd.json"
 
-# Загрузка данных из файла dsd.json
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 
 # Обработка каждого словаря в данных
 for record in data:
-    # Удаляем ключи optical_flares и solar_field, если они существуют
     record.pop("optical_flares", None)
     record.pop("solar_field", None)
 
@@ -33,11 +31,8 @@ for record in data:
     else:
         record["x_ray_flux"] = "A0.0"
 
-    # Обработка background: если значение отсутствует, заменяем на 0.0
-    # Затем удаляем ключ background
     record.pop("background", None)
 
-# Сохраняем изменённые данные обратно в файл dsd.json
 with open(input_file, "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=4)
 

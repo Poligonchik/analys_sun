@@ -179,5 +179,7 @@ cython_debug/
 *.txt
 *.tar.gz
 *.csv
-#*.pkl
+*.pkl
 files_for_predict/tables
+.DS_Store
+
