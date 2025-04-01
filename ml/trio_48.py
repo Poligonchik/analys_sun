@@ -402,20 +402,21 @@ if corr_pairs:
 else:
     print(f"\nНет пар признаков с корреляцией выше {threshold}.")
 
-# Ансамблевая модель VotingClassifier (48h)
-voting_clf = VotingClassifier(
-    estimators=[
-        ('lgb', lgb_model),
-        ('rf', rf_model),
-        ('xgb', xgb_model)
-    ],
-    voting='soft'
-)
-voting_clf.fit(X_train_balanced, y_train_balanced)
-y_pred_prob_voting = voting_clf.predict_proba(X_test)[:, 1]
-y_pred_voting = (y_pred_prob_voting >= 0.5).astype(int)
-print_metrics(y_test, y_pred_voting, y_pred_prob_voting, "VotingClassifier Ensemble (48h)")
+meta_features_train = np.column_stack((
+    lgb_model.predict_proba(X_train_balanced)[:,1],
+    rf_model.predict_proba(X_train_balanced)[:,1],
+    xgb_model.predict_proba(X_train_balanced)[:,1]
+))
+meta_features_test = np.column_stack((
+    y_pred_prob_lgb,   # предсказания на X_test
+    y_pred_prob_rf,
+    y_pred_prob_xgb
+))
 
-# Сохраняем ансамблевую модель VotingClassifier (48h)
-joblib.dump(voting_clf, "../models/d_s_e_ensemble_model_merged_48.pkl")
-print("Ансамблевая модель VotingClassifier сохранена в '../models/d_s_e_ensemble_model_merged_48.pkl'")
+meta_model = LogisticRegression(random_state=42)
+meta_model.fit(meta_features_train, y_train_balanced)
+
+y_pred_prob_stack = meta_model.predict_proba(meta_features_test)[:,1]
+y_pred_stack = (y_pred_prob_stack>=0.5).astype(int)
+print_metrics(y_test, y_pred_stack, y_pred_prob_stack, "StackingEnsemble(48h)")
+joblib.dump(meta_model,"../models/d_s_e_stacking_model_merged_48.pkl")
