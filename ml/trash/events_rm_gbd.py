@@ -11,7 +11,7 @@ from sklearn.metrics import (roc_auc_score, f1_score, accuracy_score, precision_
 import joblib  # для сохранения модели
 
 # Загрузка данных из файла с развёрнутыми событиями
-input_file = "../result_json/events.json"
+input_file = "../../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 
@@ -196,8 +196,8 @@ importance_rf = pd.Series(rf_model.feature_importances_, index=features)
 print(importance_rf.sort_values(ascending=False))
 
 # Сохраняем модели и обучающие данные
-lgb_model_filename = "../models/e_lightgbm_model_target_24.pkl"
-rf_model_filename = "../models/e_random_forest_model_target_24.pkl"
+lgb_model_filename = "../../models/e_lightgbm_model_target_24.pkl"
+rf_model_filename = "../../models/e_random_forest_model_target_24.pkl"
 joblib.dump(lgb_model, lgb_model_filename)
 joblib.dump(rf_model, rf_model_filename)
 print(f"\nМодель LightGBM сохранена в {lgb_model_filename}")
@@ -207,6 +207,6 @@ train_data_filename = "../models/train_data_target_24.csv"
 df_clean.to_csv(train_data_filename, index=False)
 print(f"Обучающие данные сохранены в {train_data_filename}")
 
-full_data_filename = "../result_json/full_events_with_targets.csv"
+full_data_filename = "../../result_json/full_events_with_targets.csv"
 df.to_csv(full_data_filename, index=False)
 print(f"Полный DataFrame с прогнозами сохранен в {full_data_filename}")

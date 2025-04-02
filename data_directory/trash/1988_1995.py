@@ -44,7 +44,7 @@ def download_specific_files(ftp: FTP, file_list: list, local_path: str):
 
 if __name__ == "__main__":
     ftp_server = "ftp.swpc.noaa.gov"
-    local_save_path = "./ftp_data"
+    local_save_path = "../ftp_data"
 
     # Список файлов для скачивания
     files_to_download = [

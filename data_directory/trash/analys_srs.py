@@ -3,7 +3,7 @@ import json
 import matplotlib.pyplot as plt
 
 # Укажите путь к файлу JSON
-json_path = "./processed_results/combined_srs.json"
+json_path = "../processed_results/combined_srs.json"
 
 # Загрузка данных из JSON
 try:

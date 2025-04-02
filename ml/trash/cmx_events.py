@@ -47,10 +47,11 @@ def extract_flare_class(particulars):
 
 
 #############################################
-# Функция для определения будущей вспышки (на ближайшие 24 часов)
-# Среди событий типа XRA выбирается событие с наивысшей интенсивностью
+# Функция для определения будущей высококлассной вспышки (на 24 часа)
+# Среди событий типа XRA выбирается событие с наивысшей интенсивностью.
+# Если лучшая вспышка имеет класс A или B, возвращается "None".
 #############################################
-def label_future_flare(ts, horizon_hours, df):
+def label_future_high_flare(ts, horizon_hours, df):
     t_end = ts + timedelta(hours=horizon_hours)
     mask = (df['timestamp'] > ts) & (df['timestamp'] <= t_end) & (df['type'] == "XRA")
     candidate_events = df.loc[mask].copy()
@@ -61,13 +62,17 @@ def label_future_flare(ts, horizon_hours, df):
     candidate_events['intensity'] = candidate_events['flare_class'].apply(lambda x: intensity.get(x, 0))
     best_idx = candidate_events['intensity'].idxmax()
     best = candidate_events.loc[best_idx]
-    return best['flare_class']
+    # Если лучшая вспышка имеет класс A или B, считаем, что высоких вспышек не будет.
+    if best['flare_class'] in ["A", "B"]:
+        return "None"
+    else:
+        return best['flare_class']
 
 
 #############################################
 # Загрузка и подготовка данных из events.json
 #############################################
-input_file = "../result_json/events.json"
+input_file = "../../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)
@@ -133,15 +138,16 @@ for col in ['type', 'particulars', 'loc_freq', 'region']:
 df = df.dropna(subset=['begin', 'end', 'particulars', 'type'])
 
 #############################################
-# Формирование целевого признака: прогноз класса вспышки в ближайшие 24 часов
+# Формирование целевого признака: прогноз высококлассной вспышки в ближайшие 24 часов
 #############################################
 df = df.sort_values("timestamp").reset_index(drop=True)
-df['target_24_multi'] = df['timestamp'].apply(lambda x: label_future_flare(x, 24, df))
-df['target_24_multi'] = pd.Categorical(df['target_24_multi'],
-                                       categories=["None", "A", "B", "C", "M", "X"],
-                                       ordered=True)
+df['target_24_high'] = df['timestamp'].apply(lambda x: label_future_high_flare(x, 24, df))
+# Новые 4 класса: "None", "C", "M", "X"
+df['target_24_high'] = pd.Categorical(df['target_24_high'],
+                                      categories=["None", "C", "M", "X"],
+                                      ordered=True)
 
-# Добавляем колонку flare_class для формирования признаков по истории
+# Для формирования признаков истории используем колонку flare_class, извлечённую из particulars
 df['flare_class'] = df['particulars'].apply(extract_flare_class)
 
 
@@ -159,7 +165,6 @@ def add_flare_type_features(df, window_hours):
     for current_time in df['timestamp']:
         window_start = current_time - timedelta(hours=window_hours)
         window_df = df[(df['timestamp'] >= window_start) & (df['timestamp'] < current_time)]
-        # Если в окне нет событий, запишем "None"
         if not window_df.empty:
             last_flare.append(window_df.iloc[-1]['flare_class'])
         else:
@@ -183,7 +188,6 @@ def add_flare_type_features(df, window_hours):
 
 # Добавляем признаки за последние 24 часов
 df = add_flare_type_features(df, 24)
-# Преобразуем категориальный признак last_flare_24h в числовой код
 df['last_flare_24h_code'] = df['last_flare_24h'].astype('category').cat.codes
 
 #############################################
@@ -193,7 +197,7 @@ features_to_use = ['hour', 'weekday', 'month', 'duration',
                    'last_flare_24h_code', 'count_A_24h', 'count_B_24h',
                    'count_C_24h', 'count_M_24h', 'count_X_24h',
                    'total_flare_count_24h', 'ratio_MX_24h']
-target = 'target_24_multi'
+target = 'target_24_high'
 
 df_model = df[features_to_use + [target]].dropna().reset_index(drop=True)
 
@@ -208,7 +212,7 @@ X_test = test_df[features_to_use]
 y_test = test_df[target]
 
 #############################################
-# Обучение моделей (многоклассовое прогнозирование)
+# Обучение моделей (многоклассовое прогнозирование для 4 классов)
 #############################################
 # LightGBM: objective='multiclass'
 lgb_model = lgb.LGBMClassifier(objective='multiclass', random_state=42, n_jobs=-1)
@@ -232,14 +236,15 @@ y_pred_xgb = xgb_model.predict(X_test)
 y_pred_prob_xgb = xgb_model.predict_proba(X_test)
 
 #############################################
-# Оценка моделей с учётом двух критериев:
+# Оценка моделей с учетом двух критериев:
 # 1) Точное совпадение
 # 2) Допустимое совпадение (±1 по интенсивности)
 #############################################
-intensity_map = {"None": 0, "A": 1, "B": 2, "C": 3, "M": 4, "X": 5}
+# Для 4 классов зададим словарь интенсивностей: {"None": 0, "C": 1, "M": 2, "X": 3}
+intensity_map = {"None": 0, "C": 1, "M": 2, "X": 3}
 categories = y_train.cat.categories.tolist()
 
-# Используем .cat.codes для получения числовых кодов целевой переменной
+# Используем .cat.codes для получения кодов целевой переменной
 y_true_labels = pd.Categorical.from_codes(y_test.cat.codes, categories=categories, ordered=True)
 y_pred_labels_lgb = pd.Categorical.from_codes(y_pred_lgb, categories=categories, ordered=True)
 y_pred_labels_rf = pd.Categorical.from_codes(y_pred_rf, categories=categories, ordered=True)

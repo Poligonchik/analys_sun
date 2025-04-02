@@ -128,8 +128,8 @@ def save_to_json(data: list, output_path: Path):
 
 
 def main():
-    input_file = Path('./ftp_data/2013/2013_DSD.txt')
-    output_file = Path('./processed_results/DSD_2013.json')
+    input_file = Path('../ftp_data/2013/2013_DSD.txt')
+    output_file = Path('../processed_results/DSD_2013.json')
 
     if not input_file.exists():
         print(f"Файл {input_file} не найден.")

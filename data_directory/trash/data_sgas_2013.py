@@ -5,7 +5,7 @@ from pathlib import Path
 # Папка, где лежат файлы SGAS за 2013 год
 input_directory = Path("./ftp_data/2013/2013_SGAS")
 # Папка для сохранения результата
-output_directory = Path("./processed_results")
+output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 
 # --- Регулярные выражения для поиска ключевых данных ---

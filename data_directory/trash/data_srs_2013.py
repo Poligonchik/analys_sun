@@ -4,8 +4,8 @@ from pathlib import Path
 import json
 
 # Путь к директориям
-input_directory = Path("./ftp_data/2013/2013_SRS")  # Укажите путь к папке с файлами
-output_directory = Path("./processed_results")
+input_directory = Path("../ftp_data/2013/2013_SRS")  # Укажите путь к папке с файлами
+output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)  # Создаем директорию, если она не существует
 
 

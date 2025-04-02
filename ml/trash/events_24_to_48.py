@@ -93,7 +93,7 @@ def add_flare_history_features(df, lower_hours, upper_hours, prefix):
 #############################################
 # Загрузка и подготовка данных из events.json
 #############################################
-input_file = "../result_json/events.json"
+input_file = "../../result_json/events.json"
 with open(input_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 df = pd.DataFrame(data)

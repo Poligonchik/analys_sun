@@ -5,7 +5,7 @@ from pathlib import Path
 # Папка, где лежат файлы RSGA за 2013 год
 input_directory = Path("./ftp_data/2013/2013_RSGA")
 # Папка для сохранения результата
-output_directory = Path("./processed_results")
+output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 
 # --- Регулярные выражения для поиска ключевых фраз ---
@@ -197,7 +197,7 @@ def parse_rsgi_file(filepath: Path) -> dict | None:
 
 def main():
     input_directory = Path("./ftp_data/2013/2013_RSGA")
-    output_directory = Path("./processed_results")
+    output_directory = Path("../processed_results")
     output_directory.mkdir(parents=True, exist_ok=True)
 
     all_data = []

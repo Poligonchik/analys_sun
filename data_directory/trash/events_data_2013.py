@@ -3,8 +3,8 @@ import re
 import json
 from pathlib import Path
 
-input_directory = Path("./ftp_data/2013/2013_events")
-output_directory = Path("./processed_results")
+input_directory = Path("../ftp_data/2013/2013_events")
+output_directory = Path("../processed_results")
 output_directory.mkdir(parents=True, exist_ok=True)
 
 # Функция для парсинга одного файла
