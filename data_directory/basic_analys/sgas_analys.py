@@ -17,23 +17,19 @@ def load_and_transform_data(json_file: str) -> pd.DataFrame:
         rec["product"] = row.get("product", None)
         rec["sgas_number"] = row.get("sgas_number", None)
 
-        # Раздел daily_indices (если отсутствует или равен None, используем пустой словарь)
         daily_indices = row.get("daily_indices") or {}
         rec["ten_cm"] = daily_indices.get("10cm", None)
         rec["ssn"] = daily_indices.get("ssn", None)
         rec["afr_ap"] = daily_indices.get("afr_ap", None)
         rec["xray_background"] = daily_indices.get("xray_background", None)
 
-        # Daily Proton Fluence
         dp_fluence = daily_indices.get("daily_proton_fluence") or {}
         rec["dp_fluence_gt_1_mev"] = dp_fluence.get("gt_1_mev", None)
         rec["dp_fluence_gt_10_mev"] = dp_fluence.get("gt_10_mev", None)
 
-        # Daily Electron Fluence
         de_fluence = daily_indices.get("daily_electron_fluence") or {}
         rec["de_fluence_gt_2_mev"] = de_fluence.get("gt_2_mev", None)
 
-        # K-indices (Boulder и Planetary)
         k_indices = daily_indices.get("k_indices") or {}
         if "boulder" in k_indices:
             for i, val in enumerate(k_indices["boulder"]):
@@ -42,17 +38,15 @@ def load_and_transform_data(json_file: str) -> pd.DataFrame:
             for i, val in enumerate(k_indices["planetary"]):
                 rec[f"k_planetary_{i}"] = val
 
-        # Энергетические события (считаем их количество)
+        # Считаем количество энергетических событий
         energetic_events = row.get("energetic_events", None)
         rec["energetic_events_count"] = len(energetic_events) if isinstance(energetic_events, list) else 0
 
-        # Proton events (строка)
         rec["proton_events"] = row.get("proton_events", None)
 
-        # Geomagnetic summary (строка)
         rec["geomagnetic_activity_summary"] = row.get("geomagnetic_activity_summary", None)
 
-        # Удаляем ключи из daily_indices, если их значения равны None
+        # Удаляем ключи, если их значения равны None
         daily_keys = ["ten_cm", "ssn", "afr_ap", "xray_background",
                       "dp_fluence_gt_1_mev", "dp_fluence_gt_10_mev", "de_fluence_gt_2_mev"]
         for k in daily_keys:
@@ -98,13 +92,10 @@ def analyze_missing_values(df: pd.DataFrame):
 
 def analyze_categorical_columns(df: pd.DataFrame):
     """
-    Анализ категориальных столбцов: вывод уникальных значений, частот и построение графиков.
-    Здесь в примере мы будем считать категориальными поля 'product', 'issued', 'afr_ap', 'xray_background',
-    'proton_events' и 'geomagnetic_activity_summary'.
-    В реальности лучше вручную выбрать, какие поля считать категориальными.
+    вывод уникальных значений, частот и построение графиков.
     """
     cat_cols = ["product", "issued", "afr_ap", "xray_background", "proton_events", "geomagnetic_activity_summary"]
-    cat_cols = [c for c in cat_cols if c in df.columns]  # только те, что реально есть в DataFrame
+    cat_cols = [c for c in cat_cols if c in df.columns]
 
     print("\n=== Анализ категориальных столбцов ===")
     for col in cat_cols:
@@ -113,17 +104,14 @@ def analyze_categorical_columns(df: pd.DataFrame):
         print(f"Уникальных значений: {len(unique_vals)}")
         print("Первые 10 уникальных значений:", unique_vals[:10])
 
-        # value_counts
         counts = df[col].value_counts(dropna=False)
         print("Топ-10 по частоте:")
         print(counts.head(10))
 
-        # Построим barplot только если число уникальных не слишком велико (например, < 30)
+        # Построим barplot только если число уникальных не слишком велико
         if len(unique_vals) < 30:
             plt.figure(figsize=(8, 4))
-            # В pandas 2.0+ нужно counts.sort_values(ascending=False)[:30]
-            # но учитываем, что у нас уже counts.head(30) – можно совместить
-            subset_counts = counts.head(30)  # ограничим 30 категориями
+            subset_counts = counts.head(30)
             sns.barplot(x=subset_counts.index.astype(str), y=subset_counts.values)
             plt.title(f"Распределение категорий: {col}")
             plt.xticks(rotation=90)
@@ -144,10 +132,8 @@ def analyze_numeric_columns(df: pd.DataFrame):
 
     for col in numeric_cols:
         print(f"\n--- Анализ поля: {col} ---")
-        # Пропусков:
         na_count = df[col].isna().sum()
         print(f"Пропусков: {na_count}")
-        # Уникальных значений
         unique_vals = df[col].dropna().unique()
         print(f"Уникальных значений: {len(unique_vals)}")
 
@@ -168,9 +154,8 @@ def analyze_numeric_columns(df: pd.DataFrame):
 
 def analyze_correlations(df: pd.DataFrame):
     """
-    Анализ корреляций для числовых столбцов:
-    - вывод корреляционной матрицы
-    - построение heatmap
+    вывод корреляционной матрицы
+    построение heatmap
     """
     numeric_cols = df.select_dtypes(include=[np.number]).columns
     corr_matrix = df[numeric_cols].corr()
@@ -185,19 +170,14 @@ def analyze_correlations(df: pd.DataFrame):
     plt.show()
 
 def main():
-    # 1. Загрузка и трансформация
     df = load_and_transform_data("../processed_results/sgas_all.json")
 
-    # 2. Анализ пропусков
     analyze_missing_values(df)
 
-    # 3. Анализ категориальных столбцов
     analyze_categorical_columns(df)
 
-    # 4. Анализ числовых столбцов
     analyze_numeric_columns(df)
 
-    # 5. Анализ корреляций
     analyze_correlations(df)
 
 if __name__ == "__main__":

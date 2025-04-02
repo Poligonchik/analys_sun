@@ -7,14 +7,9 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# ================================
-# Функции обработки данных
-# ================================
-
 def reformat_date(date_str):
     """
     Преобразует дату из формата "YYYY-MM-DD" в формат "YYYY MM DD".
-    Если преобразование не удаётся, возвращает исходную строку.
     """
     try:
         dt = datetime.datetime.strptime(date_str, "%Y-%m-%d")
@@ -25,11 +20,7 @@ def reformat_date(date_str):
 
 def clean_value(value):
     """
-    Рекурсивно обрабатывает значение:
-      - Если значение равно None, пустой строке, "none" (без учёта регистра) или "*" – возвращает "NaN".
-      - Если значение – список, обрабатывает каждый элемент.
-      - Если значение – словарь, обрабатывает каждый ключ-значение и удаляет ключ "op_10cm".
-      - Иначе возвращает значение без изменений.
+    Чищу немного
     """
     if isinstance(value, str) and value.strip() == "*":
         return "NaN"
@@ -45,9 +36,7 @@ def clean_value(value):
 
 def process_dsd_records(records):
     """
-    Для каждого словаря:
-      - Приводит значение поля "date" к формату "YYYY MM DD".
-      - Заменяет отсутствующие значения (None, пустые строки, "none", "*") на "NaN" для всех полей.
+    Приводит значение поля "date" к формату "YYYY MM DD".
     """
     for record in records:
         if "date" in record:
@@ -59,7 +48,6 @@ def process_dsd_records(records):
 def flatten_flares(records):
     """
     Переносит вложенные поля словаря "flares" на уровень верхнего уровня с префиксом "flares.".
-    После переноса удаляет исходное поле "flares".
     """
     for record in records:
         if "flares" in record and isinstance(record["flares"], dict):
@@ -76,6 +64,8 @@ def shift_flares(records):
       - Старое значение "flares.M" записывается в "flares.X".
       - Старое значение "flares.X" записывается в "flares.S".
     После сдвига удаляет поле "background".
+    Потому что я случайно его добавила на 1 этапе и поздно заметила, что для модели это ключевой признак самый, а
+    ключевой на самом деле flares.C и парсила не так
     """
     for record in records:
         background_val = record.get("background", 0.0)
@@ -87,21 +77,17 @@ def shift_flares(records):
         record["flares.M"] = flares_C_val
         record["flares.X"] = flares_M_val
         record["flares.S"] = flares_X_val
-        # Удаляем поле background
         if "background" in record:
             del record["background"]
     return records
 
-# ================================
-# Функции анализа
-# ================================
 
 def analyze_field(records, field, sample_size=5):
     """
     Выводит статистическую информацию по указанному полю:
       - Общее число записей,
       - Количество значений "NaN",
-      - Количество уникальных значений (при необходимости приводит не-хэшируемые значения к JSON-строке),
+      - Количество уникальных значений
       - sample_size наиболее частых значений.
     """
     values = [record.get(field, "NaN") for record in records]
@@ -117,17 +103,13 @@ def analyze_field(records, field, sample_size=5):
     unique_vals = set(hashable_values)
     most_common = Counter(hashable_values).most_common(sample_size)
 
-    print(f"\nПоле: '{field}'")
-    print(f"  Общее число записей: {len(records)}")
-    print(f"  Количество значений 'NaN': {nan_count}")
-    print(f"  Количество уникальных значений: {len(unique_vals)}")
-    print(f"  {sample_size} наиболее частых значений: {most_common}")
+    print(f"Поле: '{field}'")
+    print(f"Общее число записей: {len(records)}")
+    print(f"Количество значений 'NaN': {nan_count}")
+    print(f"Количество уникальных значений: {len(unique_vals)}")
+    print(f"{sample_size} наиболее частых значений: {most_common}")
 
 def analyze_nested_field(records, parent_field, sample_size=5):
-    """
-    Анализирует вложенные поля внутри словаря (например, поле "flares").
-    Для каждого ключа во вложенном словаре выводит статистику.
-    """
     nested_values = {}
     for record in records:
         nested = record.get(parent_field)
@@ -146,11 +128,11 @@ def analyze_nested_field(records, parent_field, sample_size=5):
         hashable_values = list(map(to_hashable, values))
         unique_vals = set(hashable_values)
         most_common = Counter(hashable_values).most_common(sample_size)
-        print(f"\nВложенное поле: '{parent_field}.{key}'")
-        print(f"  Общее число записей: {len(values)}")
-        print(f"  Количество значений 'NaN': {nan_count}")
-        print(f"  Количество уникальных значений: {len(unique_vals)}")
-        print(f"  {sample_size} наиболее частых значений: {most_common}")
+        print(f"Вложенное поле: '{parent_field}.{key}'")
+        print(f"Общее число записей: {len(values)}")
+        print(f"Количество значений 'NaN': {nan_count}")
+        print(f"Количество уникальных значений: {len(unique_vals)}")
+        print(f"{sample_size} наиболее частых значений: {most_common}")
 
 def build_correlation_table(records, title="Тепловая карта корреляций числовых полей"):
     """
@@ -173,9 +155,6 @@ def build_correlation_table(records, title="Тепловая карта корр
     plt.tight_layout()
     plt.show()
 
-# ================================
-# Функции импьютации (заполнения пропусков)
-# ================================
 
 def impute_top_level_fields(records):
     """
@@ -212,7 +191,6 @@ def impute_nested_flares(records):
         if non_nan:
             flares_mode[k] = Counter(non_nan).most_common(1)[0][0]
         else:
-            # Если для ключа нет ненулевых значений, устанавливаем 0.0
             flares_mode[k] = 0.0
     for record in records:
         flares = record.get("flares")
@@ -235,29 +213,23 @@ def impute_flattened_flares(records):
                 record[k] = 0.0
     return records
 
-# ================================
-# Основной блок
-# ================================
-
 if __name__ == '__main__':
-    # Пути к входному и выходному файлам
     input_file = "../processed_results/DSD_all.json"
     output_file = "../../result_json/dsd.json"
 
-    # Загрузка данных из DSD_all.json
     with open(input_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    # Обработка записей: приведение даты к единому формату и замена отсутствующих значений на "NaN"
+    # Приведение даты к единому формату
     processed_data = process_dsd_records(data)
 
-    # Сначала развернём вложенные поля "flares"
+    # Развернём вложенные поля "flares"
     processed_data = flatten_flares(processed_data)
 
     # Выполняем сдвиг значений: background -> flares.C, flares.C -> flares.M, flares.M -> flares.X, flares.X -> flares.S
+    # Потому что я только потом заметила, что парсила неверно
     processed_data = shift_flares(processed_data)
 
-    # Сохранение обработанного файла (до импьютации)
     output_dir = os.path.dirname(output_file)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -265,35 +237,28 @@ if __name__ == '__main__':
         json.dump(processed_data, f, ensure_ascii=False, indent=4)
     print(f"Обработанный файл сохранен по пути: {output_file}")
 
-    # Вывод корреляционной матрицы до импьютации (с учетом развернутых полей)
-    print("\n>>> Корреляционная матрица до импьютации:")
+    print("Корреляционная матрица до импьютации:")
     build_correlation_table(processed_data, title="До импьютации")
 
-    # Вывод сводной статистики по каждому полю до импьютации
-    print("\n>>> Статистика по каждому полю до импьютации:")
+    print("Статистика по каждому полю до импьютации:")
     fields = set()
     for record in processed_data:
         fields.update(record.keys())
     for field in fields:
         analyze_field(processed_data, field, sample_size=5)
 
-    # Импьютация полей верхнего уровня
     processed_data = impute_top_level_fields(processed_data)
 
-    # Импьютация вложенных (уже развернутых) полей вспышек
     processed_data = impute_flattened_flares(processed_data)
 
-    # Сохранение итогового обработанного файла (после импьютации)
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(processed_data, f, ensure_ascii=False, indent=4)
     print(f"Итоговый обработанный файл сохранен по пути: {output_file}")
 
-    # Вывод корреляционной матрицы после импьютации
-    print("\n>>> Корреляционная матрица после импьютации:")
+    print("Корреляционная матрица после импьютации:")
     build_correlation_table(processed_data, title="После импьютации")
 
-    # Вывод сводной статистики по каждому полю после импьютации
-    print("\n>>> Статистика по каждому полю после импьютации:")
+    print("Статистика по каждому полю после импьютации:")
     fields = set()
     for record in processed_data:
         fields.update(record.keys())

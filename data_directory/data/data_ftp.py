@@ -26,7 +26,7 @@ def connect_ftp(server: str) -> FTP:
 
 def is_directory(ftp: FTP, item: str) -> bool:
     """
-    Проверяет, является ли 'item' папкой.
+    Проверяет, является ли папкой.
     """
     original_cwd = ftp.pwd()
     try:
@@ -89,10 +89,8 @@ def list_ftp_contents(ftp: FTP, remote_path: str, indent: int = 0):
 def download_selected_files(ftp: FTP, remote_path: str, local_path: str,
                             allowed_extensions=ALLOWED_EXTENSIONS):
     """
-    Рекурсивно обходит FTP-каталог и скачивает только те файлы,
-    которые соответствуют списку 'allowed_extensions'.
+    Рекурсивно обходит FTP-каталог и скачивает файлы
     """
-    # Создаём локальную папку
     ensure_directory(local_path)
 
     ftp.cwd(remote_path)
@@ -103,18 +101,16 @@ def download_selected_files(ftp: FTP, remote_path: str, local_path: str,
             continue
 
         if is_directory(ftp, item):
-            # Папка: рекурсивно заходим внутрь
             new_remote = f"{remote_path}/{item}"
             new_local = os.path.join(local_path, item)
             download_selected_files(ftp, new_remote, new_local, allowed_extensions)
         else:
-            # Файл: проверяем расширение
             _, ext = os.path.splitext(item)
             if ext.lower() in allowed_extensions:
                 local_file_path = os.path.join(local_path, item)
                 if os.path.exists(local_file_path):
                     print(f"Файл уже существует и будет пропущен: {remote_path}/{item}")
-                    continue  # Пропускаем уже скачанные файлы
+                    continue
 
                 print(f"Скачиваем файл: {remote_path}/{item}")
                 try:
@@ -122,7 +118,6 @@ def download_selected_files(ftp: FTP, remote_path: str, local_path: str,
                         ftp.retrbinary(f"RETR {item}", f.write)
                 except error_temp as e:
                     print(f"Ошибка при скачивании {item}: {e}")
-                    # Можно реализовать повторную попытку здесь
                 except Exception as e:
                     print(f"Не удалось скачать {item}: {e}")
 
@@ -141,7 +136,7 @@ def keep_alive(ftp: FTP, interval: int):
             print("Отправлена команда NOOP для поддержания соединения.")
         except Exception as e:
             print(f"Ошибка при отправке NOOP: {e}")
-            break  # Выходим из цикла, если не удалось отправить NOOP
+            break
 
 
 if __name__ == "__main__":

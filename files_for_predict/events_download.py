@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 import requests
 import json
 import os
@@ -21,7 +21,6 @@ def download_events():
 
     data = response.json()
 
-    # Сохраняем JSON в файл в текущей папке
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
@@ -31,7 +30,6 @@ def download_events():
 def extract_time(dt_str):
     """
     Извлекает время из строки ISO datetime и возвращает его в формате HHMM.
-    Если ошибка – возвращает "ND".
     """
     try:
         dt = datetime.fromisoformat(dt_str)
@@ -42,7 +40,6 @@ def extract_time(dt_str):
 def extract_date(dt_str):
     """
     Извлекает дату из строки ISO datetime и возвращает её в формате "YYYY MM DD".
-    Если ошибка – возвращает "ND".
     """
     try:
         dt = datetime.fromisoformat(dt_str)
@@ -81,7 +78,6 @@ def transform_event(event):
 def time_str_to_minutes(t):
     """
     Преобразует строку времени формата HHMM в минуты от начала дня.
-    Если преобразование не удалось, возвращает pd.NA.
     """
     if pd.isna(t):
         return pd.NA
@@ -107,7 +103,7 @@ def minutes_to_time_str(m):
 
 def compute_interval(row):
     """
-    Вычисляет интервал между begin и end (в минутах) с учетом перехода через полночь.
+    Интервал между begin и end
     """
     b = row['begin_mins']
     e = row['end_mins']
@@ -117,29 +113,19 @@ def compute_interval(row):
         return pd.NA
 
 def transform_events():
-    """
-    Выполняет преобразование загруженных данных:
-    - Преобразует время и дату в нужный формат
-    - Заполняет отсутствующие значения end и begin на основе медианного интервала
-    - Вычисляет значение max для пропущенных значений с использованием средней доли прохождения интервала
-    - Все отсутствующие значения заменяются на pd.NA
-    - Сохраняет итоговый JSON в файл output_events.json
-    """
-    input_filename = "tables/events_download.json"  # Исходный JSON с событиями
+    input_filename = "tables/events_download.json"
     output_filename = "tables/events_download.json"
 
-    # Загружаем исходный JSON
     with open(input_filename, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    # Преобразуем каждое событие в новый формат
     transformed = [transform_event(e) for e in data]
 
-    # Создаем DataFrame и заменяем пустые строки и "ND" на pd.NA
+    # заменяем пустые строки и "ND" на pd.NA
     df = pd.DataFrame(transformed)
     df = df.replace({"": pd.NA, "ND": pd.NA})
 
-    # Преобразуем время из строк в минуты от начала дня
+    # время из строк в минуты от начала дня
     df['begin_mins'] = df['begin'].apply(time_str_to_minutes)
     df['max_mins']   = df['max'].apply(time_str_to_minutes)
     df['end_mins']   = df['end'].apply(time_str_to_minutes)
@@ -147,20 +133,19 @@ def transform_events():
     # Вычисляем интервал между begin и end
     df['interval'] = df.apply(compute_interval, axis=1)
 
-    # Вычисляем медианный интервал (для строк с заданными begin и end)
+    # Вычисляем медианный интервал
     valid_intervals = df['interval'].dropna()
     median_interval = valid_intervals.median() if not valid_intervals.empty else 13
     print("Медианный интервал (минут):", median_interval)
 
-    # Если отсутствует end, заменяем его как begin + медианный интервал (с модулем 1440)
+    # Если отсутствует end, заменяем его как begin + медианный интервал
     mask_end_missing = df['begin_mins'].notna() & df['end_mins'].isna()
     df.loc[mask_end_missing, 'end_mins'] = (df.loc[mask_end_missing, 'begin_mins'] + median_interval) % 1440
 
-    # Если отсутствует begin, заменяем его как end - медианный интервал (с модулем 1440)
+    # Если отсутствует begin, заменяем его как end - медианный интервал
     mask_begin_missing = df['end_mins'].notna() & df['begin_mins'].isna()
     df.loc[mask_begin_missing, 'begin_mins'] = (df.loc[mask_begin_missing, 'end_mins'] - median_interval) % 1440
 
-    # Пересчитываем интервал после заполнения begin/end
     df['interval'] = df.apply(compute_interval, axis=1)
 
     # Функция для вычисления доли прохождения интервала от начала до max
@@ -189,28 +174,24 @@ def transform_events():
     df['end']   = df['end_mins'].apply(minutes_to_time_str)
     df['max']   = df['max_mins'].apply(minutes_to_time_str)
 
-    # Удаляем временные столбцы, если они не нужны в итоговом JSON
+    # Удаляем временные столбцы
     df.drop(columns=['begin_mins', 'max_mins', 'end_mins', 'interval', 'progress'], inplace=True)
 
-    # Еще раз заменяем возможные оставшиеся "ND" или пустые строки на pd.NA
+    # Еще раз заменяем  оставшиеся "ND" или пустые строки на pd.NA
     df = df.replace({"": pd.NA, "ND": pd.NA})
 
-    # Сохраняем итоговый DataFrame в JSON
     final_json = df.to_dict(orient="records")
     with open(output_filename, "w", encoding="utf-8") as f:
         json.dump(final_json, f, indent=4, ensure_ascii=False)
 
     print(f"Преобразование завершено. Итоговый файл: {output_filename}")
 
-    # Подсчитываем количество пропущенных значений по каждому столбцу
     missing_counts = df.isna().sum()
     print("\nКоличество пропущенных значений по столбцам:")
     print(missing_counts)
 
 def main():
-    # Сначала загружаем данные
     if download_events():
-        # Затем выполняем преобразование
         transform_events()
 
 if __name__ == "__main__":

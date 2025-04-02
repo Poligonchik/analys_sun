@@ -13,9 +13,7 @@ import joblib
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 
-#############################################
-# 1) Функции вспомогательные
-#############################################
+# Функции вспомогательные
 def print_metrics(y_true, y_pred, y_prob, model_name="Model"):
     print(f"\nМетрики предсказания для {model_name}:")
     print(f"Accuracy: {accuracy_score(y_true, y_pred):.3f} ({accuracy_score(y_true, y_pred)*100:.1f}%)")
@@ -60,9 +58,7 @@ def is_strong_row(row):
     cl = str(row.get('flare_class', "None")).strip()
     return 1 if (evt_type == "XRA" and cl in ["M", "X"]) else 0
 
-#############################################
-# 2) Чтение и обработка SRS данных
-#############################################
+# Чтение и обработка SRS данных
 srs_input = "../result_json/srs.json"
 srs_df = pd.read_json(srs_input)
 srs_df['date'] = pd.to_datetime(srs_df['date'], format="%Y %m %d")
@@ -71,16 +67,15 @@ srs_df['date'] = pd.to_datetime(srs_df['date'], format="%Y %m %d")
 for col in ['Lo', 'Area', 'LL', 'NN']:
     srs_df[col] = pd.to_numeric(srs_df[col], errors='coerce').fillna(0)
 
-# Кодирование магнитного типа и определение "сложности"
 srs_df['mag_code'] = srs_df['Mag_Type'].apply(encode_mag_type)
 srs_df['is_complex'] = np.where(srs_df['mag_code'] >= 2, 1, 0)
 
-# 2.1) Суммарная площадь сложных регионов
+# Суммарная площадь сложных регионов
 complex_mask = (srs_df['is_complex'] == 1)
 complex_df = srs_df[complex_mask]
 sum_complex_area = complex_df.groupby('date')['Area'].sum().rename("sum_complex_area")
 
-# 2.2) Агрегация SRS по дате
+# Агрегация SRS по дате
 srs_agg = srs_df.groupby('date').agg({
     'Nmbr': 'count',
     'Area': 'mean',
@@ -97,13 +92,10 @@ srs_agg = srs_df.groupby('date').agg({
     'is_complex': 'complex_count'
 })
 
-# Присоединяем sum_complex_area
 srs_agg = pd.merge(srs_agg, sum_complex_area, on='date', how='left')
 srs_agg['sum_complex_area'] = srs_agg['sum_complex_area'].fillna(0)
 
-#############################################
-# 3) Чтение и обработка EVENTS данных
-#############################################
+# Чтение и обработка events данных
 events_input = "../result_json/events.json"
 events_df = pd.read_json(events_input)
 events_df['date'] = pd.to_datetime(events_df['date'], format="%Y %m %d")
@@ -111,7 +103,7 @@ events_df['particulars'] = events_df['particulars'].fillna("")
 events_df['flare_class'] = events_df['particulars'].apply(extract_flare_class)
 events_df['strong'] = events_df.apply(is_strong_row, axis=1)
 
-# Агрегация по дате: общее число событий и число сильных событий
+# Агрегация по дате общее число событий и число сильных событий
 evt_agg = events_df.groupby('date').agg(
     events_count=('type', 'count'),
     strong_events=('strong', 'sum')
@@ -125,10 +117,6 @@ for cl in ["A", "B", "C", "M", "X"]:
 
 events_final = pd.merge(evt_agg, flare_daily, on='date', how='outer').fillna(0)
 
-#############################################
-# 3.1) Учёт region -> mx_5d (вспышки M/X за 5 дней)
-#############################################
-# Приводим region в int
 events_df['region'] = pd.to_numeric(events_df['region'], errors='coerce').fillna(0).astype(int)
 srs_df['Nmbr'] = pd.to_numeric(srs_df['Nmbr'], errors='coerce').fillna(0).astype(int)
 
@@ -138,7 +126,7 @@ region_mx_daily = events_df.groupby(['date', 'region'])['is_MX'].sum().reset_ind
 region_mx_daily = region_mx_daily.sort_values(['region', 'date'])
 region_mx_daily['mx_5d'] = region_mx_daily.groupby('region')['is_MX'].rolling(5, min_periods=1).sum().values
 
-# Объединяем с srs_df по дате и региону (Nmbr)
+# Объединяем с srs_df по дате и региону
 srs_df2 = pd.merge(srs_df, region_mx_daily[['date','region','mx_5d']],
                    left_on=['date','Nmbr'],
                    right_on=['date','region'],
@@ -148,25 +136,17 @@ mx_5d_agg = srs_df2.groupby('date')['mx_5d'].max().reset_index()
 srs_agg = pd.merge(srs_agg, mx_5d_agg, on='date', how='left')
 srs_agg['mx_5d'] = srs_agg['mx_5d'].fillna(0)
 
-#############################################
-# 3.2) 7-дневные скользящие суммы для SRS
-#############################################
+# 7-дневные скользящие суммы для SRS
 srs_agg = srs_agg.sort_values('date').reset_index(drop=True)
 srs_agg['sum_complex_area_7d'] = srs_agg['sum_complex_area'].rolling(7, min_periods=1).sum()
 srs_agg['mag_code_sum_7d'] = srs_agg['mag_code_sum'].rolling(7, min_periods=1).sum()
 srs_agg['complex_count_7d'] = srs_agg['complex_count'].rolling(7, min_periods=1).sum()
 srs_agg['mx_5d_7d'] = srs_agg['mx_5d'].rolling(7, min_periods=1).sum()
 
-#############################################
-# 4) Финальное объединение SRS и EVENTS
-#############################################
+# Финальное объединение SRS и EVENTS
 merged = pd.merge(srs_agg, events_final, on='date', how='outer').fillna(0)
 merged = merged.sort_values('date').reset_index(drop=True)
 
-#############################################
-# 5) Вычисляем дополнительные rolling-столбцы в merged
-#############################################
-# rolling(24h) и rolling(48h) для событий (так как данные агрегированы по дням)
 merged['events_24h'] = merged['events_count'].rolling(window=1, min_periods=1).sum()
 merged['events_48h'] = merged['events_count'].rolling(window=2, min_periods=1).sum()
 
@@ -200,14 +180,10 @@ merged['ratio_events_48h_to_24h'] = merged['events_48h'] / (merged['events_24h']
 merged['ratio_strong_48h_to_24h'] = merged['strong_48h'] / (merged['strong_24h'] + 1e-5)
 merged['diff_events_48h_24h'] = merged['events_48h'] - merged['events_24h']
 
-#############################################
-# 6) Добавляем таргет target_24
-#############################################
+# Добавляем таргет
 merged['target_24'] = merged['strong_events'].shift(-1).fillna(0).apply(lambda x: 1 if x > 0 else 0)
 
-#############################################
-# 7) Формирование финального датасета и списка признаков
-#############################################
+# Формирование финального датасета и списка признаков
 features = [
     # Из srs_agg:
     'srs_count', 'srs_area_mean', 'srs_NN_mean', 'srs_LL_mean', 'mag_code_sum', 'complex_count',
@@ -232,9 +208,7 @@ y_train = train_data['target_24']
 X_test = test_data[features]
 y_test = test_data['target_24']
 
-#############################################
-# 8) Обучение моделей
-#############################################
+# Обучение моделей
 lgb_model = lgb.LGBMClassifier(objective='binary', random_state=42, n_jobs=-1)
 lgb_model.fit(X_train, y_train)
 prob_lgb = lgb_model.predict_proba(X_test)[:, 1]
@@ -259,9 +233,7 @@ prob_ensemble = (prob_lgb + prob_rf + prob_xgb) / 3
 pred_ensemble = (prob_ensemble >= 0.5).astype(int)
 print_metrics(y_test, pred_ensemble, prob_ensemble, "Ensemble (LGBM+RF+XGB)")
 
-#############################################
-# 9) Сохранение датасета и моделей
-#############################################
+# Сохранение датасета и моделей
 joblib.dump(lgb_model, "../models/s_e_lgb_model_merged_24.pkl")
 joblib.dump(rf_model, "../models/s_e_rf_model_merged_24.pkl")
 joblib.dump(xgb_model, "../models/s_e_xgb_model_merged_24.pkl")
@@ -271,9 +243,7 @@ print("Модель LightGBM сохранена в 's_e_lgb_model_merged.pkl'.")
 print("Модель RandomForest сохранена в 's_e_rf_model_merged.pkl'.")
 print("Модель XGBoost сохранена в 's_e_xgb_model_merged.pkl'.")
 
-#############################################
-# 10) Корреляционная матрица и поиск сильно коррелирующих пар
-#############################################
+# Корреляционная матрица и поиск сильно коррелирующих пар
 corr_matrix = data_model[features].corr()
 print("Корреляционная матрица (численно):")
 print(corr_matrix)

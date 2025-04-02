@@ -12,11 +12,10 @@ import lightgbm as lgb
 import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
 
-# Пути к файлам с текущими данными
 EVENTS_FILE = Path("../files_for_predict/tables/events_download.json")
 SRS_FILE = Path("../files_for_predict/tables/srs_download.json")
 
-# Пути к обученным моделям (для target_24 и target_48, обученных на объединённых данных SRS+Events)
+# Пути к обученным моделям
 LGB_MODEL_FILE_24 = Path("../models/s_e_lgb_model_merged_24.pkl")
 RF_MODEL_FILE_24 = Path("../models/s_e_rf_model_merged_24.pkl")
 XGB_MODEL_FILE_24 = Path("../models/s_e_xgb_model_merged_24.pkl")
@@ -27,9 +26,6 @@ RF_MODEL_FILE_48 = Path("../models/s_e_rf_model_merged_48.pkl")
 XGB_MODEL_FILE_48 = Path("../models/s_e_xgb_model_merged_48.pkl")
 STACK_MODEL_FILE_48 = Path("../models/s_e_stacking_model_merged_48.pkl")
 
-###########################################
-# Функции вспомогательной обработки данных
-###########################################
 def encode_mag_type(mag_str):
     MAG_TYPE_MAP = {
         'ALPHA': 1,
@@ -57,7 +53,6 @@ def extract_flare_class(particulars):
 
 
 def combine_date_str(date_str, time_str):
-    # Предполагается, что date в формате "YYYY MM DD", time – строка, дополненная ведущими нулями до 4 символов
     try:
         date_str = date_str.strip()
         time_str = str(time_str).strip().zfill(4)
@@ -137,9 +132,7 @@ def compute_daily_flare_features(df):
     return daily[['date', 'yesterday_count', 'daybefore_count', 'growth_flare']]
 
 
-###########################################
 # Функции формирования признаков для объединённых данных
-###########################################
 def prepare_features():
     # Загрузка SRS данных
     srs_df = pd.read_json(SRS_FILE)
@@ -169,12 +162,11 @@ def prepare_features():
     srs_agg = pd.merge(srs_agg, sum_complex_area, on='date', how='left')
     srs_agg['sum_complex_area'] = srs_agg['sum_complex_area'].fillna(0)
 
-    # Загрузка EVENTS данных
     events_df = pd.read_json(EVENTS_FILE)
     events_df['date'] = pd.to_datetime(events_df['date'], format="%Y %m %d")
     events_df['particulars'] = events_df['particulars'].fillna("")
     events_df['flare_class'] = events_df['particulars'].apply(extract_flare_class)
-    # Флаг сильного события: если type=='XRA' и flare_class M или X
+    # Флаг сильного события
     events_df['strong'] = np.where((events_df['type'].str.strip() == "XRA") &
                                    (events_df['flare_class'].isin(['M', 'X'])), 1, 0)
     evt_agg = events_df.groupby('date').agg(
@@ -215,7 +207,7 @@ def prepare_features():
     merged = pd.merge(srs_agg, events_final, on='date', how='outer').fillna(0)
     merged = merged.sort_values('date').reset_index(drop=True)
 
-    # Дополнительные rolling-признаки (поскольку данные агрегированы по дням)
+    # Дополнительные признаки
     merged['events_24h'] = merged['events_count'].rolling(window=1, min_periods=1).sum()
     merged['events_48h'] = merged['events_count'].rolling(window=2, min_periods=1).sum()
     merged['strong_24h'] = merged['strong_events'].rolling(window=1, min_periods=1).sum()
@@ -243,7 +235,7 @@ def prepare_features():
     merged['ratio_strong_48h_to_24h'] = merged['strong_48h'] / (merged['strong_24h'] + 1e-5)
     merged['diff_events_48h_24h'] = merged['events_48h'] - merged['events_24h']
 
-    # Список признаков (как при обучении)
+    # Список признаков
     features = [
         'srs_count', 'srs_area_mean', 'srs_NN_mean', 'srs_LL_mean', 'mag_code_sum', 'complex_count',
         'sum_complex_area', 'mx_5d', 'sum_complex_area_7d', 'mag_code_sum_7d', 'complex_count_7d', 'mx_5d_7d',
@@ -254,7 +246,7 @@ def prepare_features():
         'ratio_events_48h_to_24h', 'ratio_strong_48h_to_24h'
     ]
 
-    # Возвращаем последнюю запись (наиболее актуальную)
+    # Возвращаем последнюю запись
     data_features = merged.dropna().reset_index(drop=True)
     if data_features.empty:
         print("Нет данных для формирования признаков!")
@@ -262,29 +254,26 @@ def prepare_features():
     return data_features.iloc[-1:][features].copy()
 
 
-###########################################
 # Прогнозирование на завтра
-###########################################
 def predict_tomorrow():
     input_row = prepare_features()
     if input_row is None or input_row.empty:
         print("Нет данных для прогнозирования!")
         return
-    print("Признаки для прогноза (последняя запись):")
-    print(input_row)
-    # Загрузка моделей (24h)
+    # print("Признаки для прогноза (последняя запись):")
+    # print(input_row)
+    # Загрузка моделей
     lgb_24 = joblib.load(LGB_MODEL_FILE_24)
     rf_24 = joblib.load(RF_MODEL_FILE_24)
     xgb_24 = joblib.load(XGB_MODEL_FILE_24)
     stack_24 = joblib.load(STACK_MODEL_FILE_24)
 
-    # Загрузка моделей (48h)
     lgb_48 = joblib.load(LGB_MODEL_FILE_48)
     rf_48 = joblib.load(RF_MODEL_FILE_48)
     xgb_48 = joblib.load(XGB_MODEL_FILE_48)
     stack_48 = joblib.load(STACK_MODEL_FILE_48)
 
-    # Предсказания (24h)
+    # Предсказания
     prob_lgb_24 = lgb_24.predict_proba(input_row)[:, 1][0]
     prob_rf_24 = rf_24.predict_proba(input_row)[:, 1][0]
     prob_xgb_24 = xgb_24.predict_proba(input_row)[:, 1][0]
@@ -292,7 +281,6 @@ def predict_tomorrow():
     prob_stack_24 = stack_24.predict_proba(np.column_stack((
         prob_lgb_24, prob_rf_24, prob_xgb_24)).reshape(1, -1))[:, 1][0]
 
-    # Предсказания (48h)
     prob_lgb_48 = lgb_48.predict_proba(input_row)[:, 1][0]
     prob_rf_48 = rf_48.predict_proba(input_row)[:, 1][0]
     prob_xgb_48 = xgb_48.predict_proba(input_row)[:, 1][0]
@@ -315,7 +303,7 @@ def predict_tomorrow():
     print(f"Stacking Ensemble: {prob_stack_48:.3f}")
 
     print(
-        "\nРекомендуется ориентироваться на прогноз стэккинг-модели, поскольку она продемонстрировала лучшие результаты на тесте.")
+        "\nРекомендуется ориентироваться на прогноз стэккинг-модели.")
 
 
 if __name__ == "__main__":
