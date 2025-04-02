@@ -181,3 +181,4 @@ cython_debug/
 *.csv
 *.pkl
 files_for_predict/tables
+.DS_Store
